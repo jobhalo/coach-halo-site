@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coach directory — Coach-Halo</title>
+  <!--
+    Host this folder at coach-halo.com/directory/ (e.g. upload /directory/index.html).
+
+    Airtable embed:
+    1. Open the grid/gallery view you want public.
+    2. Click Share → Embed this view.
+    3. Copy the iframe "src" URL and paste it into the <iframe src="..."> below
+       (replace about:blank).
+  -->
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --surface: #141a22;
+      --border: #243041;
+      --text: #e8eef6;
+      --muted: #8b9cb3;
+      --accent: #6ee7ff;
+      --max: 1080px;
+      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: rgba(12, 15, 20, 0.92);
+      backdrop-filter: blur(12px);
+    }
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .logo { font-weight: 700; color: var(--text); }
+    .nav a:not(.logo) { color: var(--muted); font-size: 0.95rem; }
+
+    .intro {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 36px 20px 20px;
+    }
+    .intro h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.5rem, 3vw, 1.9rem);
+      letter-spacing: -0.02em;
+    }
+    .intro p { margin: 0; color: var(--muted); max-width: 58ch; }
+
+    .embed-wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 20px 56px;
+    }
+    .embed-inner {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+    iframe {
+      display: block;
+      width: 100%;
+      height: min(88vh, 920px);
+      border: 0;
+      background: #fff;
+    }
+    .setup-note {
+      margin: 0;
+      padding: 16px 20px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.2);
+    }
+    .setup-note code {
+      font-size: 0.85em;
+      color: var(--accent);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav" aria-label="Primary">
+      <!-- Production: use href="/" for home -->
+      <a class="logo" href="../coach-halo-sketch.html">Coach-Halo</a>
+      <a href="../coach-halo-sketch.html#pricing">Plans &amp; pricing</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="intro">
+      <h1>Find a coach</h1>
+      <p>
+        Browse coaches in the Coach-Halo network. Listings are powered by our directory;
+        for lead matching and signup, visit the main site.
+      </p>
+    </div>
+
+    <div class="embed-wrap">
+      <div class="embed-inner">
+        <!-- Replace about:blank with your Airtable embed URL (https://airtable.com/embed/...) -->
+        <iframe
+          title="Coach directory"
+          src="about:blank"
+          loading="lazy"
+          allowfullscreen
+        ></iframe>
+        <p class="setup-note" id="setup-note">
+          <strong>Setup:</strong> In Airtable, use <strong>Share → Embed this view</strong>, copy the iframe
+          <code>src</code>, and paste it into <code>directory/index.html</code> on the
+          <code>&lt;iframe&gt;</code> above (replace <code>about:blank</code>).
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 Coach-Halo · <a href="../coach-halo-sketch.html">Home</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      var iframe = document.querySelector('iframe[title="Coach directory"]');
+      var note = document.getElementById("setup-note");
+      if (!iframe || !note) return;
+      var src = iframe.getAttribute("src") || "";
+      if (src && src !== "about:blank") {
+        note.hidden = true;
+      }
+    })();
+  </script>
+</body>
+</html>

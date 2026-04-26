@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Market benchmarks — Coach-Halo</title>
+  <!--
+    Static path: coach-halo/benchmarks.html
+    When hosted at site root: /coach-halo/benchmarks.html
+  -->
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --surface: #141a22;
+      --border: #243041;
+      --text: #e8eef6;
+      --muted: #8b9cb3;
+      --accent: #6ee7ff;
+      --radius: 14px;
+      --max: 1080px;
+      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      background: rgba(12, 15, 20, 0.85);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .logo {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .nav-links a:not(.btn) { color: var(--muted); font-size: 0.95rem; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font: inherit;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #6ee7ff, #a78bfa);
+      color: #0c0f14;
+    }
+
+    main { overflow-x: hidden; }
+
+    section {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 56px 20px 72px;
+    }
+    h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      letter-spacing: -0.02em;
+      margin: 0 0 12px;
+    }
+    .section-intro {
+      color: var(--muted);
+      max-width: 60ch;
+      margin: 0 0 36px;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .market-pricing {
+      border-top: 1px solid var(--border);
+      background: linear-gradient(180deg, transparent, rgba(20, 26, 34, 0.35));
+    }
+    .plotly-chart-shell {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      line-height: 0;
+      max-width: 100%;
+    }
+    .market-chart-iframe {
+      width: 100%;
+      height: 820px;
+      border: 0;
+      display: block;
+    }
+    @media (max-width: 640px) {
+      .market-chart-iframe { height: 760px; }
+    }
+
+    .benchmark-gate {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 20px 22px;
+      margin-bottom: 24px;
+      max-width: 520px;
+    }
+    .benchmark-gate .eyebrow {
+      margin-bottom: 8px;
+    }
+    .benchmark-gate p.note {
+      margin: 0 0 14px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .benchmark-gate form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .benchmark-gate input[type="email"] {
+      flex: 1 1 200px;
+      min-width: 0;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.95rem;
+    }
+    .benchmark-gate input[type="email"]::placeholder {
+      color: var(--muted);
+      opacity: 0.85;
+    }
+    .benchmark-gate .msg {
+      margin: 12px 0 0;
+      font-size: 0.92rem;
+      color: #f0a8a8;
+    }
+    .benchmark-gate .msg[hidden] {
+      display: none;
+    }
+
+    #benchmark-chart-panel[hidden] {
+      display: none;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav" aria-label="Primary">
+      <a class="logo" href="../coach-halo-sketch.html">Coach-Halo</a>
+      <div class="nav-links">
+        <a href="../coach-halo-sketch.html">Sketch home</a>
+        <a href="../coach-halo-sketch.html#pricing">Pricing</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="market-pricing" id="benchmarks">
+      <h2>What the market is pricing</h2>
+      <p class="section-intro">
+        Implied hourly rates by category (lead-cost basis, ~8% avg conversion assumption).
+        Categories: marriage &amp; relationship coaching, life coaching, resume writing, career coaching.
+        The interactive chart (pan/zoom with the Plotly toolbar) unlocks after we verify an active subscriber email.
+      </p>
+      <div class="benchmark-gate" id="benchmark-access">
+        <span class="eyebrow">Subscriber access</span>
+        <p class="note">Market insights are for paid Coach-Halo subscribers. Enter the email on your account to continue.</p>
+        <form id="benchmark-email-form" action="#" method="get" novalidate>
+          <label class="visually-hidden" for="benchmark-email">Email</label>
+          <input
+            id="benchmark-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+            required
+          />
+          <button type="submit" class="btn btn-primary">View market insights</button>
+        </form>
+        <p id="benchmark-email-msg" class="msg" role="alert" hidden></p>
+      </div>
+      <div class="plotly-chart-shell" id="benchmark-chart-panel" hidden>
+        <iframe
+          id="benchmark-chart-frame"
+          class="market-chart-iframe"
+          title="Distribution of estimated hourly rate estimates by category"
+          data-src="../market_pricing_hourly_histogram.html"
+          loading="lazy"
+        ></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Coach-Halo sketch · <a href="../coach-halo-sketch.html">Home</a> · <a href="../directory/">Coach directory</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      var form = document.getElementById("benchmark-email-form");
+      var msg = document.getElementById("benchmark-email-msg");
+      var gate = document.getElementById("benchmark-access");
+      var panel = document.getElementById("benchmark-chart-panel");
+      var iframe = document.getElementById("benchmark-chart-frame");
+      /* TODO: replace with server / billing API check (e.g. Outseta, Stripe customer list) */
+      var allowed = "joaquinh@job-halo.com";
+
+      function showInsights() {
+        if (gate) gate.hidden = true;
+        if (panel) panel.hidden = false;
+        if (iframe) {
+          var url = iframe.getAttribute("data-src");
+          if (url && !iframe.getAttribute("src")) iframe.setAttribute("src", url);
+        }
+      }
+
+      if (new URLSearchParams(window.location.search).get("bypass") === "1") {
+        showInsights();
+        return;
+      }
+
+      if (!form || !msg) return;
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var input = document.getElementById("benchmark-email");
+        if (!input) return;
+        var email = (input.value || "").trim().toLowerCase();
+        msg.hidden = true;
+        msg.textContent = "";
+
+        if (email === allowed) {
+          showInsights();
+          return;
+        }
+        msg.textContent = "We could not verify an active subscription for that email.";
+        msg.hidden = false;
+      });
+    })();
+  </script>
+</body>
+</html>
