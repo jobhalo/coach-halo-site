@@ -14,12 +14,10 @@
       --muted: #6b6b6b;
       --accent: #0a0a0a;
       --accent-dim: rgba(10, 10, 10, 0.06);
-      --green: #065f46;
       --green-dim: rgba(6, 95, 70, 0.07);
-      --purple: #4a3f7a;
       --purple-dim: rgba(74, 63, 122, 0.07);
       --radius: 2px;
-      --max: 640px;
+      --max: 1080px;
       --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     }
     * { box-sizing: border-box; }
@@ -35,6 +33,7 @@
     a { color: var(--text); text-decoration: underline; text-underline-offset: 2px; }
     a:hover { color: var(--muted); }
 
+    /* ── Header (matches index.html exactly) ── */
     header {
       position: sticky;
       top: 0;
@@ -44,7 +43,7 @@
       border-bottom: 1px solid var(--border);
     }
     .nav {
-      max-width: 1080px;
+      max-width: var(--max);
       margin: 0 auto;
       padding: 14px 20px;
       display: flex;
@@ -58,10 +57,47 @@
       color: var(--text);
       text-decoration: none;
     }
-    .logo:hover { text-decoration: none; color: var(--muted); }
-    .nav-right { display: flex; gap: 20px; align-items: center; }
-    .nav-right a { color: var(--muted); font-size: 0.95rem; text-decoration: none; }
-    .nav-right a:hover { color: var(--text); }
+    .logo:hover { color: var(--muted); text-decoration: none; }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .nav-links a:not(.btn) { color: var(--muted); font-size: 0.95rem; text-decoration: none; }
+    .nav-links a:not(.btn):hover { color: var(--text); }
+    @media (max-width: 600px) {
+      .nav { padding: 12px 16px; }
+      .nav-links { gap: 12px; }
+      .nav-links a:not(.btn) { display: none; }
+      .btn-signout { padding: 7px 12px; font-size: 0.8rem; }
+    }
+
+    /* ── Buttons (matches index.html) ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 2px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid transparent;
+      text-decoration: none;
+      cursor: pointer;
+      font-family: var(--font);
+    }
+    .btn-primary {
+      background: #0a0a0a;
+      color: #ffffff;
+      border-color: transparent;
+    }
+    .btn-primary:hover { background: #2a2a2a; color: #ffffff; }
+    .btn-ghost {
+      border-color: var(--border);
+      color: var(--text);
+      background: transparent;
+    }
+    .btn-ghost:hover { border-color: #0a0a0a; color: var(--text); }
     .btn-signout {
       background: none;
       border: 1px solid var(--border);
@@ -74,30 +110,33 @@
     }
     .btn-signout:hover { color: var(--text); border-color: #0a0a0a; }
 
-    /* ── Centered page wrapper ── */
+    /* ── Page wrapper ── */
     .page {
-      max-width: var(--max);
+      max-width: 640px;
       margin: 0 auto;
-      padding: 56px 20px 80px;
+      padding: 64px 20px 96px;
     }
 
     /* ── Email gate ── */
-    .gate-eyebrow {
-      font-size: 0.78rem;
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--muted);
-      margin: 0 0 14px;
+      margin-bottom: 12px;
     }
     .gate-title {
-      font-size: clamp(1.6rem, 4vw, 2rem);
-      letter-spacing: -0.02em;
-      margin: 0 0 10px;
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin: 0 0 12px;
     }
     .gate-lead {
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: 1rem;
       margin: 0 0 28px;
+      max-width: 42ch;
     }
     .email-row {
       display: flex;
@@ -117,20 +156,6 @@
     }
     .email-input::placeholder { color: var(--muted); }
     .email-input:focus { outline: none; border-color: #0a0a0a; }
-    .btn-primary {
-      padding: 11px 22px;
-      border-radius: 2px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      border: none;
-      background: #0a0a0a;
-      color: #ffffff;
-      cursor: pointer;
-      font: inherit;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-    .btn-primary:hover { background: #2a2a2a; }
     .error-msg {
       margin: 12px 0 0;
       font-size: 0.88rem;
@@ -138,32 +163,16 @@
     }
 
     /* ── Dashboard ── */
-    .dash-greeting {
-      margin-bottom: 36px;
-    }
-    .dash-eyebrow {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
+    .dash-greeting { margin-bottom: 36px; }
+    .dash-name {
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
       margin: 0 0 8px;
     }
-    .dash-name {
-      font-size: clamp(1.6rem, 4vw, 2rem);
-      letter-spacing: -0.02em;
-      margin: 0 0 6px;
-    }
-    .dash-sub {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin: 0;
-    }
+    .dash-sub { color: var(--muted); font-size: 0.95rem; margin: 0; }
 
-    .links-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+    .links-stack { display: flex; flex-direction: column; gap: 12px; }
     .portal-link {
       display: flex;
       align-items: center;
@@ -176,11 +185,7 @@
       color: var(--text);
       transition: border-color 0.15s;
     }
-    .portal-link:hover {
-      border-color: #0a0a0a;
-      text-decoration: none;
-      color: var(--text);
-    }
+    .portal-link:hover { border-color: #0a0a0a; text-decoration: none; color: var(--text); }
     .link-icon {
       width: 42px;
       height: 42px;
@@ -191,32 +196,21 @@
       font-size: 1.2rem;
       flex-shrink: 0;
     }
-    .link-icon.teal   { background: var(--accent-dim); }
-    .link-icon.green  { background: var(--green-dim); }
-    .link-icon.purple { background: var(--purple-dim); }
+    .link-icon.neutral { background: var(--accent-dim); }
+    .link-icon.green   { background: var(--green-dim); }
+    .link-icon.purple  { background: var(--purple-dim); }
     .link-body { flex: 1; min-width: 0; }
-    .link-title {
-      font-weight: 600;
-      font-size: 0.98rem;
-      margin: 0 0 2px;
-    }
-    .link-desc {
-      color: var(--muted);
-      font-size: 0.85rem;
-      margin: 0;
-    }
-    .link-arrow {
-      color: var(--muted);
-      font-size: 1rem;
-      flex-shrink: 0;
-    }
+    .link-title { font-weight: 600; font-size: 0.98rem; margin: 0 0 2px; }
+    .link-desc  { color: var(--muted); font-size: 0.85rem; margin: 0; }
+    .link-arrow { color: var(--muted); font-size: 1rem; flex-shrink: 0; }
 
+    /* ── Footer (matches index.html) ── */
     footer {
       border-top: 1px solid var(--border);
-      padding: 28px 20px;
-      text-align: center;
+      padding: 40px 20px;
       color: var(--muted);
-      font-size: 0.82rem;
+      font-size: 0.85rem;
+      text-align: center;
     }
   </style>
 </head>
@@ -225,7 +219,7 @@
   <header>
     <nav class="nav" aria-label="Primary">
       <a class="logo" href="index.html">Coach-Halo</a>
-      <div class="nav-right">
+      <div class="nav-links">
         <a href="index.html#pricing">Plans</a>
         <button class="btn-signout" id="signout-btn" hidden onclick="signOut()">Sign out</button>
       </div>
@@ -237,7 +231,7 @@
 
       <!-- ── Email gate ── -->
       <div id="gate">
-        <p class="gate-eyebrow">Coach portal</p>
+        <span class="eyebrow">Coach portal</span>
         <h1 class="gate-title">Welcome back</h1>
         <p class="gate-lead">Enter the email on your Coach-Halo account to access your portal.</p>
         <div class="email-row">
@@ -249,23 +243,23 @@
             placeholder="you@example.com"
             onkeydown="if(event.key==='Enter') checkEmail()"
           />
-          <button class="btn-primary" type="button" onclick="checkEmail()">Continue</button>
+          <button class="btn btn-primary" type="button" onclick="checkEmail()">Continue</button>
         </div>
         <p class="error-msg" id="error-msg" hidden>We don't have an active Coach-Halo account for that email.</p>
-        <p style="margin:28px 0 0;font-size:0.85rem;color:var(--muted);">Not a paid coach yet? <a href="index.html#pricing" style="color:var(--text);font-weight:500;">See plans →</a></p>
+        <p style="margin:24px 0 0;font-size:0.88rem;color:var(--muted);">Not a paid coach yet? <a href="index.html#pricing" style="color:var(--text);font-weight:600;text-decoration:none;">See plans →</a></p>
       </div>
 
       <!-- ── Dashboard ── -->
       <div id="dashboard" hidden>
         <div class="dash-greeting">
-          <p class="dash-eyebrow">Coach portal</p>
+          <span class="eyebrow">Coach portal</span>
           <h1 class="dash-name" id="dash-name">Welcome</h1>
           <p class="dash-sub">Here's everything you need to manage your Coach-Halo presence.</p>
         </div>
 
         <div class="links-stack">
           <a class="portal-link" id="link-profile" href="#" target="_blank" rel="noopener noreferrer">
-            <div class="link-icon teal">✏️</div>
+            <div class="link-icon neutral">✏️</div>
             <div class="link-body">
               <p class="link-title">Update my profile</p>
               <p class="link-desc">Edit your bio, niche, session rate, photo, and Calendly link.</p>
@@ -283,7 +277,7 @@
           </a>
 
           <a class="portal-link" id="link-dashboard" href="#" target="_blank" rel="noopener noreferrer">
-            <div class="link-icon teal">📈</div>
+            <div class="link-icon neutral">📈</div>
             <div class="link-body">
               <p class="link-title">Activity dashboard</p>
               <p class="link-desc">Your lead activity, match history, and performance data.</p>
@@ -306,8 +300,7 @@
   </main>
 
   <footer>
-    <p>© 2026 Coach-Halo</p>
-    <p><a href="index.html">Home</a> · <a href="https://job-halo.com/coaching">Directory</a></p>
+    <p>© 2026 Coach-Halo · <a href="index.html">Home</a> · <a href="https://job-halo.com/coaching">Directory</a></p>
   </footer>
 
   <script>
