@@ -14,6 +14,8 @@ Env:
 Optional:
   COACH_HALO_SITE_HTML          full path to coach-portal.html (overrides auto-detect)
   COACH_HALO_SITE_DIR           directory containing coach-portal.html
+  COACH_PORTAL_PROFILE_URL_MAX_LEN  if Update Profile URL exceeds this (default 2048),
+                                    substitute a minimal name+email prefill link (long URLs often break in browsers)
   AIRTABLE_BASE_ID              default appYMfUftdmhlnU6q
   AIRTABLE_COACHES_TABLE_ID     default tblUGp4lLiJyABtzt
   AIRTABLE_COACH_PORTAL_VIEW_ID default viw2qFIMJEm5pr9Y3
@@ -73,6 +75,10 @@ F_DASHBOARD = "Coach Dashboard"
 MARKER_START = "// <coach-portal-coaches-json-start>"
 MARKER_END = "// <coach-portal-coaches-json-end>"
 
+PROFILE_FORM_BASE = (
+    "https://airtable.com/apppbUQrzMKIHnPUl/pagBXFAbn45Yq0O4d/form"
+)
+
 
 def _env(name: str, default: str) -> str:
     v = (os.getenv(name) or "").strip()
@@ -92,6 +98,15 @@ def _cell_str(val: Any) -> str:
     if isinstance(val, list) and val:
         return _cell_str(val[0])
     return str(val).strip()
+
+
+def _fallback_profile_form_url(coach_name: str, email_for_prefill: str) -> str:
+    pairs = [
+        ("prefill_Full Name", coach_name),
+        ("prefill_Email", email_for_prefill),
+    ]
+    q = urllib.parse.urlencode(pairs, quote_via=urllib.parse.quote)
+    return f"{PROFILE_FORM_BASE}?{q}"
 
 
 def _fetch_airtable_pages(
@@ -138,6 +153,14 @@ def _build_coaches_object(records: List[Dict[str, Any]]) -> Dict[str, Dict[str, 
             dupes.append(email)
         name = _cell_str(fields.get(F_NAME)) or raw_email.split("@")[0]
         profile = _cell_str(fields.get(F_PROFILE))
+        max_pf = int((os.getenv("COACH_PORTAL_PROFILE_URL_MAX_LEN") or "2048").strip() or "2048")
+        if profile and len(profile) > max_pf:
+            print(
+                f"Warning: {F_PROFILE} for {email} is {len(profile)} chars (>{max_pf}); "
+                "using minimal name+email prefill so the link works in browsers.",
+                file=sys.stderr,
+            )
+            profile = _fallback_profile_form_url(name, raw_email)
         dash = _cell_str(fields.get(F_DASHBOARD))
         out[email] = {
             "name": name,
