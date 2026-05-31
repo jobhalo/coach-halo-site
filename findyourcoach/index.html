@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Get matched with a career, life, relationship, wellness, or financial coach on Coach-Halo. Tell us your goals and we will connect you for a complimentary intro conversation." />
+  <title>Find your coach | Coach-Halo</title>
+  <script defer data-website-id="dfid_ImJXeenE5zJoIlqGSMtN5" data-domain="coach-halo.com" src="https://datafa.st/js/script.js"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #fafafa;
+      --border: #e8e8e8;
+      --text: #0a0a0a;
+      --muted: #6b6b6b;
+      --accent: #0a0a0a;
+      --accent-dim: rgba(10, 10, 10, 0.06);
+      --radius-card: 12px;
+      --radius-pill: 999px;
+      --max: 1120px;
+      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --ok-bg: #ecfdf5;
+      --ok-border: #a7f3d0;
+      --ok-text: #065f46;
+      --error: #991b1b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: var(--text); text-underline-offset: 2px; }
+    a:hover { color: var(--muted); }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.92);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links a {
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-decoration: none;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 22px;
+      border-radius: var(--radius-card);
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 1px solid transparent;
+      text-decoration: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s ease;
+    }
+    .btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      width: 100%;
+    }
+    .btn-primary:hover { background: #2a2a2a; }
+    .btn-ghost {
+      border-color: var(--border);
+      color: var(--text);
+      background: transparent;
+    }
+    .btn-ghost:hover { background: var(--surface); }
+
+    /* Hero + form above the fold */
+    .hero-funnel {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+      display: grid;
+      gap: 32px;
+      align-items: start;
+    }
+    @media (min-width: 900px) {
+      .hero-funnel {
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        padding: 40px 20px 56px;
+        align-items: start;
+      }
+    }
+    @media (max-width: 899px) {
+      .hero-funnel { grid-template-columns: 1fr; }
+      .hero-form { order: -1; }
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      margin: 0 0 14px;
+    }
+    .lead {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin: 0 0 22px;
+      max-width: 44ch;
+    }
+
+    .trust-badges {
+      list-style: none;
+      margin: 0 0 24px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .trust-badges li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+    .trust-badges .check {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: var(--radius-pill);
+      background: var(--ok-bg);
+      border: 1px solid var(--ok-border);
+      color: var(--ok-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .network-viz {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 18px 20px;
+    }
+    .network-viz p {
+      margin: 0 0 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .coach-network-grid {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      margin-bottom: 12px;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+    .coach-network-grid::-webkit-scrollbar { display: none; }
+    .coach-network-grid img {
+      width: clamp(28px, 6.5vw, 36px);
+      height: clamp(28px, 6.5vw, 36px);
+      border-radius: var(--radius-pill);
+      border: 2px solid var(--bg);
+      margin-left: -10px;
+      object-fit: cover;
+      background: var(--border);
+      flex-shrink: 0;
+      position: relative;
+    }
+    .coach-network-grid img:first-child { margin-left: 0; }
+    .coach-network-grid img:hover,
+    .coach-network-grid img:focus-visible {
+      z-index: 1;
+      transform: scale(1.06);
+      transition: transform 0.15s ease;
+    }
+    .network-viz .caption {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    .process-steps-mini {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .process-steps-mini span {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .process-steps-mini span.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .hero-form .form-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 24px 22px 28px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
+    }
+    @media (min-width: 480px) {
+      .hero-form .form-card { padding: 28px 28px 32px; }
+    }
+    .form-card-head {
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .form-card-head strong {
+      display: block;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .form-card-head span {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .progress {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .progress span {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+      border-radius: var(--radius-pill);
+      transition: background 0.25s ease;
+    }
+    .progress span.on { background: var(--accent); }
+    .form-step-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin: 0 0 6px;
+    }
+    .form-step-title {
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      margin: 0 0 18px;
+    }
+    .wizard-step { display: none; }
+    .wizard-step.on {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    label .opt { font-weight: 400; color: var(--muted); }
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      font: inherit;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      background: var(--bg);
+      margin-bottom: 16px;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    textarea { min-height: 100px; resize: vertical; }
+    .field-error {
+      font-size: 0.82rem;
+      color: var(--error);
+      margin: -10px 0 12px;
+      display: none;
+    }
+    .field-error.show { display: block; }
+
+    fieldset { border: none; margin: 0 0 14px; padding: 0; }
+    fieldset legend {
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      padding: 0;
+    }
+    .radio-grid { display: flex; flex-direction: column; gap: 8px; }
+    .radio-card { position: relative; display: block; }
+    .radio-card input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .radio-card span {
+      display: block;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      font-size: 0.92rem;
+      cursor: pointer;
+    }
+    .radio-card input:checked + span {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      font-weight: 600;
+    }
+    .type-grid {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    @media (min-width: 400px) {
+      .type-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .type-grid .radio-card span { font-size: 0.85rem; padding: 10px 12px; }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .form-actions .btn-primary { flex: 1; min-width: 140px; }
+    .form-microcopy {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: center;
+      margin: 14px 0 0;
+    }
+    .form-below-trust {
+      margin: 14px 0 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .matching-panel {
+      display: none;
+      text-align: left;
+      padding: 4px 0 0;
+    }
+    .matching-panel.on { display: block; animation: fadeIn 0.35s ease; }
+    .matching-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 24px 20px;
+    }
+    .matching-title {
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      margin: 0 0 20px;
+      line-height: 1.3;
+    }
+    .matching-steps {
+      list-style: none;
+      margin: 0 0 18px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .matching-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.4;
+      opacity: 0.45;
+      transition: opacity 0.25s ease, color 0.25s ease;
+    }
+    .matching-step.active {
+      opacity: 1;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .matching-step.done {
+      opacity: 1;
+      color: var(--text);
+    }
+    .matching-step-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      margin-top: 1px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      color: transparent;
+      transition: border-color 0.25s ease, background 0.25s ease, color 0.2s ease;
+    }
+    .matching-step.active .matching-step-icon {
+      border-color: var(--accent);
+      border-top-color: transparent;
+      animation: matchingSpin 0.7s linear infinite;
+    }
+    .matching-step.done .matching-step-icon {
+      border-color: var(--ok-border);
+      background: var(--ok-bg);
+      color: var(--ok-text);
+      animation: none;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .matching-step.done .matching-step-icon::before { content: "✓"; }
+    @keyframes matchingSpin {
+      to { transform: rotate(360deg); }
+    }
+    .matching-progress-track {
+      height: 3px;
+      background: var(--border);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+    .matching-progress-fill {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      border-radius: var(--radius-pill);
+      transition: width 0.45s ease;
+    }
+
+    .success-panel { display: none; text-align: left; padding: 4px 0 0; }
+    .success-panel.on { display: block; animation: fadeIn 0.35s ease; }
+    .success-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+    .match-reveal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 22px 20px;
+    }
+    .match-reveal-top {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .match-coach-photo {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--radius-card);
+      object-fit: cover;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      background: var(--border);
+    }
+    .match-reveal-intro { flex: 1; min-width: 0; }
+    .match-coach-name {
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      margin: 0 0 4px;
+      line-height: 1.2;
+    }
+    .match-coach-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin: 0;
+    }
+    .match-rationale {
+      font-size: 0.95rem;
+      margin: 0 0 20px;
+      line-height: 1.55;
+    }
+    .match-review {
+      margin: 0 0 20px;
+      padding: 14px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      border-left: 3px solid var(--accent);
+    }
+    .match-review-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin: 0 0 8px;
+    }
+    .match-review-text {
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin: 0 0 8px;
+      font-style: italic;
+    }
+    .match-review-by {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin: 0;
+      font-style: normal;
+    }
+    .match-times h4 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+    .match-times ul {
+      margin: 0 0 20px;
+      padding: 0;
+      list-style: none;
+    }
+    .match-times li {
+      padding: 11px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .match-times li:last-child { margin-bottom: 0; }
+    .match-email-note {
+      font-size: 0.9rem;
+      margin: 0 0 12px;
+      padding: 12px 14px;
+      background: var(--ok-bg);
+      border: 1px solid var(--ok-border);
+      border-radius: var(--radius-card);
+      color: var(--ok-text);
+    }
+    .match-reply-cta {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+    .success-preview-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 14px;
+      text-align: center;
+    }
+    .match-error {
+      display: none;
+      padding: 16px 18px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: var(--radius-card);
+      color: var(--error);
+      font-size: 0.92rem;
+      margin-bottom: 14px;
+    }
+    .match-error.on { display: block; }
+
+    section.block {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 48px 20px;
+      border-top: 1px solid var(--border);
+    }
+    h2 {
+      font-size: clamp(1.4rem, 3vw, 1.85rem);
+      letter-spacing: -0.02em;
+      margin: 0 0 12px;
+    }
+    .section-intro {
+      color: var(--muted);
+      max-width: 58ch;
+      margin: 0 0 28px;
+    }
+    .steps-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) { .steps-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 960px) { .steps-grid { grid-template-columns: repeat(4, 1fr); } }
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 20px 18px;
+    }
+    .step-num {
+      display: inline-flex;
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-pill);
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .step-card h3 { margin: 0 0 6px; font-size: 0.98rem; }
+    .step-card p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+
+    .trust-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 600px) { .trust-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 900px) { .trust-grid { grid-template-columns: repeat(3, 1fr); } }
+    .trust-card {
+      padding: 22px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+    }
+    .trust-card strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+    .trust-card p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .faq-list { max-width: 720px; }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-item summary {
+      padding: 18px 0;
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: "+";
+      font-size: 1.2rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .faq-item[open] summary::after { content: "−"; }
+    .faq-item p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      padding-right: 24px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    footer p { margin: 0 0 8px; }
+    footer a { color: var(--muted); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav" aria-label="Main">
+      <a class="logo" href="/">Coach-Halo</a>
+      <div class="nav-links">
+        <a href="#how-it-works">How it works</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero + form above the fold -->
+    <section class="hero-funnel" id="matching-form" aria-labelledby="hero-heading">
+      <div class="hero-copy">
+        <span class="eyebrow">Free coach matching</span>
+        <h1 id="hero-heading">Get matched with the right coach for your next step</h1>
+        <p class="lead">
+          Tell us what you need. We will pair you with a vetted coach from our network and introduce you for a complimentary first conversation.
+        </p>
+        <ul class="trust-badges" aria-label="Why Coach-Halo">
+          <li><span class="check" aria-hidden="true">✓</span><span><strong>60+ vetted coaches</strong> in career, life, relationship, leadership, wellness, and financial coaching</span></li>
+          <li><span class="check" aria-hidden="true">✓</span><span><strong>Human-reviewed matching</strong>, not an automated blast</span></li>
+          <li><span class="check" aria-hidden="true">✓</span><span><strong>Complimentary first conversation</strong> with your matched coach</span></li>
+          <li><span class="check" aria-hidden="true">✓</span><span><strong>No obligation.</strong> Explore before you commit</span></li>
+          <li><span class="check" aria-hidden="true">✓</span><span><strong>Typically matched within seconds</strong></span></li>
+        </ul>
+        <div class="network-viz">
+          <p>Matching you from our coach network</p>
+          <div
+            class="coach-network-grid"
+            id="coach-network-grid"
+            role="img"
+            aria-label="Photos of coaches in the Coach-Halo matching network"
+          ></div>
+          <div class="process-steps-mini">
+            <span class="active">Your goals</span>
+            <span>Review</span>
+            <span>Match</span>
+            <span>Intro call</span>
+          </div>
+          <p class="caption">60+ vetted coaches available · Specialty-matched to your needs</p>
+        </div>
+      </div>
+
+      <div class="hero-form">
+        <div class="form-card" id="form-card">
+          <div class="form-card-head" id="form-card-head">
+            <strong>Start your free match</strong>
+            <span>About 2 minutes · Step <span id="step-indicator">1</span> of 3</span>
+          </div>
+
+          <form id="match-form" novalidate>
+            <div class="progress" id="wizard-progress" aria-hidden="true">
+              <span class="on"></span><span></span><span></span>
+            </div>
+
+            <div class="wizard-step on" id="step-1" data-step="1" role="group" aria-labelledby="step1-title">
+              <p class="form-step-label">Step 1 of 3</p>
+              <h3 class="form-step-title" id="step1-title">Let’s get started</h3>
+              <label for="firstName">First name</label>
+              <input type="text" id="firstName" name="firstName" autocomplete="given-name" required />
+              <p class="field-error" id="err-name">Please enter your first name.</p>
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" autocomplete="email" required />
+              <p class="field-error" id="err-email">Please enter a valid email.</p>
+              <div class="form-actions">
+                <button type="button" class="btn btn-primary" data-action="next">Continue</button>
+              </div>
+              <p class="form-microcopy">No spam · Unsubscribe anytime · We never sell your info</p>
+            </div>
+
+            <div class="wizard-step" id="step-2" data-step="2" role="group" aria-labelledby="step2-title">
+              <p class="form-step-label">Step 2 of 3</p>
+              <h3 class="form-step-title" id="step2-title">Your goals</h3>
+              <fieldset>
+                <legend>What type of coaching are you looking for?</legend>
+                <div class="type-grid">
+                  <label class="radio-card">
+                    <input type="radio" name="coachingType" value="Career coaching" data-category="Career Coaching" required />
+                    <span>Career coaching</span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="coachingType" value="Life coaching" data-category="Life Coaching" />
+                    <span>Life coaching</span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="coachingType" value="Relationship & marriage" data-category="Marriage and Relationship Counseling" />
+                    <span>Relationship &amp; marriage</span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="coachingType" value="Leadership & executive" data-category="Business Coaching" />
+                    <span>Leadership &amp; executive</span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="coachingType" value="Health & wellness" data-category="Health and Wellness Coaching" />
+                    <span>Health &amp; wellness</span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="coachingType" value="Family & parenting" data-category="Family Counseling" />
+                    <span>Family &amp; parenting</span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="coachingType" value="Resume & job search" data-category="Resume Writing" />
+                    <span>Resume &amp; job search</span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="coachingType" value="Financial wellness" data-category="Personal Financial Planning" />
+                    <span>Financial wellness</span>
+                  </label>
+                  <label class="radio-card" style="grid-column:1/-1">
+                    <input type="radio" name="coachingType" value="Not sure" data-category="Life Coaching" data-unsure="true" />
+                    <span>Not sure: help me decide</span>
+                  </label>
+                </div>
+              </fieldset>
+              <p class="field-error" id="err-type">Please select a coaching type.</p>
+              <label for="goals">What are you hoping to work on?</label>
+              <textarea id="goals" name="goals" placeholder="A few sentences help us match you better…" required></textarea>
+              <p class="field-error" id="err-goals">Please tell us what you want to work on.</p>
+              <div class="form-actions">
+                <button type="button" class="btn btn-ghost" data-action="back">Back</button>
+                <button type="button" class="btn btn-primary" data-action="next">Continue</button>
+              </div>
+            </div>
+
+            <div class="wizard-step" id="step-3" data-step="3" role="group" aria-labelledby="step3-title">
+              <p class="form-step-label">Step 3 of 3</p>
+              <h3 class="form-step-title" id="step3-title">Preferences</h3>
+              <fieldset>
+                <legend>How soon would you like to meet?</legend>
+                <div class="radio-grid">
+                  <label class="radio-card"><input type="radio" name="timeline" value="ASAP" required /><span>ASAP</span></label>
+                  <label class="radio-card"><input type="radio" name="timeline" value="This week" /><span>This week</span></label>
+                  <label class="radio-card"><input type="radio" name="timeline" value="This month" /><span>This month</span></label>
+                  <label class="radio-card"><input type="radio" name="timeline" value="Just exploring" /><span>Just exploring</span></label>
+                </div>
+              </fieldset>
+              <p class="field-error" id="err-timeline">Please choose a timeline.</p>
+              <fieldset>
+                <legend>Preferred coaching style</legend>
+                <div class="radio-grid">
+                  <label class="radio-card"><input type="radio" name="style" value="Direct and practical" required /><span>Direct and practical</span></label>
+                  <label class="radio-card"><input type="radio" name="style" value="Supportive and reflective" /><span>Supportive and reflective</span></label>
+                  <label class="radio-card"><input type="radio" name="style" value="Strategic / action-oriented" /><span>Strategic / action-oriented</span></label>
+                  <label class="radio-card"><input type="radio" name="style" value="Not sure" /><span>Not sure</span></label>
+                </div>
+              </fieldset>
+              <p class="field-error" id="err-style">Please choose a coaching style.</p>
+              <fieldset>
+                <legend>Coach gender preference</legend>
+                <div class="radio-grid">
+                  <label class="radio-card"><input type="radio" name="genderPreference" value="Male" required /><span>Male</span></label>
+                  <label class="radio-card"><input type="radio" name="genderPreference" value="Female" /><span>Female</span></label>
+                  <label class="radio-card"><input type="radio" name="genderPreference" value="No preference" /><span>No preference</span></label>
+                </div>
+              </fieldset>
+              <p class="field-error" id="err-gender">Please choose a coach gender preference.</p>
+              <label for="notes">Anything else? <span class="opt">(optional)</span></label>
+              <textarea id="notes" name="notes" rows="2" placeholder="Scheduling, preferences, or context…"></textarea>
+              <div class="form-actions">
+                <button type="button" class="btn btn-ghost" data-action="back">Back</button>
+                <button type="submit" class="btn btn-primary">Get my coach match</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="matching-panel" id="matching-panel" aria-live="polite" aria-busy="false" hidden>
+            <div class="matching-card">
+              <h2 class="matching-title">Finding your best coach match...</h2>
+              <ul class="matching-steps" id="matching-steps">
+                <li class="matching-step" data-matching-step><span class="matching-step-icon" aria-hidden="true"></span><span>Reviewing your coaching goals</span></li>
+                <li class="matching-step" data-matching-step><span class="matching-step-icon" aria-hidden="true"></span><span>Checking coach specialties</span></li>
+                <li class="matching-step" data-matching-step><span class="matching-step-icon" aria-hidden="true"></span><span>Reviewing current availability</span></li>
+                <li class="matching-step" data-matching-step><span class="matching-step-icon" aria-hidden="true"></span><span>Comparing preferred coaching styles</span></li>
+                <li class="matching-step" data-matching-step><span class="matching-step-icon" aria-hidden="true"></span><span>Selecting the strongest available match</span></li>
+              </ul>
+              <div class="matching-progress-track" aria-hidden="true">
+                <span class="matching-progress-fill" id="matching-progress-fill"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="match-error" id="match-error" role="alert"></div>
+
+          <div class="success-panel" id="success-panel" role="status" aria-live="polite">
+            <p class="success-eyebrow">Your coach match</p>
+            <div class="match-reveal">
+              <div class="match-reveal-top">
+                <img class="match-coach-photo" id="match-coach-photo" src="https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1761345282663-headshot_linkedin+%281%29.jfif" alt="" width="72" height="72" />
+                <div class="match-reveal-intro">
+                  <h2 class="match-coach-name" id="match-coach-name">Brittany Schmaling</h2>
+                  <p class="match-coach-title" id="match-coach-title">Relationship &amp; Marriage Coach</p>
+                </div>
+              </div>
+              <p class="match-rationale" id="match-rationale">
+                Based on your goals and preferred coaching style, Brittany appears to be one of the strongest available matches in our network.
+              </p>
+              <blockquote class="match-review" id="match-review">
+                <p class="match-review-label">What clients say</p>
+                <p class="match-review-text" id="match-review-text"></p>
+                <footer class="match-review-by" id="match-review-by"></footer>
+              </blockquote>
+              <div class="match-times">
+                <h4>Next available times</h4>
+                <ul>
+                  <li>Tuesday 4:00 PM ET</li>
+                  <li>Wednesday 12:00 PM ET</li>
+                  <li>Thursday 5:30 PM ET</li>
+                </ul>
+              </div>
+              <p class="match-email-note" id="match-email-note">📧 We've sent these details to your email as well.</p>
+              <p class="match-reply-cta">To receive a personal introduction, simply reply to the email we just sent.</p>
+            </div>
+            <p class="success-preview-note" id="match-preview-note">Sample intro times shown until scheduling is connected per coach.</p>
+          </div>
+        </div>
+        <p class="form-below-trust">Free coach matching · No credit card required · No obligation</p>
+      </div>
+    </section>
+
+    <section class="block" id="how-it-works" aria-labelledby="how-heading">
+      <h2 id="how-heading">How matching works</h2>
+      <p class="section-intro">Four simple steps from your first answer to a coach introduction.</p>
+      <div class="steps-grid">
+        <article class="step-card">
+          <span class="step-num" aria-hidden="true">1</span>
+          <h3>Tell us what you're looking for</h3>
+          <p>Share your goals, timeline, and preferences in the short form above.</p>
+        </article>
+        <article class="step-card">
+          <span class="step-num" aria-hidden="true">2</span>
+          <h3>We review your goals</h3>
+          <p>A real person reads your answers and identifies the best fit.</p>
+        </article>
+        <article class="step-card">
+          <span class="step-num" aria-hidden="true">3</span>
+          <h3>We match you with a coach</h3>
+          <p>We pick from 60+ vetted coaches based on specialty and capacity.</p>
+        </article>
+        <article class="step-card">
+          <span class="step-num" aria-hidden="true">4</span>
+          <h3>Complimentary intro call</h3>
+          <p>Meet your coach with no obligation before you decide to continue.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="block" id="trust" aria-labelledby="trust-heading">
+      <h2 id="trust-heading">Why people trust Coach-Halo</h2>
+      <p class="section-intro">Built for people actively looking for support, not a directory you have to search alone.</p>
+      <div class="trust-grid">
+        <article class="trust-card">
+          <strong>60+ vetted coaches</strong>
+          <p>Career, life, relationship, leadership, wellness, financial coaching, and more. Each coach is onboarded to our network.</p>
+        </article>
+        <article class="trust-card">
+          <strong>Human-reviewed matching</strong>
+          <p>Your submission is read by our team before we make an introduction.</p>
+        </article>
+        <article class="trust-card">
+          <strong>Complimentary first conversation</strong>
+          <p>Most matches include a no-cost intro call so you can see if it's the right fit.</p>
+        </article>
+        <article class="trust-card">
+          <strong>No obligation</strong>
+          <p>Explore coaching at your pace. There's no commitment required to get matched.</p>
+        </article>
+        <article class="trust-card">
+          <strong>Fast turnaround</strong>
+          <p>We typically respond with a coach introduction within seconds.</p>
+        </article>
+        <article class="trust-card">
+          <strong>Privacy respected</strong>
+          <p>We don't sell your information. Unsubscribe anytime from our emails.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="block" id="faq" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">Frequently asked questions</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Why use Coach-Halo instead of finding a coach myself?</summary>
+          <p>You certainly can search for a coach on your own.</p>
+          <p>Coach-Halo saves you the time and guesswork of sorting through dozens of profiles, websites, and coaching styles. We learn about your situation first, then introduce you to a coach who is likely to be a strong fit from the start.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is Coach-Halo matching really free?</summary>
+          <p>Yes. Submitting the form and receiving a coach introduction is completely free.</p>
+          <p>We review your goals and personally introduce you to a coach who fits what you're looking for. Your first conversation is complimentary, so you can see if it's the right fit before making any commitment.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How long does it take to get matched?</summary>
+          <p>Most people receive a coach introduction within seconds.</p>
+          <p>Every submission is reviewed by a real person, not an automated system, so we can make thoughtful matches based on your goals, preferences, and timeline.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What happens during the first conversation?</summary>
+          <p>Think of it as an introduction, not a sales call.</p>
+          <p>You'll have a chance to discuss your goals, learn about the coach's approach, ask questions, and decide whether you'd like to work together. There is no obligation to continue.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do you choose my coach?</summary>
+          <p>We consider what you'd like help with, your goals, preferred coaching style, timeline, and coach availability.</p>
+          <p>Our goal isn't to send you a random coach. It's to introduce you to someone who is genuinely well-positioned to help.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What types of coaching are available?</summary>
+          <p>Our network includes coaches specializing in career transitions, job search, leadership, life coaching, relationships, confidence and mindset, health and wellness, and family coaching.</p>
+          <p>Not sure what kind of coaching you need? That's perfectly okay. We'll help point you in the right direction.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Headquartered in San Francisco, California · © 2026 JH People Insights LLC, doing business as Coach-Halo.com. All rights reserved.</p>
+    <p><a href="#">Terms and Conditions</a> · <a href="#">Privacy Policy</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      /* JH Member? checked in Airtable + Outseta Image URL */
+      var COACH_NETWORK_PHOTOS = [
+        { name: "Annette Lagunes", image: "https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1770438035347-Coach+Annette+L.jpg" },
+        { name: "Brittany Schmaling", image: "https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1761345282663-headshot_linkedin+%281%29.jfif" },
+        { name: "Christine Liu", image: "https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1766706648061-959657.jpg" },
+        { name: "Christoph Nauer", image: "https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1776372894598-ChristophNauer.jpg" },
+        { name: "Denise Foss", image: "https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1768078850239-Coach_Denise.JPG" },
+        { name: "Emily Steliotes", image: "https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1761345238059-Headshot_Steliotes.jpg" },
+        { name: "Fabienne Jach Snyder", image: "https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1777499367827-Fabienne_Jach_Snyder-Life_Coach.jpg" },
+        { name: "Gary Anello", image: "https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1770574603167-Picture1.jpg" },
+        { name: "Jake Randall", image: "https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1768002079091-Coach_Jake.jpg" },
+        { name: "Laszlo Ujpal", image: "https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1774315338721-917511.jpg" },
+        { name: "Madhuri Garigipati", image: "https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1775240961350-coach_madhuri.jpg" },
+        { name: "Yacine Nedjam", image: "https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1761345228582-Foto+Coach-Halo.JPG" }
+      ];
+
+      function renderCoachNetworkGrid() {
+        var grid = document.getElementById("coach-network-grid");
+        if (!grid) return;
+        var frag = document.createDocumentFragment();
+        COACH_NETWORK_PHOTOS.forEach(function (coach) {
+          var img = document.createElement("img");
+          img.src = coach.image;
+          img.alt = coach.name;
+          img.width = 40;
+          img.height = 40;
+          img.loading = "lazy";
+          img.decoding = "async";
+          frag.appendChild(img);
+        });
+        grid.appendChild(frag);
+        grid.setAttribute(
+          "aria-label",
+          COACH_NETWORK_PHOTOS.length + " Job-Halo member coach photos in the matching network"
+        );
+      }
+
+      renderCoachNetworkGrid();
+
+      var currentStep = 1;
+      var totalSteps = 3;
+      var form = document.getElementById("match-form");
+      var progressEl = document.getElementById("wizard-progress");
+      var matchingPanel = document.getElementById("matching-panel");
+      var matchingProgressFill = document.getElementById("matching-progress-fill");
+      var matchingStepEls = matchingPanel
+        ? matchingPanel.querySelectorAll("[data-matching-step]")
+        : [];
+      var successPanel = document.getElementById("success-panel");
+      var formCardHead = document.getElementById("form-card-head");
+      var MATCHING_STEP_MS = 800;
+      var isMatching = false;
+      var stepIndicator = document.getElementById("step-indicator");
+
+      function getUtmParams() {
+        var params = {};
+        new URLSearchParams(window.location.search).forEach(function (value, key) {
+          if (key.indexOf("utm_") === 0) params[key] = value;
+        });
+        return params;
+      }
+
+      function showStep(n) {
+        currentStep = n;
+        document.querySelectorAll(".wizard-step").forEach(function (step) {
+          var num = parseInt(step.getAttribute("data-step"), 10);
+          step.classList.toggle("on", num === n);
+        });
+        if (progressEl) {
+          progressEl.querySelectorAll("span").forEach(function (bar, i) {
+            bar.classList.toggle("on", i < n);
+          });
+        }
+        if (stepIndicator) stepIndicator.textContent = String(n);
+        updateProcessMini(n);
+      }
+
+      function updateProcessMini(step) {
+        var labels = document.querySelectorAll(".process-steps-mini span");
+        labels.forEach(function (el, i) {
+          el.classList.toggle("active", i < step);
+        });
+      }
+
+      function showError(id, show) {
+        var el = document.getElementById(id);
+        if (el) el.classList.toggle("show", !!show);
+      }
+
+      function validateStep1() {
+        var first = document.getElementById("firstName");
+        var email = document.getElementById("email");
+        var ok = true;
+        if (!(first.value || "").trim()) { showError("err-name", true); ok = false; } else { showError("err-name", false); }
+        var emailVal = (email.value || "").trim();
+        if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+          showError("err-email", true);
+          ok = false;
+        } else { showError("err-email", false); }
+        return ok;
+      }
+
+      function validateStep2() {
+        var ok = true;
+        if (!document.querySelector('input[name="coachingType"]:checked')) {
+          showError("err-type", true); ok = false;
+        } else { showError("err-type", false); }
+        if (!(document.getElementById("goals").value || "").trim()) {
+          showError("err-goals", true); ok = false;
+        } else { showError("err-goals", false); }
+        return ok;
+      }
+
+      function validateStep3() {
+        var ok = true;
+        if (!document.querySelector('input[name="timeline"]:checked')) {
+          showError("err-timeline", true); ok = false;
+        } else { showError("err-timeline", false); }
+        if (!document.querySelector('input[name="style"]:checked')) {
+          showError("err-style", true); ok = false;
+        } else { showError("err-style", false); }
+        if (!document.querySelector('input[name="genderPreference"]:checked')) {
+          showError("err-gender", true); ok = false;
+        } else { showError("err-gender", false); }
+        return ok;
+      }
+
+      form.addEventListener("click", function (e) {
+        var btn = e.target.closest("[data-action]");
+        if (!btn) return;
+        if (btn.getAttribute("data-action") === "next") {
+          if (currentStep === 1 && !validateStep1()) return;
+          if (currentStep === 2 && !validateStep2()) return;
+          if (currentStep < totalSteps) showStep(currentStep + 1);
+        }
+        if (btn.getAttribute("data-action") === "back" && currentStep > 1) {
+          showStep(currentStep - 1);
+        }
+      });
+
+      function truncate(str, max) {
+        str = (str || "").trim();
+        if (str.length <= max) return str;
+        return str.slice(0, max).trim() + "…";
+      }
+
+      function buildPayload() {
+        var typeInput = document.querySelector('input[name="coachingType"]:checked');
+        return {
+          firstName: (document.getElementById("firstName").value || "").trim(),
+          email: (document.getElementById("email").value || "").trim(),
+          coachingType: typeInput ? typeInput.value : "",
+          coachingTypeCategory: typeInput ? (typeInput.getAttribute("data-category") || "") : "",
+          coachingTypeUnsure: typeInput && typeInput.getAttribute("data-unsure") === "true",
+          goals: (document.getElementById("goals").value || "").trim(),
+          timeline: (document.querySelector('input[name="timeline"]:checked') || {}).value || "",
+          style: (document.querySelector('input[name="style"]:checked') || {}).value || "",
+          genderPreference: (document.querySelector('input[name="genderPreference"]:checked') || {}).value || "",
+          notes: (document.getElementById("notes").value || "").trim(),
+          source: "findyourcoach",
+          submittedAt: new Date().toISOString(),
+          utm: getUtmParams()
+        };
+      }
+
+      var MATCH_API_URL = "/.netlify/functions/match-coach";
+      var lastMatchResult = null;
+
+      function renderSuccessSummary(payload, match) {
+        if (!match) return;
+        var stylePart = payload.style && payload.style !== "Not sure"
+          ? " and your preferred coaching style (" + payload.style.toLowerCase() + ")"
+          : " and your preferred coaching style";
+        var genderPart = "";
+        if (payload.genderPreference && payload.genderPreference !== "No preference") {
+          genderPart = " We also noted your preference for a " + payload.genderPreference.toLowerCase() + " coach.";
+        }
+
+        var photoEl = document.getElementById("match-coach-photo");
+        photoEl.src = match.image;
+        photoEl.alt = match.name + ", " + match.title;
+
+        document.getElementById("match-coach-name").textContent = match.name;
+        document.getElementById("match-coach-title").textContent = match.title;
+        document.getElementById("match-rationale").textContent =
+          "Based on your goals" + stylePart + ", " + match.short +
+          " appears to be one of the strongest available matches in our network." + genderPart;
+
+        var reviewBlock = document.getElementById("match-review");
+        var reviewText = document.getElementById("match-review-text");
+        var reviewBy = document.getElementById("match-review-by");
+        if (match.review) {
+          reviewText.textContent = "\u201C" + match.review + "\u201D";
+          reviewBy.textContent = match.reviewBy || "";
+          reviewBlock.style.display = "";
+        } else {
+          reviewBlock.style.display = "none";
+        }
+
+        var emailNote = document.getElementById("match-email-note");
+        if (payload.email) {
+          emailNote.textContent =
+            "📧 We've sent these details to " + payload.email + " as well.";
+        } else {
+          emailNote.textContent = "📧 We've sent these details to your email as well.";
+        }
+      }
+
+      function escapeHtml(s) {
+        var d = document.createElement("div");
+        d.textContent = s;
+        return d.innerHTML;
+      }
+
+      function resetMatchingSteps() {
+        for (var i = 0; i < matchingStepEls.length; i++) {
+          matchingStepEls[i].classList.remove("active", "done");
+        }
+        if (matchingProgressFill) matchingProgressFill.style.width = "0%";
+      }
+
+      function setMatchingProgress(fraction) {
+        if (matchingProgressFill) {
+          matchingProgressFill.style.width = Math.min(100, Math.round(fraction * 100)) + "%";
+        }
+      }
+
+      function runMatchingSequence(done) {
+        if (!matchingPanel || !matchingStepEls.length) {
+          done();
+          return;
+        }
+        resetMatchingSteps();
+        matchingPanel.hidden = false;
+        matchingPanel.classList.add("on");
+        matchingPanel.setAttribute("aria-busy", "true");
+        matchingPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        updateProcessMini(2);
+        var index = 0;
+        var total = matchingStepEls.length;
+
+        function advance() {
+          if (index > 0) {
+            matchingStepEls[index - 1].classList.remove("active");
+            matchingStepEls[index - 1].classList.add("done");
+          }
+          if (index >= total) {
+            setMatchingProgress(1);
+            updateProcessMini(3);
+            matchingPanel.setAttribute("aria-busy", "false");
+            window.setTimeout(function () {
+              matchingPanel.classList.remove("on");
+              matchingPanel.hidden = true;
+              resetMatchingSteps();
+              done();
+            }, 400);
+            return;
+          }
+          matchingStepEls[index].classList.add("active");
+          setMatchingProgress((index + 0.35) / total);
+          index += 1;
+          window.setTimeout(advance, MATCHING_STEP_MS);
+        }
+
+        advance();
+      }
+
+      function showMatchError(message) {
+        var errEl = document.getElementById("match-error");
+        if (errEl) {
+          errEl.textContent = message;
+          errEl.classList.add("on");
+        }
+        successPanel.classList.remove("on");
+      }
+
+      function clearMatchError() {
+        var errEl = document.getElementById("match-error");
+        if (errEl) {
+          errEl.textContent = "";
+          errEl.classList.remove("on");
+        }
+      }
+
+      function fetchCoachMatch(payload) {
+        return fetch(MATCH_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        }).then(function (res) {
+          return res.json().then(function (data) {
+            return { httpOk: res.ok, data: data };
+          });
+        });
+      }
+
+      function showMatchResult(payload, match) {
+        clearMatchError();
+        renderSuccessSummary(payload, match);
+        successPanel.classList.add("on");
+        updateProcessMini(4);
+        successPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+
+      function handleMatchFormSubmit(event) {
+        event.preventDefault();
+        if (isMatching) return;
+        if (!validateStep3()) return;
+        var payload = buildPayload();
+        var submitBtn = form.querySelector('button[type="submit"]');
+        var matchError = document.getElementById("match-error");
+        isMatching = true;
+        if (submitBtn) submitBtn.disabled = true;
+        clearMatchError();
+
+        form.style.display = "none";
+        if (progressEl) progressEl.style.display = "none";
+        if (formCardHead) formCardHead.style.display = "none";
+        successPanel.classList.remove("on");
+
+        var matchPromise = fetchCoachMatch(payload).catch(function (err) {
+          return { httpOk: false, data: { ok: false, error: "network", message: String(err) } };
+        });
+        var animationDone = false;
+        var matchReady = null;
+
+        matchPromise.then(function (result) {
+          if (result.data && result.data.ok && result.data.name) {
+            matchReady = result.data;
+          } else {
+            matchReady = false;
+          }
+          if (animationDone) finishSubmit();
+        });
+
+        function finishSubmit() {
+          if (matchReady && matchReady.name) {
+            lastMatchResult = matchReady;
+            showMatchResult(payload, matchReady);
+          } else {
+            var msg =
+              (matchReady && matchReady.message) ||
+              "We could not find a coach match for your preferences right now. Please email info@coach-halo.com and we will help.";
+            if (matchError) {
+              form.style.display = "";
+              if (progressEl) progressEl.style.display = "";
+              if (formCardHead) formCardHead.style.display = "";
+              matchingPanel.classList.remove("on");
+              matchingPanel.hidden = true;
+            }
+            showMatchError(msg);
+          }
+          isMatching = false;
+          if (submitBtn) submitBtn.disabled = false;
+        }
+
+        runMatchingSequence(function () {
+          animationDone = true;
+          if (matchReady !== null) finishSubmit();
+        });
+      }
+
+      form.addEventListener("submit", handleMatchFormSubmit);
+      showStep(1);
+    })();
+  </script>
+</body>
+</html>
