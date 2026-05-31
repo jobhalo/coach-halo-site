@@ -1628,7 +1628,7 @@
         matchState.matchedCoachMatchReason =
           "Based on your goals" + stylePart + ", " + (match.short || match.name) +
           " appears to be one of the strongest available matches in our network." + genderPart;
-        matchState.userTimezone = payload.timezone || "";
+        matchState.userTimezone = payload.timezoneLabel || payload.timezone || "";
         matchState.userAvailabilityPreferences = [
           payload.startWhen,
           (payload.availabilityWindows || []).join(", "),
@@ -1660,8 +1660,14 @@
 
         var previewNote = document.getElementById("match-preview-note");
         if (previewNote) {
-          previewNote.textContent =
-            "Sample appointment times shown until per-coach scheduling is connected.";
+          if (match.availability_slots && match.availability_slots.length) {
+            previewNote.textContent = "";
+            previewNote.style.display = "none";
+          } else {
+            previewNote.style.display = "";
+            previewNote.textContent =
+              "Sample appointment times shown until per-coach scheduling is connected.";
+          }
         }
       }
 
