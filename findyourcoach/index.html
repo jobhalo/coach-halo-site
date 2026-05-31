@@ -1215,7 +1215,23 @@
 
       /* Job-Halo Netlify already has AIRTABLE_PAT; coach-halo.com site does not. */
       var MATCH_API_URL = "https://job-halo.com/.netlify/functions/match-coach";
+      var LEAD_LOG_API_URL = "https://job-halo.com/.netlify/functions/log-findyourcoach-lead";
       var lastMatchResult = null;
+
+      function sendLeadToZapier(payload, matchData, matchStatus, matchError) {
+        var body = {
+          event_type: "findyourcoach_submit",
+          match_status: matchStatus,
+          lead: payload,
+          match: matchData && matchData.ok ? matchData : null,
+          match_error: matchError || ""
+        };
+        fetch(LEAD_LOG_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        }).catch(function () {});
+      }
 
       function renderSuccessSummary(payload, match) {
         if (!match) return;
@@ -1402,9 +1418,12 @@
         function finishSubmit() {
           if (matchReady && matchReady.ok && matchReady.name) {
             lastMatchResult = matchReady;
+            sendLeadToZapier(payload, matchReady, "matched", "");
             showMatchResult(payload, matchReady);
           } else {
             var msg = matchFailureMessage(matchReady);
+            var errCode = (matchReady && matchReady.error) ? matchReady.error : "unknown";
+            sendLeadToZapier(payload, null, errCode === "no_match" ? "no_match" : "error", errCode);
             if (matchError) {
               form.style.display = "";
               if (progressEl) progressEl.style.display = "";
