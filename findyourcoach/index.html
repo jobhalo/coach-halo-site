@@ -1213,7 +1213,8 @@
         };
       }
 
-      var MATCH_API_URL = "/.netlify/functions/match-coach";
+      /* Job-Halo Netlify already has AIRTABLE_PAT; coach-halo.com site does not. */
+      var MATCH_API_URL = "https://job-halo.com/.netlify/functions/match-coach";
       var lastMatchResult = null;
 
       function renderSuccessSummary(payload, match) {
@@ -1378,19 +1379,32 @@
           if (result.data && result.data.ok && result.data.name) {
             matchReady = result.data;
           } else {
-            matchReady = false;
+            matchReady = result.data || { ok: false };
           }
           if (animationDone) finishSubmit();
         });
 
+        function matchFailureMessage(data) {
+          if (!data) {
+            return "We could not complete matching right now. Please email info@coach-halo.com and we will help.";
+          }
+          if (data.error === "no_match" && data.message) return data.message;
+          if (data.error === "network" && data.message) {
+            return "We could not reach the matching service. Please check your connection and try again, or email info@coach-halo.com.";
+          }
+          if (data.error === "match_failed" && data.message) {
+            return "Something went wrong while matching coaches. Please try again or email info@coach-halo.com.";
+          }
+          if (data.message) return data.message;
+          return "We could not find a coach match for your preferences right now. Please email info@coach-halo.com and we will help.";
+        }
+
         function finishSubmit() {
-          if (matchReady && matchReady.name) {
+          if (matchReady && matchReady.ok && matchReady.name) {
             lastMatchResult = matchReady;
             showMatchResult(payload, matchReady);
           } else {
-            var msg =
-              (matchReady && matchReady.message) ||
-              "We could not find a coach match for your preferences right now. Please email info@coach-halo.com and we will help.";
+            var msg = matchFailureMessage(matchReady);
             if (matchError) {
               form.style.display = "";
               if (progressEl) progressEl.style.display = "";
