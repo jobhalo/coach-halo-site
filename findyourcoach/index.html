@@ -308,6 +308,7 @@
     label .opt { font-weight: 400; color: var(--muted); }
     input[type="text"],
     input[type="email"],
+    select,
     textarea {
       width: 100%;
       padding: 12px 14px;
@@ -318,10 +319,20 @@
       background: var(--bg);
       margin-bottom: 16px;
     }
-    input:focus, textarea:focus {
+    input:focus,
+    select:focus,
+    textarea:focus {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b6b6b' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
     }
     textarea { min-height: 100px; resize: vertical; }
     .field-error {
@@ -983,16 +994,10 @@
             <div class="wizard-step" id="step-4" data-step="4" role="group" aria-labelledby="step4-title">
               <p class="form-step-label">Step 4 of 4</p>
               <h3 class="form-step-title" id="step4-title">Scheduling preferences</h3>
-              <fieldset>
-                <legend>Time zone</legend>
-                <div class="radio-grid">
-                  <label class="radio-card"><input type="radio" name="timezone" value="Eastern (ET)" required /><span>Eastern (ET)</span></label>
-                  <label class="radio-card"><input type="radio" name="timezone" value="Central (CT)" /><span>Central (CT)</span></label>
-                  <label class="radio-card"><input type="radio" name="timezone" value="Mountain (MT)" /><span>Mountain (MT)</span></label>
-                  <label class="radio-card"><input type="radio" name="timezone" value="Pacific (PT)" /><span>Pacific (PT)</span></label>
-                  <label class="radio-card" style="grid-column:1/-1"><input type="radio" name="timezone" value="Other" /><span>Other</span></label>
-                </div>
-              </fieldset>
+              <label for="timezone">Time zone</label>
+              <select id="timezone" name="timezone" required>
+                <option value="">Select your time zone</option>
+              </select>
               <p class="field-error" id="err-timezone">Please choose your time zone.</p>
               <fieldset>
                 <legend>When would you like to start?</legend>
@@ -1237,6 +1242,110 @@
 
       renderCoachNetworkGrid();
 
+      var US_TIMEZONE_PRIORITY = [
+        "America/New_York",
+        "America/Chicago",
+        "America/Denver",
+        "America/Los_Angeles",
+        "America/Phoenix",
+        "America/Anchorage",
+        "Pacific/Honolulu"
+      ];
+
+      var FALLBACK_TIMEZONES = [
+        "America/New_York", "America/Chicago", "America/Denver", "America/Los_Angeles",
+        "America/Phoenix", "America/Anchorage", "Pacific/Honolulu",
+        "America/Toronto", "America/Vancouver", "America/Mexico_City",
+        "America/Sao_Paulo", "America/Buenos_Aires", "Europe/London",
+        "Europe/Paris", "Europe/Berlin", "Europe/Madrid", "Europe/Rome",
+        "Europe/Amsterdam", "Europe/Zurich", "Europe/Dublin",
+        "Asia/Dubai", "Asia/Kolkata", "Asia/Singapore", "Asia/Hong_Kong",
+        "Asia/Tokyo", "Asia/Seoul", "Asia/Shanghai", "Australia/Sydney",
+        "Australia/Melbourne", "Pacific/Auckland", "Africa/Johannesburg",
+        "Africa/Cairo", "UTC"
+      ];
+
+      function timezoneDisplayLabel(iana) {
+        var friendly = iana.replace(/_/g, " ");
+        try {
+          var parts = new Intl.DateTimeFormat("en-US", {
+            timeZone: iana,
+            timeZoneName: "shortOffset"
+          }).formatToParts(new Date());
+          var off = "";
+          for (var i = 0; i < parts.length; i++) {
+            if (parts[i].type === "timeZoneName") {
+              off = parts[i].value;
+              break;
+            }
+          }
+          if (off) return friendly + " (" + off + ")";
+        } catch (e) { /* ignore */ }
+        return friendly;
+      }
+
+      function populateTimezoneSelect() {
+        var select = document.getElementById("timezone");
+        if (!select) return;
+        var zones = [];
+        if (typeof Intl !== "undefined" && Intl.supportedValuesOf) {
+          try {
+            zones = Intl.supportedValuesOf("timeZone");
+          } catch (e) {
+            zones = FALLBACK_TIMEZONES.slice();
+          }
+        } else {
+          zones = FALLBACK_TIMEZONES.slice();
+        }
+        var priority = {};
+        US_TIMEZONE_PRIORITY.forEach(function (z, i) { priority[z] = i; });
+        zones.sort(function (a, b) {
+          var pa = priority.hasOwnProperty(a) ? priority[a] : 9999;
+          var pb = priority.hasOwnProperty(b) ? priority[b] : 9999;
+          if (pa !== pb) return pa - pb;
+          return a.localeCompare(b);
+        });
+        var frag = document.createDocumentFragment();
+        zones.forEach(function (iana) {
+          var opt = document.createElement("option");
+          opt.value = iana;
+          opt.textContent = timezoneDisplayLabel(iana);
+          frag.appendChild(opt);
+        });
+        while (select.options.length > 1) {
+          select.remove(1);
+        }
+        select.appendChild(frag);
+        if (!select.dataset.defaultTz) {
+          select.dataset.defaultTz = "1";
+          var guess = "";
+          try {
+            guess = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+          } catch (e) { /* ignore */ }
+          if (guess && select.querySelector('option[value="' + guess + '"]')) {
+            select.value = guess;
+          }
+        }
+      }
+
+      populateTimezoneSelect();
+
+      function timezoneAbbrFromPayload(payload) {
+        var iana = (payload && payload.timezone) || "";
+        var label = (payload && payload.timezoneLabel) || "";
+        if (/America\/New_York|America\/Detroit|America\/Indiana/i.test(iana)) return "ET";
+        if (/America\/Chicago|America\/Winnipeg/i.test(iana)) return "CT";
+        if (/America\/Denver|America\/Boise|America\/Phoenix/i.test(iana)) return "MT";
+        if (/America\/Los_Angeles|America\/Vancouver/i.test(iana)) return "PT";
+        if (/Anchorage/i.test(iana)) return "AKT";
+        if (/Honolulu/i.test(iana)) return "HT";
+        if (label.indexOf("ET") >= 0) return "ET";
+        if (label.indexOf("CT") >= 0) return "CT";
+        if (label.indexOf("MT") >= 0) return "MT";
+        if (label.indexOf("PT") >= 0) return "PT";
+        return "";
+      }
+
       var currentStep = 1;
       var totalSteps = 4;
       var form = document.getElementById("match-form");
@@ -1348,7 +1457,8 @@
 
       function validateStep4() {
         var ok = true;
-        if (!document.querySelector('input[name="timezone"]:checked')) {
+        var tzEl = document.getElementById("timezone");
+        if (!tzEl || !(tzEl.value || "").trim()) {
           showError("err-timezone", true); ok = false;
         } else { showError("err-timezone", false); }
         if (!document.querySelector('input[name="startWhen"]:checked')) {
@@ -1391,7 +1501,12 @@
 
       function buildPayload() {
         var typeInput = document.querySelector('input[name="coachingType"]:checked');
-        var tz = (document.querySelector('input[name="timezone"]:checked') || {}).value || "";
+        var tzEl = document.getElementById("timezone");
+        var tz = tzEl ? (tzEl.value || "").trim() : "";
+        var tzLabel = "";
+        if (tzEl && tzEl.selectedIndex >= 0 && tzEl.options[tzEl.selectedIndex]) {
+          tzLabel = tzEl.options[tzEl.selectedIndex].text || "";
+        }
         var startWhen = (document.querySelector('input[name="startWhen"]:checked') || {}).value || "";
         var windows = getAvailabilityWindows();
         return {
@@ -1404,6 +1519,7 @@
           timeline: startWhen,
           startWhen: startWhen,
           timezone: tz,
+          timezoneLabel: tzLabel,
           availabilityWindows: windows,
           availabilityNotes: (document.getElementById("availabilityNotes").value || "").trim(),
           style: (document.querySelector('input[name="style"]:checked') || {}).value || "",
@@ -1441,7 +1557,7 @@
           match: matchData && matchData.ok ? matchData : null,
           match_error: matchError || "",
           selectedTimeSlot: payload.selectedTimeSlot || "",
-          userTimezone: payload.timezone || "",
+          userTimezone: payload.timezoneLabel || payload.timezone || "",
           userAvailabilityPreferences: payload.availabilityWindows
             ? payload.availabilityWindows.join(", ")
             : "",
@@ -1459,12 +1575,13 @@
         if (match && match.availability_slots && match.availability_slots.length) {
           return match.availability_slots;
         }
-        var tz = (payload && payload.timezone) ? payload.timezone : "ET";
-        var abbr = tz.indexOf("ET") >= 0 ? "ET" : tz.indexOf("CT") >= 0 ? "CT" : tz.indexOf("MT") >= 0 ? "MT" : tz.indexOf("PT") >= 0 ? "PT" : "";
+        var abbr = timezoneAbbrFromPayload(payload);
         return PLACEHOLDER_AVAILABILITY.map(function (s, i) {
           var label = s.label;
-          if (abbr && label.indexOf("ET") >= 0 && abbr !== "ET") {
+          if (abbr && label.indexOf(" ET") >= 0) {
             label = label.replace(" ET", " " + abbr);
+          } else if (abbr && label.indexOf("ET") === label.length - 2) {
+            label = label.slice(0, -2) + abbr;
           }
           return { id: s.id || "slot-" + i, label: label, value: label };
         });
