@@ -1752,7 +1752,10 @@
         var reviewBy = document.getElementById("match-review-by");
         if (match.review) {
           reviewText.textContent = "\u201C" + match.review + "\u201D";
-          reviewBy.textContent = match.reviewBy || "Coach-Halo client";
+          if (reviewBy) {
+            reviewBy.textContent = "";
+            reviewBy.style.display = "none";
+          }
           reviewBlock.style.display = "";
         } else {
           reviewBlock.style.display = "none";
