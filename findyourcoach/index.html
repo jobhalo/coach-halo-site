@@ -583,6 +583,105 @@
       margin-bottom: 8px;
     }
     .match-times li:last-child { margin-bottom: 0; }
+    .slot-picker {
+      margin: 0 0 16px;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .slot-picker label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .slot-picker label:has(input:checked) {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .slot-picker input { accent-color: var(--accent); }
+    .none-times-wrap {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+    }
+    .none-times-wrap label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.92rem;
+      cursor: pointer;
+    }
+    .custom-availability {
+      display: none;
+      margin-bottom: 16px;
+    }
+    .custom-availability.on { display: block; }
+    .match-actions { margin-top: 8px; }
+    .confirmation-panel { display: none; text-align: left; padding: 4px 0 0; }
+    .confirmation-panel.on { display: block; animation: fadeIn 0.35s ease; }
+    .confirmation-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 24px 22px;
+    }
+    .confirmation-card h2 {
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      margin: 0 0 14px;
+      line-height: 1.25;
+    }
+    .confirmation-card p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin: 0 0 14px;
+      color: var(--text);
+    }
+    .confirmation-card .muted-block {
+      font-size: 0.9rem;
+      color: var(--muted);
+      padding: 14px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      margin: 16px 0 0;
+    }
+    .checkbox-grid {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 480px) {
+      .checkbox-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .checkbox-card {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      background: var(--bg);
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+    .checkbox-card:has(input:checked) {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .checkbox-card input { accent-color: var(--accent); }
     .match-email-note {
       font-size: 0.9rem;
       margin: 0 0 12px;
@@ -774,16 +873,16 @@
         <div class="form-card" id="form-card">
           <div class="form-card-head" id="form-card-head">
             <strong>Start your free match</strong>
-            <span>About 2 minutes · Step <span id="step-indicator">1</span> of 3</span>
+            <span>About 2 minutes · Step <span id="step-indicator">1</span> of 4</span>
           </div>
 
           <form id="match-form" novalidate>
             <div class="progress" id="wizard-progress" aria-hidden="true">
-              <span class="on"></span><span></span><span></span>
+              <span class="on"></span><span></span><span></span><span></span>
             </div>
 
             <div class="wizard-step on" id="step-1" data-step="1" role="group" aria-labelledby="step1-title">
-              <p class="form-step-label">Step 1 of 3</p>
+              <p class="form-step-label">Step 1 of 4</p>
               <h3 class="form-step-title" id="step1-title">Let’s get started</h3>
               <label for="firstName">First name</label>
               <input type="text" id="firstName" name="firstName" autocomplete="given-name" required />
@@ -798,7 +897,7 @@
             </div>
 
             <div class="wizard-step" id="step-2" data-step="2" role="group" aria-labelledby="step2-title">
-              <p class="form-step-label">Step 2 of 3</p>
+              <p class="form-step-label">Step 2 of 4</p>
               <h3 class="form-step-title" id="step2-title">Your goals</h3>
               <fieldset>
                 <legend>What type of coaching are you looking for?</legend>
@@ -852,18 +951,8 @@
             </div>
 
             <div class="wizard-step" id="step-3" data-step="3" role="group" aria-labelledby="step3-title">
-              <p class="form-step-label">Step 3 of 3</p>
-              <h3 class="form-step-title" id="step3-title">Preferences</h3>
-              <fieldset>
-                <legend>How soon would you like to meet?</legend>
-                <div class="radio-grid">
-                  <label class="radio-card"><input type="radio" name="timeline" value="ASAP" required /><span>ASAP</span></label>
-                  <label class="radio-card"><input type="radio" name="timeline" value="This week" /><span>This week</span></label>
-                  <label class="radio-card"><input type="radio" name="timeline" value="This month" /><span>This month</span></label>
-                  <label class="radio-card"><input type="radio" name="timeline" value="Just exploring" /><span>Just exploring</span></label>
-                </div>
-              </fieldset>
-              <p class="field-error" id="err-timeline">Please choose a timeline.</p>
+              <p class="form-step-label">Step 3 of 4</p>
+              <h3 class="form-step-title" id="step3-title">Coaching preferences</h3>
               <fieldset>
                 <legend>Preferred coaching style</legend>
                 <div class="radio-grid">
@@ -883,8 +972,50 @@
                 </div>
               </fieldset>
               <p class="field-error" id="err-gender">Please choose a coach gender preference.</p>
-              <label for="notes">Anything else? <span class="opt">(optional)</span></label>
-              <textarea id="notes" name="notes" rows="2" placeholder="Scheduling, preferences, or context…"></textarea>
+              <label for="notes">Anything else about your goals? <span class="opt">(optional)</span></label>
+              <textarea id="notes" name="notes" rows="2" placeholder="Context that helps us match you…"></textarea>
+              <div class="form-actions">
+                <button type="button" class="btn btn-ghost" data-action="back">Back</button>
+                <button type="button" class="btn btn-primary" data-action="next">Continue</button>
+              </div>
+            </div>
+
+            <div class="wizard-step" id="step-4" data-step="4" role="group" aria-labelledby="step4-title">
+              <p class="form-step-label">Step 4 of 4</p>
+              <h3 class="form-step-title" id="step4-title">Scheduling preferences</h3>
+              <fieldset>
+                <legend>Time zone</legend>
+                <div class="radio-grid">
+                  <label class="radio-card"><input type="radio" name="timezone" value="Eastern (ET)" required /><span>Eastern (ET)</span></label>
+                  <label class="radio-card"><input type="radio" name="timezone" value="Central (CT)" /><span>Central (CT)</span></label>
+                  <label class="radio-card"><input type="radio" name="timezone" value="Mountain (MT)" /><span>Mountain (MT)</span></label>
+                  <label class="radio-card"><input type="radio" name="timezone" value="Pacific (PT)" /><span>Pacific (PT)</span></label>
+                  <label class="radio-card" style="grid-column:1/-1"><input type="radio" name="timezone" value="Other" /><span>Other</span></label>
+                </div>
+              </fieldset>
+              <p class="field-error" id="err-timezone">Please choose your time zone.</p>
+              <fieldset>
+                <legend>When would you like to start?</legend>
+                <div class="radio-grid">
+                  <label class="radio-card"><input type="radio" name="startWhen" value="ASAP" required /><span>ASAP</span></label>
+                  <label class="radio-card"><input type="radio" name="startWhen" value="This week" /><span>This week</span></label>
+                  <label class="radio-card"><input type="radio" name="startWhen" value="Next week" /><span>Next week</span></label>
+                  <label class="radio-card"><input type="radio" name="startWhen" value="Just exploring" /><span>Just exploring</span></label>
+                </div>
+              </fieldset>
+              <p class="field-error" id="err-startWhen">Please choose when you would like to start.</p>
+              <fieldset>
+                <legend>What times generally work best for you?</legend>
+                <div class="checkbox-grid">
+                  <label class="checkbox-card"><input type="checkbox" name="availabilityWindow" value="Weekday mornings" /><span>Weekday mornings</span></label>
+                  <label class="checkbox-card"><input type="checkbox" name="availabilityWindow" value="Weekday afternoons" /><span>Weekday afternoons</span></label>
+                  <label class="checkbox-card"><input type="checkbox" name="availabilityWindow" value="Weekday evenings" /><span>Weekday evenings</span></label>
+                  <label class="checkbox-card"><input type="checkbox" name="availabilityWindow" value="Weekends" /><span>Weekends</span></label>
+                </div>
+              </fieldset>
+              <p class="field-error" id="err-availability">Please select at least one time window.</p>
+              <label for="availabilityNotes">Anything else we should know about your availability? <span class="opt">(optional)</span></label>
+              <textarea id="availabilityNotes" name="availabilityNotes" rows="2" placeholder="e.g. Tuesdays after 3pm, avoid Fridays…"></textarea>
               <div class="form-actions">
                 <button type="button" class="btn btn-ghost" data-action="back">Back</button>
                 <button type="submit" class="btn btn-primary">Get my coach match</button>
@@ -910,36 +1041,55 @@
 
           <div class="match-error" id="match-error" role="alert"></div>
 
+          <!-- Post-match: coach reveal + time selection (INTEGRATION: matchedCoach* from API) -->
           <div class="success-panel" id="success-panel" role="status" aria-live="polite">
             <p class="success-eyebrow">Your coach match</p>
             <div class="match-reveal">
               <div class="match-reveal-top">
-                <img class="match-coach-photo" id="match-coach-photo" src="https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1761345282663-headshot_linkedin+%281%29.jfif" alt="" width="72" height="72" />
+                <img class="match-coach-photo" id="match-coach-photo" src="" alt="" width="72" height="72" />
                 <div class="match-reveal-intro">
-                  <h2 class="match-coach-name" id="match-coach-name">Brittany Schmaling</h2>
-                  <p class="match-coach-title" id="match-coach-title">Relationship &amp; Marriage Coach</p>
+                  <h2 class="match-coach-name" id="match-coach-name"></h2>
+                  <p class="match-coach-title" id="match-coach-title"></p>
                 </div>
               </div>
-              <p class="match-rationale" id="match-rationale">
-                Based on your goals and preferred coaching style, Brittany appears to be one of the strongest available matches in our network.
-              </p>
-              <blockquote class="match-review" id="match-review">
+              <p class="match-rationale" id="match-rationale"></p>
+              <blockquote class="match-review" id="match-review" style="display:none">
                 <p class="match-review-label">What clients say</p>
                 <p class="match-review-text" id="match-review-text"></p>
                 <footer class="match-review-by" id="match-review-by"></footer>
               </blockquote>
               <div class="match-times">
-                <h4>Next available times</h4>
-                <ul>
-                  <li>Tuesday 4:00 PM ET</li>
-                  <li>Wednesday 12:00 PM ET</li>
-                  <li>Thursday 5:30 PM ET</li>
-                </ul>
+                <h4 id="slot-picker-heading">Select a preferred time</h4>
+                <ul class="slot-picker" id="slot-picker-list" role="radiogroup" aria-labelledby="slot-picker-heading"></ul>
               </div>
-              <p class="match-email-note" id="match-email-note">📧 We've sent these details to your email as well.</p>
-              <p class="match-reply-cta">To receive a personal introduction, simply reply to the email we just sent.</p>
+              <div class="none-times-wrap">
+                <label>
+                  <input type="checkbox" id="none-times-work" name="noneTimesWork" />
+                  <span>None of these times work for me</span>
+                </label>
+              </div>
+              <div class="custom-availability" id="custom-availability-wrap">
+                <label for="custom-availability">Please share your availability:</label>
+                <textarea id="custom-availability" rows="3" placeholder="Tell us what days and times work for you…"></textarea>
+                <p class="field-error" id="err-custom-availability">Please share your availability.</p>
+              </div>
+              <div class="match-actions">
+                <button type="button" class="btn btn-primary" id="btn-confirm-time">Continue</button>
+              </div>
             </div>
-            <p class="success-preview-note" id="match-preview-note">Sample intro times shown until scheduling is connected per coach.</p>
+            <p class="success-preview-note" id="match-preview-note"></p>
+          </div>
+
+          <!-- Confirmation after time selection; coach is NOT notified until user replies to email -->
+          <div class="confirmation-panel" id="confirmation-panel" role="status" aria-live="polite">
+            <div class="confirmation-card">
+              <h2>Great! Your match request has been submitted.</h2>
+              <p id="confirmation-email-line">We've sent a confirmation email to your email.</p>
+              <p>Please check your inbox (and spam folder just in case) and <strong>reply to confirm</strong> your appointment request.</p>
+              <p><strong>Your coach has not been notified yet.</strong></p>
+              <p id="confirmation-intro-line">Once we receive your confirmation, we'll personally connect you with your matched coach and help finalize scheduling.</p>
+              <p class="muted-block">We only introduce coaches to people who confirm their interest and intention to attend. This helps us respect our coaches' time and provide a better experience for everyone.</p>
+            </div>
           </div>
         </div>
         <p class="form-below-trust">Free coach matching · No credit card required · No obligation</p>
@@ -967,8 +1117,8 @@
         </article>
         <article class="step-card">
           <span class="step-num" aria-hidden="true">4</span>
-          <h3>Complimentary intro call</h3>
-          <p>Meet your coach with no obligation before you decide to continue.</p>
+          <h3>Confirm and meet your coach</h3>
+          <p>Choose a time, confirm by email, then we introduce you for a complimentary intro call.</p>
         </article>
       </div>
     </section>
@@ -1088,7 +1238,7 @@
       renderCoachNetworkGrid();
 
       var currentStep = 1;
-      var totalSteps = 3;
+      var totalSteps = 4;
       var form = document.getElementById("match-form");
       var progressEl = document.getElementById("wizard-progress");
       var matchingPanel = document.getElementById("matching-panel");
@@ -1097,10 +1247,34 @@
         ? matchingPanel.querySelectorAll("[data-matching-step]")
         : [];
       var successPanel = document.getElementById("success-panel");
+      var confirmationPanel = document.getElementById("confirmation-panel");
       var formCardHead = document.getElementById("form-card-head");
-      var MATCHING_STEP_MS = 800;
+      var MATCHING_STEP_MS = 720;
       var isMatching = false;
       var stepIndicator = document.getElementById("step-indicator");
+      var lastFormPayload = null;
+      var lastMatchResult = null;
+
+      /* INTEGRATION: replace with live slots from scheduling API per matched coach */
+      var PLACEHOLDER_AVAILABILITY = [
+        { id: "slot-1", label: "Tuesday 4:00 PM ET", value: "Tuesday 4:00 PM ET" },
+        { id: "slot-2", label: "Wednesday 12:00 PM ET", value: "Wednesday 12:00 PM ET" },
+        { id: "slot-3", label: "Thursday 5:30 PM ET", value: "Thursday 5:30 PM ET" }
+      ];
+
+      /* Dynamic match state — populated after match-coach API (see applyMatchToUI) */
+      var matchState = {
+        matchedCoachName: "",
+        matchedCoachTitle: "",
+        matchedCoachPhoto: "",
+        matchedCoachTestimonial: "",
+        matchedCoachTestimonialBy: "",
+        matchedCoachAvailability: [],
+        matchedCoachMatchReason: "",
+        selectedTimeSlot: "",
+        userTimezone: "",
+        userAvailabilityPreferences: ""
+      };
 
       function getUtmParams() {
         var params = {};
@@ -1163,9 +1337,6 @@
 
       function validateStep3() {
         var ok = true;
-        if (!document.querySelector('input[name="timeline"]:checked')) {
-          showError("err-timeline", true); ok = false;
-        } else { showError("err-timeline", false); }
         if (!document.querySelector('input[name="style"]:checked')) {
           showError("err-style", true); ok = false;
         } else { showError("err-style", false); }
@@ -1175,12 +1346,28 @@
         return ok;
       }
 
+      function validateStep4() {
+        var ok = true;
+        if (!document.querySelector('input[name="timezone"]:checked')) {
+          showError("err-timezone", true); ok = false;
+        } else { showError("err-timezone", false); }
+        if (!document.querySelector('input[name="startWhen"]:checked')) {
+          showError("err-startWhen", true); ok = false;
+        } else { showError("err-startWhen", false); }
+        var windows = document.querySelectorAll('input[name="availabilityWindow"]:checked');
+        if (!windows.length) {
+          showError("err-availability", true); ok = false;
+        } else { showError("err-availability", false); }
+        return ok;
+      }
+
       form.addEventListener("click", function (e) {
         var btn = e.target.closest("[data-action]");
         if (!btn) return;
         if (btn.getAttribute("data-action") === "next") {
           if (currentStep === 1 && !validateStep1()) return;
           if (currentStep === 2 && !validateStep2()) return;
+          if (currentStep === 3 && !validateStep3()) return;
           if (currentStep < totalSteps) showStep(currentStep + 1);
         }
         if (btn.getAttribute("data-action") === "back" && currentStep > 1) {
@@ -1194,8 +1381,19 @@
         return str.slice(0, max).trim() + "…";
       }
 
+      function getAvailabilityWindows() {
+        var out = [];
+        document.querySelectorAll('input[name="availabilityWindow"]:checked').forEach(function (el) {
+          out.push(el.value);
+        });
+        return out;
+      }
+
       function buildPayload() {
         var typeInput = document.querySelector('input[name="coachingType"]:checked');
+        var tz = (document.querySelector('input[name="timezone"]:checked') || {}).value || "";
+        var startWhen = (document.querySelector('input[name="startWhen"]:checked') || {}).value || "";
+        var windows = getAvailabilityWindows();
         return {
           firstName: (document.getElementById("firstName").value || "").trim(),
           email: (document.getElementById("email").value || "").trim(),
@@ -1203,7 +1401,11 @@
           coachingTypeCategory: typeInput ? (typeInput.getAttribute("data-category") || "") : "",
           coachingTypeUnsure: typeInput && typeInput.getAttribute("data-unsure") === "true",
           goals: (document.getElementById("goals").value || "").trim(),
-          timeline: (document.querySelector('input[name="timeline"]:checked') || {}).value || "",
+          timeline: startWhen,
+          startWhen: startWhen,
+          timezone: tz,
+          availabilityWindows: windows,
+          availabilityNotes: (document.getElementById("availabilityNotes").value || "").trim(),
           style: (document.querySelector('input[name="style"]:checked') || {}).value || "",
           genderPreference: (document.querySelector('input[name="genderPreference"]:checked') || {}).value || "",
           notes: (document.getElementById("notes").value || "").trim(),
@@ -1213,18 +1415,37 @@
         };
       }
 
+      function buildConfirmationPayload(basePayload, match) {
+        var noneWork = document.getElementById("none-times-work");
+        var customAvail = (document.getElementById("custom-availability").value || "").trim();
+        var slotInput = document.querySelector('input[name="preferredSlot"]:checked');
+        return Object.assign({}, basePayload, {
+          selectedTimeSlot: matchState.selectedTimeSlot,
+          noneOfTimesWork: !!(noneWork && noneWork.checked),
+          customAvailability: customAvail,
+          matchState: matchState,
+          coach_notified: false,
+          confirmationSubmittedAt: new Date().toISOString()
+        });
+      }
+
       /* Same-origin proxies on coach-halo.com → Job-Halo functions (Airtable + Zapier). */
       var MATCH_API_URL = "/.netlify/functions/match-coach";
       var LEAD_LOG_API_URL = "/.netlify/functions/log-findyourcoach-lead";
-      var lastMatchResult = null;
 
-      function sendLeadToZapier(payload, matchData, matchStatus, matchError) {
+      function sendLeadToZapier(payload, matchData, eventType, matchStatus, matchError) {
         var body = {
-          event_type: "findyourcoach_submit",
+          event_type: eventType || "findyourcoach_submit",
           match_status: matchStatus,
           lead: payload,
           match: matchData && matchData.ok ? matchData : null,
-          match_error: matchError || ""
+          match_error: matchError || "",
+          selectedTimeSlot: payload.selectedTimeSlot || "",
+          userTimezone: payload.timezone || "",
+          userAvailabilityPreferences: payload.availabilityWindows
+            ? payload.availabilityWindows.join(", ")
+            : "",
+          coach_notified: false
         };
         fetch(LEAD_LOG_API_URL, {
           method: "POST",
@@ -1233,7 +1454,46 @@
         }).catch(function () {});
       }
 
-      function renderSuccessSummary(payload, match) {
+      function resolveAvailabilitySlots(match, payload) {
+        /* INTEGRATION: matchedCoachAvailability from API/scheduling snapshot */
+        if (match && match.availability_slots && match.availability_slots.length) {
+          return match.availability_slots;
+        }
+        var tz = (payload && payload.timezone) ? payload.timezone : "ET";
+        var abbr = tz.indexOf("ET") >= 0 ? "ET" : tz.indexOf("CT") >= 0 ? "CT" : tz.indexOf("MT") >= 0 ? "MT" : tz.indexOf("PT") >= 0 ? "PT" : "";
+        return PLACEHOLDER_AVAILABILITY.map(function (s, i) {
+          var label = s.label;
+          if (abbr && label.indexOf("ET") >= 0 && abbr !== "ET") {
+            label = label.replace(" ET", " " + abbr);
+          }
+          return { id: s.id || "slot-" + i, label: label, value: label };
+        });
+      }
+
+      function renderSlotPicker(slots) {
+        var list = document.getElementById("slot-picker-list");
+        if (!list) return;
+        list.innerHTML = "";
+        slots.forEach(function (slot, idx) {
+          var li = document.createElement("li");
+          var label = document.createElement("label");
+          var input = document.createElement("input");
+          input.type = "radio";
+          input.name = "preferredSlot";
+          input.value = slot.value || slot.label;
+          input.id = slot.id || "preferred-slot-" + idx;
+          if (idx === 0) input.required = true;
+          var span = document.createElement("span");
+          span.textContent = slot.label;
+          label.appendChild(input);
+          label.appendChild(span);
+          li.appendChild(label);
+          list.appendChild(li);
+        });
+        matchState.matchedCoachAvailability = slots;
+      }
+
+      function applyMatchToUI(payload, match) {
         if (!match) return;
         var stylePart = payload.style && payload.style !== "Not sure"
           ? " and your preferred coaching style (" + payload.style.toLowerCase() + ")"
@@ -1243,33 +1503,48 @@
           genderPart = " We also noted your preference for a " + payload.genderPreference.toLowerCase() + " coach.";
         }
 
-        var photoEl = document.getElementById("match-coach-photo");
-        photoEl.src = match.image;
-        photoEl.alt = match.name + ", " + match.title;
-
-        document.getElementById("match-coach-name").textContent = match.name;
-        document.getElementById("match-coach-title").textContent = match.title;
-        document.getElementById("match-rationale").textContent =
-          "Based on your goals" + stylePart + ", " + match.short +
+        matchState.matchedCoachName = match.name || "";
+        matchState.matchedCoachTitle = match.title || "";
+        matchState.matchedCoachPhoto = match.image || "";
+        matchState.matchedCoachTestimonial = match.review || "";
+        matchState.matchedCoachTestimonialBy = match.reviewBy || "";
+        matchState.matchedCoachMatchReason =
+          "Based on your goals" + stylePart + ", " + (match.short || match.name) +
           " appears to be one of the strongest available matches in our network." + genderPart;
+        matchState.userTimezone = payload.timezone || "";
+        matchState.userAvailabilityPreferences = [
+          payload.startWhen,
+          (payload.availabilityWindows || []).join(", "),
+          payload.availabilityNotes
+        ].filter(Boolean).join(" · ");
+
+        var photoEl = document.getElementById("match-coach-photo");
+        if (match.image) {
+          photoEl.src = match.image;
+          photoEl.alt = match.name + ", " + match.title;
+        }
+
+        document.getElementById("match-coach-name").textContent = matchState.matchedCoachName;
+        document.getElementById("match-coach-title").textContent = matchState.matchedCoachTitle;
+        document.getElementById("match-rationale").textContent = matchState.matchedCoachMatchReason;
 
         var reviewBlock = document.getElementById("match-review");
         var reviewText = document.getElementById("match-review-text");
         var reviewBy = document.getElementById("match-review-by");
         if (match.review) {
           reviewText.textContent = "\u201C" + match.review + "\u201D";
-          reviewBy.textContent = match.reviewBy || "";
+          reviewBy.textContent = match.reviewBy || "Coach-Halo client";
           reviewBlock.style.display = "";
         } else {
           reviewBlock.style.display = "none";
         }
 
-        var emailNote = document.getElementById("match-email-note");
-        if (payload.email) {
-          emailNote.textContent =
-            "📧 We've sent these details to " + payload.email + " as well.";
-        } else {
-          emailNote.textContent = "📧 We've sent these details to your email as well.";
+        renderSlotPicker(resolveAvailabilitySlots(match, payload));
+
+        var previewNote = document.getElementById("match-preview-note");
+        if (previewNote) {
+          previewNote.textContent =
+            "Sample appointment times shown until per-coach scheduling is connected.";
         }
       }
 
@@ -1380,16 +1655,70 @@
 
       function showMatchResult(payload, match) {
         clearMatchError();
-        renderSuccessSummary(payload, match);
+        applyMatchToUI(payload, match);
+        if (confirmationPanel) confirmationPanel.classList.remove("on");
         successPanel.classList.add("on");
         updateProcessMini(4);
         successPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        var noneCb = document.getElementById("none-times-work");
+        if (noneCb) noneCb.checked = false;
+        var customWrap = document.getElementById("custom-availability-wrap");
+        if (customWrap) customWrap.classList.remove("on");
+        document.querySelectorAll('input[name="preferredSlot"]').forEach(function (el) {
+          el.disabled = false;
+        });
+      }
+
+      function showConfirmation(payload, match) {
+        successPanel.classList.remove("on");
+        if (confirmationPanel) {
+          confirmationPanel.classList.add("on");
+          var emailLine = document.getElementById("confirmation-email-line");
+          if (emailLine && payload.email) {
+            emailLine.textContent =
+              "We've sent a confirmation email to " + payload.email + ".";
+          }
+          var introLine = document.getElementById("confirmation-intro-line");
+          if (introLine && match && match.name) {
+            introLine.textContent =
+              "Once we receive your confirmation, we'll personally connect you with " +
+              match.name + " and help finalize scheduling.";
+          }
+          confirmationPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      }
+
+      function validateTimeSelection() {
+        var noneWork = document.getElementById("none-times-work");
+        if (noneWork && noneWork.checked) {
+          var custom = (document.getElementById("custom-availability").value || "").trim();
+          if (!custom) {
+            showError("err-custom-availability", true);
+            return false;
+          }
+          showError("err-custom-availability", false);
+          matchState.selectedTimeSlot = "Custom: " + custom;
+          return true;
+        }
+        showError("err-custom-availability", false);
+        var slot = document.querySelector('input[name="preferredSlot"]:checked');
+        if (!slot) {
+          var errEl = document.getElementById("match-error");
+          if (errEl) {
+            errEl.textContent = "Please select a preferred time, or tell us your availability below.";
+            errEl.classList.add("on");
+          }
+          return false;
+        }
+        clearMatchError();
+        matchState.selectedTimeSlot = slot.value;
+        return true;
       }
 
       function handleMatchFormSubmit(event) {
         event.preventDefault();
         if (isMatching) return;
-        if (!validateStep3()) return;
+        if (!validateStep4()) return;
         var payload = buildPayload();
         var submitBtn = form.querySelector('button[type="submit"]');
         var matchError = document.getElementById("match-error");
@@ -1401,6 +1730,8 @@
         if (progressEl) progressEl.style.display = "none";
         if (formCardHead) formCardHead.style.display = "none";
         successPanel.classList.remove("on");
+        if (confirmationPanel) confirmationPanel.classList.remove("on");
+        lastFormPayload = payload;
 
         var matchPromise = fetchCoachMatch(payload).catch(function (err) {
           return { httpOk: false, data: { ok: false, error: "network", message: String(err) } };
@@ -1438,12 +1769,12 @@
         function finishSubmit() {
           if (matchReady && matchReady.ok && matchReady.name) {
             lastMatchResult = matchReady;
-            sendLeadToZapier(payload, matchReady, "matched", "");
+            /* Coach not notified here — Zapier fires after user confirms time (see handleConfirmTime) */
             showMatchResult(payload, matchReady);
           } else {
             var msg = matchFailureMessage(matchReady);
             var errCode = (matchReady && matchReady.error) ? matchReady.error : "unknown";
-            sendLeadToZapier(payload, null, errCode === "no_match" ? "no_match" : "error", errCode);
+            sendLeadToZapier(payload, null, "findyourcoach_match_failed", errCode === "no_match" ? "no_match" : "error", errCode);
             if (matchError) {
               form.style.display = "";
               if (progressEl) progressEl.style.display = "";
@@ -1464,6 +1795,37 @@
       }
 
       form.addEventListener("submit", handleMatchFormSubmit);
+
+      var noneTimesCb = document.getElementById("none-times-work");
+      if (noneTimesCb) {
+        noneTimesCb.addEventListener("change", function () {
+          var wrap = document.getElementById("custom-availability-wrap");
+          var on = noneTimesCb.checked;
+          if (wrap) wrap.classList.toggle("on", on);
+          document.querySelectorAll('input[name="preferredSlot"]').forEach(function (el) {
+            el.disabled = on;
+            if (on) el.checked = false;
+          });
+        });
+      }
+
+      var btnConfirmTime = document.getElementById("btn-confirm-time");
+      if (btnConfirmTime) {
+        btnConfirmTime.addEventListener("click", function () {
+          if (!validateTimeSelection()) return;
+          if (!lastFormPayload || !lastMatchResult) return;
+          var confirmPayload = buildConfirmationPayload(lastFormPayload, lastMatchResult);
+          sendLeadToZapier(
+            confirmPayload,
+            lastMatchResult,
+            "findyourcoach_confirmed",
+            "confirmed",
+            ""
+          );
+          showConfirmation(lastFormPayload, lastMatchResult);
+        });
+      }
+
       showStep(1);
     })();
   </script>
