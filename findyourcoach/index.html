@@ -306,8 +306,26 @@
       margin-bottom: 6px;
     }
     label .opt { font-weight: 400; color: var(--muted); }
+    .field-hint {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin: 0 0 0.75rem;
+      line-height: 1.45;
+    }
+    .match-scheduling {
+      margin: 1.25rem 0 1rem;
+    }
+    .match-scheduling label {
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+    .match-scheduling select {
+      width: 100%;
+      max-width: 100%;
+    }
     input[type="text"],
     input[type="email"],
+    input[type="date"],
     select,
     textarea {
       width: 100%;
@@ -993,34 +1011,11 @@
 
             <div class="wizard-step" id="step-4" data-step="4" role="group" aria-labelledby="step4-title">
               <p class="form-step-label">Step 4 of 4</p>
-              <h3 class="form-step-title" id="step4-title">Scheduling preferences</h3>
-              <label for="timezone">Time zone</label>
-              <select id="timezone" name="timezone" required>
-                <option value="">Select your time zone</option>
-              </select>
-              <p class="field-error" id="err-timezone">Please choose your time zone.</p>
-              <fieldset>
-                <legend>When would you like to start?</legend>
-                <div class="radio-grid">
-                  <label class="radio-card"><input type="radio" name="startWhen" value="ASAP" required /><span>ASAP</span></label>
-                  <label class="radio-card"><input type="radio" name="startWhen" value="This week" /><span>This week</span></label>
-                  <label class="radio-card"><input type="radio" name="startWhen" value="Next week" /><span>Next week</span></label>
-                  <label class="radio-card"><input type="radio" name="startWhen" value="Just exploring" /><span>Just exploring</span></label>
-                </div>
-              </fieldset>
-              <p class="field-error" id="err-startWhen">Please choose when you would like to start.</p>
-              <fieldset>
-                <legend>What times generally work best for you?</legend>
-                <div class="checkbox-grid">
-                  <label class="checkbox-card"><input type="checkbox" name="availabilityWindow" value="Weekday mornings" /><span>Weekday mornings</span></label>
-                  <label class="checkbox-card"><input type="checkbox" name="availabilityWindow" value="Weekday afternoons" /><span>Weekday afternoons</span></label>
-                  <label class="checkbox-card"><input type="checkbox" name="availabilityWindow" value="Weekday evenings" /><span>Weekday evenings</span></label>
-                  <label class="checkbox-card"><input type="checkbox" name="availabilityWindow" value="Weekends" /><span>Weekends</span></label>
-                </div>
-              </fieldset>
-              <p class="field-error" id="err-availability">Please select at least one time window.</p>
-              <label for="availabilityNotes">Anything else we should know about your availability? <span class="opt">(optional)</span></label>
-              <textarea id="availabilityNotes" name="availabilityNotes" rows="2" placeholder="e.g. Tuesdays after 3pm, avoid Fridays…"></textarea>
+              <h3 class="form-step-title" id="step4-title">When would you like to start?</h3>
+              <p class="field-hint">Choose your preferred start date. After we match you with a coach, you&rsquo;ll pick a specific time in your time zone.</p>
+              <label for="startDate">Preferred start date</label>
+              <input type="date" id="startDate" name="startDate" required />
+              <p class="field-error" id="err-startDate">Please choose your preferred start date.</p>
               <div class="form-actions">
                 <button type="button" class="btn btn-ghost" data-action="back">Back</button>
                 <button type="submit" class="btn btn-primary">Get my coach match</button>
@@ -1063,9 +1058,18 @@
                 <p class="match-review-text" id="match-review-text"></p>
                 <footer class="match-review-by" id="match-review-by"></footer>
               </blockquote>
+              <div class="match-scheduling">
+                <label for="match-timezone">Time zone</label>
+                <select id="match-timezone" name="matchTimezone" required aria-describedby="slot-picker-heading">
+                  <option value="">Select your time zone</option>
+                </select>
+                <p class="field-error" id="err-match-timezone">Please choose your time zone.</p>
+              </div>
               <div class="match-times">
                 <h4 id="slot-picker-heading">Select a preferred time</h4>
+                <p class="field-hint" id="slot-start-date-hint"></p>
                 <ul class="slot-picker" id="slot-picker-list" role="radiogroup" aria-labelledby="slot-picker-heading"></ul>
+                <p class="field-error" id="err-no-slots">No times available on or after your start date. Check &ldquo;None of these times work&rdquo; below.</p>
               </div>
               <div class="none-times-wrap">
                 <label>
@@ -1284,8 +1288,18 @@
         return friendly;
       }
 
-      function populateTimezoneSelect() {
-        var select = document.getElementById("timezone");
+      function initStartDateInput() {
+        var el = document.getElementById("startDate");
+        if (!el) return;
+        var today = new Date();
+        var y = today.getFullYear();
+        var m = String(today.getMonth() + 1).padStart(2, "0");
+        var d = String(today.getDate()).padStart(2, "0");
+        el.min = y + "-" + m + "-" + d;
+      }
+
+      function populateTimezoneSelect(selectId) {
+        var select = document.getElementById(selectId || "match-timezone");
         if (!select) return;
         var zones = [];
         if (typeof Intl !== "undefined" && Intl.supportedValuesOf) {
@@ -1328,7 +1342,8 @@
         }
       }
 
-      populateTimezoneSelect();
+      initStartDateInput();
+      populateTimezoneSelect("match-timezone");
 
       function timezoneAbbrFromPayload(payload) {
         var iana = (payload && payload.timezone) || "";
@@ -1457,18 +1472,86 @@
 
       function validateStep4() {
         var ok = true;
-        var tzEl = document.getElementById("timezone");
-        if (!tzEl || !(tzEl.value || "").trim()) {
-          showError("err-timezone", true); ok = false;
-        } else { showError("err-timezone", false); }
-        if (!document.querySelector('input[name="startWhen"]:checked')) {
-          showError("err-startWhen", true); ok = false;
-        } else { showError("err-startWhen", false); }
-        var windows = document.querySelectorAll('input[name="availabilityWindow"]:checked');
-        if (!windows.length) {
-          showError("err-availability", true); ok = false;
-        } else { showError("err-availability", false); }
+        var startEl = document.getElementById("startDate");
+        var startVal = startEl ? (startEl.value || "").trim() : "";
+        if (!startVal) {
+          showError("err-startDate", true); ok = false;
+        } else {
+          showError("err-startDate", false);
+          if (startEl && startEl.min && startVal < startEl.min) {
+            showError("err-startDate", true); ok = false;
+          }
+        }
         return ok;
+      }
+
+      function getMatchTimezoneEl() {
+        return document.getElementById("match-timezone");
+      }
+
+      function getMatchTimezoneValue() {
+        var el = getMatchTimezoneEl();
+        return el ? (el.value || "").trim() : "";
+      }
+
+      function getMatchTimezoneLabel() {
+        var el = getMatchTimezoneEl();
+        if (!el || el.selectedIndex < 0 || !el.options[el.selectedIndex]) return "";
+        return el.options[el.selectedIndex].text || "";
+      }
+
+      function localDateKeyFromIso(iso, timeZone) {
+        if (!iso || !timeZone) return "";
+        try {
+          return new Intl.DateTimeFormat("en-CA", {
+            timeZone: timeZone,
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+          }).format(new Date(iso));
+        } catch (e) {
+          return "";
+        }
+      }
+
+      function formatSlotLabelFromIso(iso, timeZone) {
+        if (!iso) return "";
+        try {
+          var dt = new Date(iso);
+          var fmt = new Intl.DateTimeFormat("en-US", {
+            timeZone: timeZone,
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+            timeZoneName: "short"
+          });
+          var parts = fmt.formatToParts(dt);
+          var get = function (type) {
+            for (var i = 0; i < parts.length; i++) {
+              if (parts[i].type === type) return parts[i].value;
+            }
+            return "";
+          };
+          var time = (get("hour") + ":" + get("minute") + " " + get("dayPeriod")).replace(/\s+/g, " ").trim();
+          return (get("weekday") + ", " + get("month") + " " + get("day") + " at " + time + " " + get("timeZoneName")).trim();
+        } catch (e) {
+          return iso;
+        }
+      }
+
+      function formatStartDateHint(startDate) {
+        if (!startDate) return "";
+        try {
+          var parts = startDate.split("-");
+          var dt = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+          var nice = dt.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+          return "Showing times on or after " + nice + ".";
+        } catch (e) {
+          return "Showing times on or after " + startDate + ".";
+        }
       }
 
       form.addEventListener("click", function (e) {
@@ -1491,24 +1574,9 @@
         return str.slice(0, max).trim() + "…";
       }
 
-      function getAvailabilityWindows() {
-        var out = [];
-        document.querySelectorAll('input[name="availabilityWindow"]:checked').forEach(function (el) {
-          out.push(el.value);
-        });
-        return out;
-      }
-
       function buildPayload() {
         var typeInput = document.querySelector('input[name="coachingType"]:checked');
-        var tzEl = document.getElementById("timezone");
-        var tz = tzEl ? (tzEl.value || "").trim() : "";
-        var tzLabel = "";
-        if (tzEl && tzEl.selectedIndex >= 0 && tzEl.options[tzEl.selectedIndex]) {
-          tzLabel = tzEl.options[tzEl.selectedIndex].text || "";
-        }
-        var startWhen = (document.querySelector('input[name="startWhen"]:checked') || {}).value || "";
-        var windows = getAvailabilityWindows();
+        var startDate = (document.getElementById("startDate").value || "").trim();
         return {
           firstName: (document.getElementById("firstName").value || "").trim(),
           email: (document.getElementById("email").value || "").trim(),
@@ -1516,12 +1584,8 @@
           coachingTypeCategory: typeInput ? (typeInput.getAttribute("data-category") || "") : "",
           coachingTypeUnsure: typeInput && typeInput.getAttribute("data-unsure") === "true",
           goals: (document.getElementById("goals").value || "").trim(),
-          timeline: startWhen,
-          startWhen: startWhen,
-          timezone: tz,
-          timezoneLabel: tzLabel,
-          availabilityWindows: windows,
-          availabilityNotes: (document.getElementById("availabilityNotes").value || "").trim(),
+          startDate: startDate,
+          timeline: startDate,
           style: (document.querySelector('input[name="style"]:checked') || {}).value || "",
           genderPreference: (document.querySelector('input[name="genderPreference"]:checked') || {}).value || "",
           notes: (document.getElementById("notes").value || "").trim(),
@@ -1534,8 +1598,11 @@
       function buildConfirmationPayload(basePayload, match) {
         var noneWork = document.getElementById("none-times-work");
         var customAvail = (document.getElementById("custom-availability").value || "").trim();
-        var slotInput = document.querySelector('input[name="preferredSlot"]:checked');
+        var tz = getMatchTimezoneValue();
+        var tzLabel = getMatchTimezoneLabel();
         return Object.assign({}, basePayload, {
+          timezone: tz,
+          timezoneLabel: tzLabel,
           selectedTimeSlot: matchState.selectedTimeSlot,
           noneOfTimesWork: !!(noneWork && noneWork.checked),
           customAvailability: customAvail,
@@ -1558,9 +1625,7 @@
           match_error: matchError || "",
           selectedTimeSlot: payload.selectedTimeSlot || "",
           userTimezone: payload.timezoneLabel || payload.timezone || "",
-          userAvailabilityPreferences: payload.availabilityWindows
-            ? payload.availabilityWindows.join(", ")
-            : "",
+          userAvailabilityPreferences: payload.startDate || "",
           coach_notified: false
         };
         fetch(LEAD_LOG_API_URL, {
@@ -1570,21 +1635,52 @@
         }).catch(function () {});
       }
 
-      function resolveAvailabilitySlots(match, payload) {
-        /* INTEGRATION: matchedCoachAvailability from API/scheduling snapshot */
+      function resolveAvailabilitySlots(match, payload, timeZone) {
+        var startDate = (payload && payload.startDate) || "";
+        var tz = timeZone || getMatchTimezoneValue() || "America/New_York";
+        var raw = [];
         if (match && match.availability_slots && match.availability_slots.length) {
-          return match.availability_slots;
+          raw = match.availability_slots.map(function (s, i) {
+            return {
+              id: s.id || "slot-" + (i + 1),
+              start_iso: s.start_iso || "",
+              label: s.label,
+              value: s.value || s.label
+            };
+          });
+        } else {
+          raw = PLACEHOLDER_AVAILABILITY.map(function (s, i) {
+            return { id: s.id || "slot-" + i, label: s.label, value: s.value || s.label, start_iso: "" };
+          });
         }
-        var abbr = timezoneAbbrFromPayload(payload);
-        return PLACEHOLDER_AVAILABILITY.map(function (s, i) {
-          var label = s.label;
-          if (abbr && label.indexOf(" ET") >= 0) {
-            label = label.replace(" ET", " " + abbr);
-          } else if (abbr && label.indexOf("ET") === label.length - 2) {
-            label = label.slice(0, -2) + abbr;
-          }
-          return { id: s.id || "slot-" + i, label: label, value: label };
+        if (startDate) {
+          raw = raw.filter(function (s) {
+            if (!s.start_iso) return true;
+            var key = localDateKeyFromIso(s.start_iso, tz);
+            return key && key >= startDate;
+          });
+        }
+        return raw.map(function (s, i) {
+          var label = s.start_iso ? formatSlotLabelFromIso(s.start_iso, tz) : s.label;
+          return {
+            id: s.id || "slot-" + (i + 1),
+            label: label,
+            value: label,
+            start_iso: s.start_iso
+          };
         });
+      }
+
+      function refreshMatchTimeSlots() {
+        if (!lastFormPayload || !lastMatchResult) return;
+        var tz = getMatchTimezoneValue();
+        if (!tz) return;
+        var slots = resolveAvailabilitySlots(lastMatchResult, lastFormPayload, tz);
+        matchState.matchedCoachAvailability = slots;
+        renderSlotPicker(slots);
+        var hint = document.getElementById("slot-start-date-hint");
+        if (hint) hint.textContent = formatStartDateHint(lastFormPayload.startDate);
+        showError("err-no-slots", !slots.length);
       }
 
       function renderSlotPicker(slots) {
@@ -1628,12 +1724,18 @@
         matchState.matchedCoachMatchReason =
           "Based on your goals" + stylePart + ", " + (match.short || match.name) +
           " appears to be one of the strongest available matches in our network." + genderPart;
-        matchState.userTimezone = payload.timezoneLabel || payload.timezone || "";
-        matchState.userAvailabilityPreferences = [
-          payload.startWhen,
-          (payload.availabilityWindows || []).join(", "),
-          payload.availabilityNotes
-        ].filter(Boolean).join(" · ");
+        var matchTz = getMatchTimezoneEl();
+        if (matchTz && !matchTz.value) {
+          var guess = "";
+          try {
+            guess = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+          } catch (e) { /* ignore */ }
+          if (guess && matchTz.querySelector('option[value="' + guess + '"]')) {
+            matchTz.value = guess;
+          }
+        }
+        matchState.userTimezone = getMatchTimezoneLabel() || getMatchTimezoneValue();
+        matchState.userAvailabilityPreferences = payload.startDate || "";
 
         var photoEl = document.getElementById("match-coach-photo");
         if (match.image) {
@@ -1656,7 +1758,9 @@
           reviewBlock.style.display = "none";
         }
 
-        renderSlotPicker(resolveAvailabilitySlots(match, payload));
+        var hint = document.getElementById("slot-start-date-hint");
+        if (hint) hint.textContent = formatStartDateHint(payload.startDate);
+        refreshMatchTimeSlots();
 
         var previewNote = document.getElementById("match-preview-note");
         if (previewNote) {
@@ -1812,6 +1916,12 @@
       }
 
       function validateTimeSelection() {
+        var tz = getMatchTimezoneValue();
+        if (!tz) {
+          showError("err-match-timezone", true);
+          return false;
+        }
+        showError("err-match-timezone", false);
         var noneWork = document.getElementById("none-times-work");
         if (noneWork && noneWork.checked) {
           var custom = (document.getElementById("custom-availability").value || "").trim();
@@ -1929,6 +2039,14 @@
             el.disabled = on;
             if (on) el.checked = false;
           });
+        });
+      }
+
+      var matchTzSelect = document.getElementById("match-timezone");
+      if (matchTzSelect) {
+        matchTzSelect.addEventListener("change", function () {
+          matchState.userTimezone = getMatchTimezoneLabel() || getMatchTimezoneValue();
+          refreshMatchTimeSlots();
         });
       }
 
