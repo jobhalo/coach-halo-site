@@ -1213,9 +1213,9 @@
         };
       }
 
-      /* Job-Halo Netlify already has AIRTABLE_PAT; coach-halo.com site does not. */
-      var MATCH_API_URL = "https://job-halo.com/.netlify/functions/match-coach";
-      var LEAD_LOG_API_URL = "https://job-halo.com/.netlify/functions/log-findyourcoach-lead";
+      /* Same-origin proxies on coach-halo.com → Job-Halo functions (Airtable + Zapier). */
+      var MATCH_API_URL = "/.netlify/functions/match-coach";
+      var LEAD_LOG_API_URL = "/.netlify/functions/log-findyourcoach-lead";
       var lastMatchResult = null;
 
       function sendLeadToZapier(payload, matchData, matchStatus, matchError) {
@@ -1349,14 +1349,31 @@
         }
       }
 
+      function parseMatchResponse(res, text) {
+        var data;
+        try {
+          data = JSON.parse(text);
+        } catch (e) {
+          return {
+            httpOk: false,
+            data: {
+              ok: false,
+              error: "invalid_json",
+              message: (text || "").slice(0, 200) || "Empty response from matching service"
+            }
+          };
+        }
+        return { httpOk: res.ok, data: data };
+      }
+
       function fetchCoachMatch(payload) {
         return fetch(MATCH_API_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         }).then(function (res) {
-          return res.json().then(function (data) {
-            return { httpOk: res.ok, data: data };
+          return res.text().then(function (text) {
+            return parseMatchResponse(res, text);
           });
         });
       }
@@ -1405,10 +1422,13 @@
             return "We could not complete matching right now. Please email info@coach-halo.com and we will help.";
           }
           if (data.error === "no_match" && data.message) return data.message;
-          if (data.error === "network" && data.message) {
+          if (data.error === "missing_airtable_pat") {
+            return "Our matching service is temporarily unavailable. Please email info@coach-halo.com and we will help.";
+          }
+          if (data.error === "network") {
             return "We could not reach the matching service. Please check your connection and try again, or email info@coach-halo.com.";
           }
-          if (data.error === "match_failed" && data.message) {
+          if (data.error === "proxy_failed" || data.error === "match_failed" || data.error === "invalid_json") {
             return "Something went wrong while matching coaches. Please try again or email info@coach-halo.com.";
           }
           if (data.message) return data.message;

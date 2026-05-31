@@ -1,11 +1,10 @@
 /**
- * Coach-Halo findyourcoach: same-origin proxy to Job-Halo match-coach (Airtable lives there).
- * Env: CH_MATCH_UPSTREAM_URL (optional override)
+ * Coach-Halo findyourcoach: same-origin proxy to Job-Halo Zapier lead logger.
  */
 
 const UPSTREAM =
-  process.env.CH_MATCH_UPSTREAM_URL ||
-  'https://job-halo.com/.netlify/functions/match-coach';
+  process.env.CH_LEAD_LOG_UPSTREAM_URL ||
+  'https://job-halo.com/.netlify/functions/log-findyourcoach-lead';
 
 function corsHeaders() {
   return {
