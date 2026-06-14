@@ -1712,8 +1712,27 @@
           ? " and your preferred coaching style (" + payload.style.toLowerCase() + ")"
           : " and your preferred coaching style";
         var genderPart = "";
+        var requestedCategory = match.requested_category || payload.coachingTypeCategory || "";
+        var matchedCategory = match.matched_category || "";
+        var categoryChanged =
+          requestedCategory &&
+          matchedCategory &&
+          requestedCategory !== matchedCategory;
         if (payload.genderPreference && payload.genderPreference !== "No preference") {
-          genderPart = " We also noted your preference for a " + payload.genderPreference.toLowerCase() + " coach.";
+          if (match.gender_preference_honored === false) {
+            genderPart =
+              " We could not find a " + payload.genderPreference.toLowerCase() +
+              " coach in your selected specialty right now, so we matched you with the closest available coach in our network.";
+          } else if (categoryChanged) {
+            genderPart =
+              " We matched you with a " + payload.genderPreference.toLowerCase() +
+              " coach from our broader network who may still be a strong fit for your goals.";
+          } else {
+            genderPart = " We also noted your preference for a " + payload.genderPreference.toLowerCase() + " coach.";
+          }
+        } else if (categoryChanged) {
+          genderPart =
+            " We matched you with a coach from our broader network who may still be a strong fit for your goals.";
         }
 
         matchState.matchedCoachName = match.name || "";
