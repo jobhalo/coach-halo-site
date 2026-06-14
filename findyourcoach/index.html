@@ -726,12 +726,6 @@
       margin: 0;
       line-height: 1.5;
     }
-    .success-preview-note {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-top: 14px;
-      text-align: center;
-    }
     .match-error {
       display: none;
       padding: 16px 18px;
@@ -1086,7 +1080,6 @@
                 <button type="button" class="btn btn-primary" id="btn-confirm-time">Continue</button>
               </div>
             </div>
-            <p class="success-preview-note" id="match-preview-note"></p>
           </div>
 
           <!-- Confirmation after time selection; coach is NOT notified until user replies to email -->
@@ -1784,17 +1777,6 @@
         if (hint) hint.textContent = formatStartDateHint(payload.startDate);
         refreshMatchTimeSlots();
 
-        var previewNote = document.getElementById("match-preview-note");
-        if (previewNote) {
-          if (match.availability_slots && match.availability_slots.length) {
-            previewNote.textContent = "";
-            previewNote.style.display = "none";
-          } else {
-            previewNote.style.display = "";
-            previewNote.textContent =
-              "Sample appointment times shown until per-coach scheduling is connected.";
-          }
-        }
       }
 
       function escapeHtml(s) {
