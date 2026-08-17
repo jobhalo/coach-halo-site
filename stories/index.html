@@ -49,6 +49,7 @@
       outline: 2px solid var(--black);
       outline-offset: 2px;
     }
+    main { overflow-x: hidden; }
 
     .site-header {
       position: sticky;
@@ -75,6 +76,7 @@
       gap: 10px;
       text-decoration: none;
       color: var(--black);
+      min-width: 0;
     }
     .brand-mark {
       width: 32px;
@@ -1220,8 +1222,16 @@
     }
 
     @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero h1 { max-width: none; }
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2.75rem 0 3rem;
+      }
+      .hero h1 {
+        max-width: none;
+        font-size: clamp(1.9rem, 6.2vw, 2.55rem);
+        line-height: 1.12;
+      }
       .steps { grid-template-columns: 1fr; }
       .step-card + .step-card {
         border-left: none;
@@ -1233,9 +1243,68 @@
       .coach-diff { grid-template-columns: 1fr; }
       .card-grid { grid-template-columns: 1fr; }
     }
-    @media (max-width: 560px) {
+    @media (max-width: 600px) {
+      .nav {
+        flex-wrap: nowrap;
+        padding: 12px 16px;
+        gap: 10px;
+      }
+      .nav-actions {
+        flex-wrap: nowrap;
+        gap: 0;
+        flex-shrink: 0;
+      }
+      /* Match coach-halo.com: logo + one CTA only on small screens */
+      .nav-actions .nav-link { display: none; }
+      .nav-actions .btn {
+        padding: 0.55rem 0.95rem;
+        font-size: 0.82rem;
+        white-space: nowrap;
+      }
+      .wrap {
+        padding: 0 1.25rem;
+      }
+      .hero {
+        padding: 1.75rem 0 2.25rem;
+        gap: 1.65rem;
+      }
+      .hero h1 {
+        font-size: 1.85rem;
+        line-height: 1.14;
+        letter-spacing: -0.035em;
+        margin: 0 0 0.85rem;
+      }
+      .eyebrow { margin-bottom: 0.65rem; }
+      .hero-sub {
+        font-size: 0.98rem;
+        line-height: 1.55;
+        margin-bottom: 0.5rem;
+      }
+      .hero-copy-stack .hero-sub:last-of-type { margin-bottom: 0.75rem; }
+      .hero-support {
+        font-size: 0.9rem;
+        margin: 0 0 1rem;
+      }
+      .hero-actions {
+        width: 100%;
+      }
+      .hero-actions .btn {
+        width: 100%;
+      }
+      .btn-lg {
+        padding: 0.9rem 1.2rem;
+        font-size: 0.95rem;
+      }
+      .hero-situations { margin: 0 0 1.15rem; }
+      .privacy-note { margin-top: 1.15rem; }
+      .section { padding: 3.25rem 0; }
+      .section h2 {
+        font-size: clamp(1.55rem, 6.5vw, 2rem);
+        max-width: none;
+      }
+      .lede { font-size: 1rem; }
       .choice-grid { grid-template-columns: 1fr; }
-      .nav-actions .nav-link:not(.is-active) { display: none; }
+      .story-preview:hover { transform: none; }
     }
 
     /* Dedicated story views (hash routes) */
