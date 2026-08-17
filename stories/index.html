@@ -323,6 +323,9 @@
       margin: 0 0 1.1rem;
       letter-spacing: -0.01em;
     }
+    /* Mobile-only conversion blocks (hidden on desktop) */
+    .mobile-only { display: none; }
+    .hero-lead { display: none; }
     .privacy-note {
       font-size: 0.72rem;
       color: #9a9a9a;
@@ -1304,22 +1307,32 @@
       }
       .hero h1 {
         text-align: left;
-        margin: 0 0 16px;
-        font-size: 2rem;
+        margin: 0 0 14px;
+        font-size: 1.85rem;
         line-height: 1.15;
         letter-spacing: -0.03em;
         max-width: none;
       }
-      /* Lead-style support line (like .lead on coach-halo.com) */
+      .hero-copy .hero-lead {
+        display: block;
+        text-align: left;
+        margin: 0 0 12px;
+        max-width: 36ch;
+        font-size: 1.02rem;
+        line-height: 1.55;
+        font-weight: 400;
+        color: var(--muted-dark);
+      }
+      /* Summary line after the product explanation */
       .hero-copy .hero-support {
         order: 0;
         text-align: left;
-        margin: 0 0 28px;
-        max-width: 34ch;
-        font-size: 1.1rem;
-        line-height: 1.6;
-        font-weight: 400;
-        color: var(--muted);
+        margin: 0 0 22px;
+        max-width: none;
+        font-size: 0.95rem;
+        line-height: 1.45;
+        font-weight: 600;
+        color: var(--black);
       }
       .hero-copy .hero-actions {
         order: 0;
@@ -1346,8 +1359,8 @@
       .hero-actions .fine {
         text-align: left;
         width: 100%;
-        margin: 28px 0 0;
-        font-size: 0.9rem;
+        margin: 14px 0 0;
+        font-size: 0.88rem;
         color: var(--muted);
       }
       .cta-label-desktop { display: none; }
@@ -1356,7 +1369,101 @@
         padding: 10px 18px;
         font-size: 0.9rem;
       }
-      .section { padding: 56px 0; }
+      .mobile-only { display: block; }
+      .mobile-proof {
+        padding: 1.75rem 0 0.25rem;
+      }
+      .mobile-proof + .mobile-proof {
+        padding-top: 1.35rem;
+        padding-bottom: 0.5rem;
+      }
+      .mobile-proof .section-head {
+        margin-bottom: 1.15rem;
+      }
+      .mobile-proof .section-head h2 {
+        font-size: 1.45rem;
+        margin-bottom: 0;
+        max-width: none;
+      }
+      .get-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 0;
+      }
+      .get-list li {
+        display: grid;
+        grid-template-columns: 1.75rem 1fr;
+        gap: 0.75rem;
+        padding: 0.95rem 0;
+        border-top: 1px solid var(--border);
+      }
+      .get-list li:last-child {
+        border-bottom: 1px solid var(--border);
+      }
+      .get-num {
+        font-family: var(--font-display);
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--muted);
+        line-height: 1.4;
+        padding-top: 0.1rem;
+      }
+      .get-list strong {
+        display: block;
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin: 0 0 0.25rem;
+        color: var(--black);
+      }
+      .get-list p {
+        margin: 0;
+        font-size: 0.92rem;
+        line-height: 1.5;
+        color: var(--muted-dark);
+      }
+      .mobile-story-card {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        background: var(--white);
+        border: 1px solid rgba(10, 10, 10, 0.08);
+        border-radius: var(--radius);
+        padding: 1.15rem 1.15rem 1.2rem;
+        box-shadow: var(--shadow-card);
+      }
+      .mobile-story-cats {
+        margin: 0 0 0.55rem;
+        font-size: 0.72rem;
+        font-weight: 650;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .mobile-story-card h3 {
+        font-family: var(--font-display);
+        font-size: 1.08rem;
+        font-weight: 750;
+        letter-spacing: -0.03em;
+        line-height: 1.3;
+        margin: 0 0 0.45rem;
+      }
+      .mobile-story-card p:not(.mobile-story-cats) {
+        margin: 0 0 0.85rem;
+        font-size: 0.92rem;
+        line-height: 1.5;
+        color: var(--muted-dark);
+      }
+      .mobile-story-card .read {
+        font-family: var(--font-display);
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--black);
+      }
+      .section { padding: 2.75rem 0; }
       .section h2 {
         font-size: clamp(1.5rem, 3vw, 2rem);
         max-width: none;
@@ -1558,6 +1665,7 @@
         <div class="hero-copy">
           <p class="eyebrow">Real stories + coach guidance</p>
           <h1>See how real people got through <em>what you’re going through.</em></h1>
+          <p class="hero-lead">Every week, we find real stories from people who faced challenges like yours, what they tried, what seemed to help, and what happened next.</p>
           <p class="hero-support">Real experiences. Coach perspectives. Stories picked for you.</p>
           <div class="hero-actions">
             <a class="btn btn-primary btn-lg" href="#signup">
@@ -1671,6 +1779,49 @@
         </div>
       </div>
     </div>
+
+    <section class="mobile-proof mobile-only" id="what-you-get" aria-labelledby="what-you-get-heading">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">What you’ll get</p>
+          <h2 id="what-you-get-heading">More than just a story.</h2>
+        </div>
+        <ol class="get-list">
+          <li>
+            <span class="get-num" aria-hidden="true">1</span>
+            <div>
+              <strong>A real story</strong>
+              <p>Someone who went through something similar, what happened, what they tried, and what changed.</p>
+            </div>
+          </li>
+          <li>
+            <span class="get-num" aria-hidden="true">2</span>
+            <div>
+              <strong>What seemed to help</strong>
+              <p>The habits, decisions, or changes they say helped them move forward.</p>
+            </div>
+          </li>
+          <li>
+            <span class="get-num" aria-hidden="true">3</span>
+            <div>
+              <strong>A coach’s perspective</strong>
+              <p>A short perspective on what stands out in the story and what may be worth considering.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="mobile-proof mobile-only" id="mobile-example" aria-label="Example story">
+      <div class="wrap">
+        <a class="mobile-story-card" href="#story/divorce" data-story="divorce" data-situation="Divorce / Separation">
+          <p class="mobile-story-cats">Divorce · Starting Over</p>
+          <h3>He thought everything would feel better once the divorce was final.</h3>
+          <p>What happened when the legal ending didn’t bring the fresh start he expected.</p>
+          <span class="read">Read example story →</span>
+        </a>
+      </div>
+    </section>
 
     <section class="section section-alt" id="how" aria-labelledby="how-heading">
       <div class="wrap">
