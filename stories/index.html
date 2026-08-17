@@ -1237,6 +1237,14 @@
       .hero h1 { max-width: none; }
       /* Sample email crowds the stacked mobile/tablet hero */
       .product-panel { display: none !important; }
+      .hero-copy .hero-copy-stack,
+      .hero-copy .hero-situations,
+      .hero-copy .privacy-note {
+        display: none;
+      }
+      .hero-copy .hero-support { margin: 0 0 1.15rem; }
+      .hero-copy .hero-actions { width: 100%; margin: 0; }
+      .hero-actions .btn { width: 100%; }
       .steps { grid-template-columns: 1fr; }
       .step-card + .step-card {
         border-left: none;
@@ -1303,8 +1311,6 @@
         padding: 0.95rem 1.15rem;
         font-size: 0.95rem;
       }
-      .btn-label-long { display: none; }
-      .btn-label-short { display: inline; }
       .section { padding: 3rem 0; }
       .section h2 {
         font-size: clamp(1.55rem, 6.5vw, 2rem);
@@ -1314,7 +1320,6 @@
       .choice-grid { grid-template-columns: 1fr; }
       .wizard { padding: 1.25rem; }
     }
-    .btn-label-short { display: none; }
 
     /* Dedicated story views (hash routes) */
     body.is-reading-story #landing-main { display: none; }
@@ -1510,10 +1515,7 @@
           <h1>See how real people got through <em>what you’re going through.</em></h1>
           <p class="hero-support">Real experiences. Coach perspectives. Stories picked for you.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary btn-lg" href="#signup">
-              <span class="btn-label-long">Get Stories Matched to Me →</span>
-              <span class="btn-label-short">Get Matched Stories →</span>
-            </a>
+            <a class="btn btn-primary btn-lg" href="#signup">Get Stories Matched to Me →</a>
             <p class="fine">Free every week. Unsubscribe anytime.</p>
           </div>
           <div class="hero-copy-stack">
@@ -1921,10 +1923,7 @@
         <p class="eyebrow">Ready when you are</p>
         <h2 id="final-heading">You don’t have to figure everything out <em>from scratch.</em></h2>
         <p class="lede">Every week, learn from one real person who faced something similar, see what helped them move forward, and get a short coach perspective — with the option to talk it through if you want.</p>
-        <a class="btn btn-primary btn-lg" href="#signup">
-          <span class="btn-label-long">Get Stories Matched to Me →</span>
-          <span class="btn-label-short">Get Matched Stories →</span>
-        </a>
+        <a class="btn btn-primary btn-lg" href="#signup">Get Stories Matched to Me →</a>
       </div>
     </section>
   </main>
