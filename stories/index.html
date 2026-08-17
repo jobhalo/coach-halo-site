@@ -5,29 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Get free weekly stories from real people who faced challenges like yours. See what they tried, what helped, what changed, and get practical guidance from Coach-Halo coaches." />
   <title>Coach-Halo Stories | Real experiences and coach perspectives</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
       --black: #0a0a0a;
       --white: #ffffff;
-      --off: #fafafa;
-      --off-warm: #fafafa;
-      --muted: #6b6b6b;
-      --muted-dark: #6b6b6b;
-      --border: #e8e8e8;
+      --off: #f6f6f6;
+      --off-warm: #faf9f7;
+      --muted: #737373;
+      --muted-dark: #525252;
+      --border: #ebebeb;
       --accent: #0a0a0a;
       --ok-bg: #ecfdf5;
       --ok-border: #a7f3d0;
       --ok-text: #065f46;
       --error: #991b1b;
-      --max: 1080px;
-      --radius: 2px;
-      --radius-sm: 2px;
-      --radius-pill: 2px;
+      --max: 1120px;
+      --radius: 20px;
+      --radius-sm: 14px;
+      --radius-pill: 9999px;
       --transition: 0.22s ease;
-      --font-display: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      --shadow-card: none;
-      --shadow-soft: none;
+      --font-display: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+      --font-body: Inter, system-ui, sans-serif;
+      --shadow-card: 0 1px 2px rgba(10, 10, 10, 0.03), 0 18px 48px rgba(10, 10, 10, 0.07);
+      --shadow-soft: 0 24px 64px rgba(10, 10, 10, 0.08);
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -36,7 +39,7 @@
       font-family: var(--font-body);
       background: var(--white);
       color: var(--black);
-      line-height: 1.6;
+      line-height: 1.65;
       -webkit-font-smoothing: antialiased;
     }
     img { max-width: 100%; display: block; }
@@ -52,19 +55,19 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(255, 255, 255, 0.88);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
     }
     .nav {
       max-width: var(--max);
       margin: 0 auto;
-      padding: 14px 20px;
+      padding: 16px clamp(1rem, 4vw, 24px);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 14px;
       flex-wrap: nowrap;
     }
     .brand {
@@ -97,10 +100,10 @@
       min-width: 0;
     }
     .brand-name {
-      font-family: var(--font-body);
+      font-family: var(--font-display);
       font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: -0.02em;
+      font-size: 1.02rem;
+      letter-spacing: -0.03em;
       color: var(--black);
     }
     .brand-sep {
@@ -124,40 +127,40 @@
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 20px;
-      flex-wrap: nowrap;
+      gap: 0.35rem 1.1rem;
+      flex-wrap: wrap;
       justify-content: flex-end;
     }
     .nav-link {
-      font-size: 0.95rem;
-      font-weight: 400;
-      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted-dark);
       text-decoration: none;
-      padding: 0;
+      padding: 0.45rem 0.1rem;
     }
     .nav-link:hover { color: var(--black); }
     .nav-link.is-active {
       color: var(--black);
-      font-weight: 500;
-      box-shadow: none;
+      font-weight: 600;
+      box-shadow: inset 0 -2px 0 var(--black);
     }
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.4rem;
-      font-family: var(--font-body);
-      font-weight: 600;
-      font-size: 0.9rem;
-      border-radius: var(--radius);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.92rem;
+      border-radius: var(--radius-pill);
       border: 1px solid transparent;
-      padding: 10px 18px;
+      padding: 0.78rem 1.4rem;
       cursor: pointer;
       text-decoration: none;
-      transition: background var(--transition), border-color var(--transition), opacity var(--transition);
+      transition: transform 0.15s ease, background var(--transition), border-color var(--transition), opacity var(--transition), box-shadow var(--transition);
       line-height: 1.2;
     }
-    .btn:hover { transform: none; }
+    .btn:hover { transform: translateY(-1px); }
     .btn:disabled {
       opacity: 0.55;
       cursor: not-allowed;
@@ -166,7 +169,7 @@
     .btn-primary {
       background: var(--black);
       color: var(--white);
-      box-shadow: none;
+      box-shadow: 0 8px 24px rgba(10, 10, 10, 0.14);
     }
     .btn-primary:hover { background: #222; color: var(--white); }
     .btn-ghost {
@@ -175,16 +178,16 @@
       color: var(--black);
     }
     .btn-ghost:hover { background: var(--off); }
-    .btn-lg { padding: 12px 20px; font-size: 0.95rem; }
+    .btn-lg { padding: 1rem 1.65rem; font-size: 1rem; }
     .btn-block { width: 100%; }
 
     .wrap {
       max-width: var(--max);
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 clamp(1.15rem, 4vw, 1.75rem);
     }
     .section {
-      padding: 56px 0;
+      padding: clamp(4.5rem, 10vw, 7rem) 0;
     }
     .section-alt { background: var(--off-warm); }
     .section-head {
@@ -201,23 +204,22 @@
       margin-right: auto;
     }
     .eyebrow {
-      display: inline-block;
-      font-family: var(--font-body);
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: none;
       color: var(--muted);
-      margin: 0 0 12px;
+      margin: 0 0 0.85rem;
     }
     .section h2 {
-      font-family: var(--font-body);
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin: 0 0 12px;
-      max-width: none;
+      font-family: var(--font-display);
+      font-size: clamp(1.85rem, 4.2vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.12;
+      margin: 0 0 1rem;
+      max-width: 16ch;
     }
     .section h2 em,
     .hero h1 em,
@@ -226,11 +228,11 @@
       font-weight: 700;
     }
     .lede {
-      font-size: 1.1rem;
-      color: var(--muted);
-      margin: 0 0 28px;
-      max-width: 60ch;
-      line-height: 1.6;
+      font-size: 1.08rem;
+      color: var(--muted-dark);
+      margin: 0 0 1.75rem;
+      max-width: 38rem;
+      line-height: 1.65;
     }
     .muted { color: var(--muted); }
     .fine {
@@ -262,59 +264,62 @@
       text-underline-offset: 2px;
     }
 
-    /* Hero — match coach-halo.com */
+    /* Hero */
     .hero-wrap {
       position: relative;
       overflow: hidden;
       border-bottom: none;
-      background: var(--white);
+      background:
+        radial-gradient(ellipse 70% 55% at 12% 0%, rgba(253, 224, 231, 0.45) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 50% at 92% 8%, rgba(224, 231, 255, 0.38) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(254, 249, 231, 0.5) 0%, transparent 55%),
+        linear-gradient(180deg, #fff 0%, #fbfbfa 100%);
     }
     .hero {
       position: relative;
       z-index: 1;
       display: grid;
       grid-template-columns: 1fr;
-      gap: 40px;
-      align-items: start;
-      padding: 72px 0 56px;
+      gap: clamp(1.75rem, 4vw, 4rem);
+      align-items: center;
+      padding: clamp(2rem, 6vw, 5.5rem) 0 clamp(2.5rem, 7vw, 6rem);
     }
-    @media (min-width: 880px) {
+    @media (min-width: 900px) {
       .hero {
-        grid-template-columns: 1.1fr 0.9fr;
-        align-items: center;
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(2.25rem, 6vw, 4rem);
+        padding: clamp(3.25rem, 8vw, 5.5rem) 0 clamp(3.75rem, 9vw, 6rem);
       }
     }
-    .hero h1 {
-      font-family: var(--font-body);
-      font-size: clamp(2rem, 4vw, 2.75rem);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
-      margin: 0 0 16px;
-      max-width: none;
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
     }
-    .hero-sub,
-    .hero .lead {
-      font-size: 1.1rem;
-      color: var(--muted);
-      margin: 0 0 28px;
-      max-width: 34ch;
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 5.2vw, 3.65rem);
+      font-weight: 800;
+      letter-spacing: -0.045em;
+      line-height: 1.1;
+      margin: 0 0 1rem;
+      max-width: 14ch;
+    }
+    .hero-sub {
+      font-size: 1.08rem;
+      color: var(--muted-dark);
+      margin: 0 0 0.65rem;
+      max-width: 34rem;
       line-height: 1.6;
     }
     .hero-sub + .hero-sub { margin-bottom: 0.65rem; }
-    .hero-copy-stack .hero-sub:last-of-type { margin-bottom: 1rem; }
+    .hero-copy-stack .hero-sub:last-of-type { margin-bottom: 0; }
+    .hero-copy-stack { margin: 0 0 1.25rem; }
     .hero-support {
-      display: none;
-    }
-    .hero-trust {
-      margin-top: 28px;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-    .hero-ctas {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--black);
+      margin: 0 0 1.1rem;
+      letter-spacing: -0.01em;
     }
     .privacy-note {
       font-size: 0.72rem;
@@ -337,12 +342,6 @@
     .hero-situations {
       margin: 0 0 1.5rem;
     }
-    .hero-extra {
-      padding-bottom: 48px;
-    }
-    .hero-extra .privacy-note {
-      margin-top: 0;
-    }
     .hero-situations-label {
       font-size: 0.82rem;
       font-weight: 550;
@@ -352,32 +351,39 @@
     .hero-situations .pills { max-width: 36rem; }
     .hero-actions {
       display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.45rem;
     }
     .hero-actions .fine { margin: 0; }
 
     .product-panel {
       position: relative;
     }
-    .product-panel::before { display: none; }
+    .product-panel::before {
+      content: "";
+      position: absolute;
+      inset: 12% -8% -6% 8%;
+      background: radial-gradient(circle at 70% 30%, rgba(253, 224, 231, 0.55), transparent 55%),
+                  radial-gradient(circle at 20% 80%, rgba(224, 231, 255, 0.45), transparent 50%);
+      filter: blur(2px);
+      z-index: 0;
+      pointer-events: none;
+    }
     .story-preview {
       position: relative;
       z-index: 1;
-      background: var(--off);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: none;
+      background: var(--white);
+      border: 1px solid rgba(10, 10, 10, 0.08);
+      border-radius: 22px;
+      box-shadow: var(--shadow-soft);
       padding: 0;
       overflow: hidden;
-      transition: none;
-      min-height: 280px;
+      transition: transform var(--transition), box-shadow var(--transition);
     }
     .story-preview:hover {
-      transform: none;
-      box-shadow: none;
+      transform: translateY(-3px);
+      box-shadow: 0 28px 72px rgba(10, 10, 10, 0.1);
     }
     .mail-chrome {
       padding: 0.85rem 1.2rem 0.95rem;
@@ -903,7 +909,7 @@
     .coach-feature-card {
       background: var(--white);
       border: 1px solid rgba(10, 10, 10, 0.08);
-      border-radius: var(--radius);
+      border-radius: 22px;
       padding: 1.55rem;
       box-shadow: var(--shadow-soft);
     }
@@ -928,7 +934,7 @@
       margin: 0 auto;
       background: var(--white);
       border: 1px solid rgba(10, 10, 10, 0.08);
-      border-radius: var(--radius);
+      border-radius: 24px;
       box-shadow: var(--shadow-soft);
       padding: clamp(1.6rem, 3.5vw, 2.15rem);
     }
@@ -1179,14 +1185,17 @@
     /* Final CTA */
     .final {
       text-align: center;
-      padding: 56px 0;
-      background: var(--off);
+      padding: clamp(5rem, 12vw, 8rem) 0;
+      background:
+        radial-gradient(ellipse 55% 60% at 50% 0%, rgba(253, 224, 231, 0.35) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 50% at 80% 100%, rgba(224, 231, 255, 0.28) 0%, transparent 55%),
+        var(--off-warm);
     }
     .final h2 {
-      max-width: none;
+      max-width: 14ch;
       margin-left: auto;
       margin-right: auto;
-      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-size: clamp(2rem, 5vw, 3.1rem);
     }
     .final .lede {
       margin-left: auto;
@@ -1225,6 +1234,7 @@
     }
 
     @media (max-width: 900px) {
+      .hero h1 { max-width: none; }
       .steps { grid-template-columns: 1fr; }
       .step-card + .step-card {
         border-left: none;
@@ -1236,29 +1246,65 @@
       .coach-diff { grid-template-columns: 1fr; }
       .card-grid { grid-template-columns: 1fr; }
     }
-    @media (max-width: 600px) {
-      .nav { padding: 12px 16px; gap: 12px; }
-      .nav-actions { gap: 12px; }
+    @media (max-width: 700px) {
+      .nav {
+        flex-wrap: nowrap;
+        padding: 12px 16px;
+        gap: 10px;
+      }
+      .brand { min-width: 0; }
+      .nav-actions {
+        flex-wrap: nowrap;
+        gap: 0;
+        flex-shrink: 0;
+      }
       .nav-actions .nav-link { display: none; }
       .nav-actions .btn {
-        padding: 8px 14px;
-        font-size: 0.9rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.84rem;
         white-space: nowrap;
       }
-      .wrap { padding: 0 16px; }
-      .hero { padding: 48px 0 40px; gap: 28px; }
-      .hero h1 { margin: 0 0 12px; }
-      .hero-sub,
-      .hero .lead { font-size: 1.05rem; margin: 0 0 20px; max-width: none; }
-      .hero-trust { margin-top: 20px; }
-      .hero-actions { width: 100%; }
-      .hero-actions .btn,
-      .hero-ctas .btn-primary { width: 100%; }
+      .wrap { padding: 0 1.25rem; }
+      .hero {
+        padding: 1.5rem 0 2rem;
+        gap: 1.5rem;
+      }
+      /* Put CTA right under the headline on phones */
+      .hero-copy .hero-support { order: 1; margin: 0 0 1rem; font-size: 0.92rem; }
+      .hero-copy .hero-actions { order: 2; width: 100%; margin-bottom: 1.1rem; }
+      .hero-copy .hero-copy-stack { order: 3; }
+      .hero-copy .hero-situations { order: 4; }
+      .hero-copy .privacy-note { order: 5; }
+      .hero-copy-stack .hero-sub:nth-child(n+2) { display: none; }
+      .hero-sub {
+        font-size: 0.98rem;
+        line-height: 1.55;
+        margin-bottom: 0;
+      }
+      .hero-actions .btn { width: 100%; }
+      .btn-lg {
+        padding: 0.95rem 1.15rem;
+        font-size: 0.95rem;
+      }
+      .btn-label-long { display: none; }
+      .btn-label-short { display: inline; }
       .hero-situations { margin: 0 0 1rem; }
       .privacy-note { margin-top: 1rem; }
-      .section { padding: 48px 0; }
+      /* Compact example card on phones */
+      .story-body p:nth-child(n+2),
+      .preview-block.reflect-note,
+      .preview-cta { display: none; }
+      .section { padding: 3rem 0; }
+      .section h2 {
+        font-size: clamp(1.55rem, 6.5vw, 2rem);
+        max-width: none;
+      }
+      .lede { font-size: 1rem; }
       .choice-grid { grid-template-columns: 1fr; }
+      .story-preview:hover { transform: none; }
+      .wizard { padding: 1.25rem; }
     }
+    .btn-label-short { display: none; }
 
     /* Dedicated story views (hash routes) */
     body.is-reading-story #landing-main { display: none; }
@@ -1269,7 +1315,10 @@
     }
     #story-view {
       display: none;
-      background: var(--white);
+      background:
+        radial-gradient(ellipse 60% 40% at 10% 0%, rgba(253, 224, 231, 0.28) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 35% at 90% 5%, rgba(224, 231, 255, 0.22) 0%, transparent 50%),
+        var(--white);
       min-height: 70vh;
       padding-bottom: clamp(3rem, 8vw, 5rem);
     }
@@ -1404,7 +1453,7 @@
       padding: clamp(1.5rem, 4vw, 2rem);
       background: var(--off-warm);
       border: 1px solid rgba(10, 10, 10, 0.06);
-      border-radius: var(--radius);
+      border-radius: 20px;
       text-align: center;
     }
     .story-subscribe h2 {
@@ -1446,16 +1495,41 @@
   <main id="landing-main">
     <div class="hero-wrap" id="top">
       <div class="wrap hero">
-        <div>
-          <span class="eyebrow">Real stories + coach guidance</span>
-          <h1>See how real people got through what you’re going through.</h1>
-          <p class="lead">
-            Every week, real stories from people who faced challenges like yours, what seemed to help, and a coach perspective on what stands out.
-          </p>
-          <div class="hero-ctas hero-actions">
-            <a class="btn btn-primary" href="#signup">Get Stories Matched to Me →</a>
+        <div class="hero-copy">
+          <p class="eyebrow">Real stories + coach guidance</p>
+          <h1>See how real people got through <em>what you’re going through.</em></h1>
+          <p class="hero-support">Real experiences. Coach perspectives. Stories picked for you.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary btn-lg" href="#signup">
+              <span class="btn-label-long">Get Stories Matched to Me →</span>
+              <span class="btn-label-short">Get Matched Stories →</span>
+            </a>
+            <p class="fine">Free every week. Unsubscribe anytime.</p>
           </div>
-          <p class="hero-trust">Free every week · Unsubscribe anytime</p>
+          <div class="hero-copy-stack">
+            <p class="hero-sub">Every week, we find real stories from people who faced challenges like yours and made meaningful progress.</p>
+            <p class="hero-sub">See what they struggled with, what they tried, what helped, and what happened next.</p>
+            <p class="hero-sub">Then, a Coach-Halo coach shares their perspective on the story and what stands out to them.</p>
+          </div>
+          <div class="hero-situations">
+            <p class="hero-situations-label">Stories for situations like</p>
+            <div class="pills" id="hero-situation-pills" role="group" aria-label="Choose a situation">
+              <button type="button" class="pill" data-situation="Divorce / Separation">Divorce &amp; Separation</button>
+              <button type="button" class="pill" data-situation="Breakup">Breakups</button>
+              <button type="button" class="pill" data-situation="Starting Over">Starting Over</button>
+              <button type="button" class="pill" data-situation="Career Change">Career Change</button>
+              <button type="button" class="pill" data-situation="Job Loss">Job Loss</button>
+              <button type="button" class="pill" data-situation="Feeling Stuck">Feeling Stuck</button>
+              <button type="button" class="pill" data-situation="Loneliness / Friendships">Loneliness &amp; Friendships</button>
+              <button type="button" class="pill" data-situation="Dating Again">Dating Again</button>
+              <button type="button" class="pill" data-situation="Feeling Stuck">Confidence</button>
+              <button type="button" class="pill" data-situation="Major Life Decisions">Major Life Decisions</button>
+            </div>
+          </div>
+          <p class="privacy-note">
+            <strong>Real experiences. Identities protected.</strong>
+            Stories are based on publicly shared experiences. Identifying details may be changed or removed to protect privacy.
+          </p>
         </div>
 
         <div class="product-panel">
@@ -1535,27 +1609,6 @@
             </div>
           </aside>
         </div>
-      </div>
-      <div class="wrap hero-extra">
-          <div class="hero-situations">
-            <p class="hero-situations-label">Stories for situations like</p>
-            <div class="pills" id="hero-situation-pills" role="group" aria-label="Choose a situation">
-              <button type="button" class="pill" data-situation="Divorce / Separation">Divorce &amp; Separation</button>
-              <button type="button" class="pill" data-situation="Breakup">Breakups</button>
-              <button type="button" class="pill" data-situation="Starting Over">Starting Over</button>
-              <button type="button" class="pill" data-situation="Career Change">Career Change</button>
-              <button type="button" class="pill" data-situation="Job Loss">Job Loss</button>
-              <button type="button" class="pill" data-situation="Feeling Stuck">Feeling Stuck</button>
-              <button type="button" class="pill" data-situation="Loneliness / Friendships">Loneliness &amp; Friendships</button>
-              <button type="button" class="pill" data-situation="Dating Again">Dating Again</button>
-              <button type="button" class="pill" data-situation="Feeling Stuck">Confidence</button>
-              <button type="button" class="pill" data-situation="Major Life Decisions">Major Life Decisions</button>
-            </div>
-          </div>
-          <p class="privacy-note">
-            <strong>Real experiences. Identities protected.</strong>
-            Stories are based on publicly shared experiences. Identifying details may be changed or removed to protect privacy.
-          </p>
       </div>
     </div>
 
@@ -1858,7 +1911,10 @@
         <p class="eyebrow">Ready when you are</p>
         <h2 id="final-heading">You don’t have to figure everything out <em>from scratch.</em></h2>
         <p class="lede">Every week, learn from one real person who faced something similar, see what helped them move forward, and get a short coach perspective — with the option to talk it through if you want.</p>
-        <a class="btn btn-primary btn-lg" href="#signup">Get Stories Matched to Me →</a>
+        <a class="btn btn-primary btn-lg" href="#signup">
+          <span class="btn-label-long">Get Stories Matched to Me →</span>
+          <span class="btn-label-short">Get Matched Stories →</span>
+        </a>
       </div>
     </section>
   </main>
