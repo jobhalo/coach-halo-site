@@ -282,13 +282,15 @@
       grid-template-columns: 1fr;
       gap: clamp(1.75rem, 4vw, 4rem);
       align-items: center;
-      padding: clamp(2rem, 6vw, 5.5rem) 0 clamp(2.5rem, 7vw, 6rem);
+      padding-top: clamp(2rem, 6vw, 5.5rem);
+      padding-bottom: clamp(2.5rem, 7vw, 6rem);
     }
     @media (min-width: 900px) {
       .hero {
         grid-template-columns: 1fr 1fr;
         gap: clamp(2.25rem, 6vw, 4rem);
-        padding: clamp(3.25rem, 8vw, 5.5rem) 0 clamp(3.75rem, 9vw, 6rem);
+        padding-top: clamp(3.25rem, 8vw, 5.5rem);
+        padding-bottom: clamp(3.75rem, 9vw, 6rem);
       }
     }
     .hero-copy {
@@ -1256,6 +1258,7 @@
       .coach-diff { grid-template-columns: 1fr; }
       .card-grid { grid-template-columns: 1fr; }
     }
+    .cta-label-mobile { display: none; }
     @media (max-width: 700px) {
       .site-header {
         border-bottom: 1px solid var(--border);
@@ -1279,41 +1282,83 @@
         font-size: 0.84rem;
         white-space: nowrap;
       }
-      .wrap { padding: 0 1.25rem; }
+      /* Match coach-halo.com hero: 20px inset, left-aligned stack */
+      .wrap { padding: 0 20px; }
       .hero {
-        padding: 1.75rem 0 2.25rem;
+        padding-top: 48px;
+        padding-bottom: 40px;
         gap: 0;
       }
-      .hero h1 {
-        font-size: 1.7rem;
-        line-height: 1.15;
-        margin: 0 0 0.75rem;
+      .hero-copy {
+        text-align: left;
+        align-items: flex-start;
       }
-      .eyebrow { margin: 0 0 0.55rem; }
-      /* Clean mobile hero: headline + support + CTA only */
+      .hero-copy .eyebrow {
+        display: inline-block;
+        text-align: left;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin: 0 0 12px;
+      }
+      .hero h1 {
+        text-align: left;
+        margin: 0 0 16px;
+        font-size: 2rem;
+        line-height: 1.15;
+        letter-spacing: -0.03em;
+        max-width: none;
+      }
+      /* Lead-style support line (like .lead on coach-halo.com) */
       .hero-copy .hero-support {
-        order: 1;
-        margin: 0 0 1.15rem;
-        font-size: 0.92rem;
+        order: 0;
+        text-align: left;
+        margin: 0 0 28px;
+        max-width: 34ch;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        font-weight: 400;
+        color: var(--muted);
       }
       .hero-copy .hero-actions {
-        order: 2;
+        order: 0;
+        align-items: flex-start;
+        justify-content: flex-start;
         width: 100%;
         margin: 0;
+        gap: 0;
       }
       .hero-copy .hero-copy-stack,
       .hero-copy .hero-situations,
       .hero-copy .privacy-note {
         display: none;
       }
-      .hero-actions .btn { width: 100%; }
-      .btn-lg {
-        padding: 0.95rem 1.15rem;
-        font-size: 0.95rem;
+      /* Compact CTA like coach-halo.com "Start free" */
+      .hero-actions .btn {
+        width: auto;
+        max-width: 100%;
+        margin: 0;
+        padding: 10px 18px;
+        font-size: 0.9rem;
+        font-weight: 600;
       }
-      .section { padding: 3rem 0; }
+      .hero-actions .fine {
+        text-align: left;
+        width: 100%;
+        margin: 28px 0 0;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+      .cta-label-desktop { display: none; }
+      .cta-label-mobile { display: inline; }
+      .btn-lg {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+      }
+      .section { padding: 56px 0; }
       .section h2 {
-        font-size: clamp(1.55rem, 6.5vw, 2rem);
+        font-size: clamp(1.5rem, 3vw, 2rem);
         max-width: none;
       }
       .lede { font-size: 1rem; }
@@ -1515,7 +1560,10 @@
           <h1>See how real people got through <em>what you’re going through.</em></h1>
           <p class="hero-support">Real experiences. Coach perspectives. Stories picked for you.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary btn-lg" href="#signup">Get Stories Matched to Me →</a>
+            <a class="btn btn-primary btn-lg" href="#signup">
+              <span class="cta-label-desktop">Get Stories Matched to Me →</span>
+              <span class="cta-label-mobile">Get Free Stories →</span>
+            </a>
             <p class="fine">Free every week. Unsubscribe anytime.</p>
           </div>
           <div class="hero-copy-stack">
