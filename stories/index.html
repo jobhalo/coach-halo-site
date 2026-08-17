@@ -323,9 +323,227 @@
       margin: 0 0 1.1rem;
       letter-spacing: -0.01em;
     }
+    .hero-lead {
+      font-size: 1.08rem;
+      color: var(--muted-dark);
+      margin: 0 0 1rem;
+      max-width: 36rem;
+      line-height: 1.6;
+    }
+    .hero-lead-mobile { display: none; }
+    .hero-copy-stack,
+    .hero-situations,
+    .hero-privacy-slot { display: none; }
     /* Mobile-only conversion blocks (hidden on desktop) */
     .mobile-only { display: none; }
-    .hero-lead { display: none; }
+
+    .hero-story-stack {
+      display: none;
+      flex-direction: column;
+      gap: 0.85rem;
+      position: relative;
+      z-index: 1;
+    }
+    @media (min-width: 900px) {
+      .hero-story-stack { display: flex; }
+      .product-panel { display: none !important; }
+    }
+    .hero-story-card {
+      display: block;
+      width: 100%;
+      text-align: left;
+      text-decoration: none;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.05rem 1.15rem 1.1rem;
+      box-shadow: none;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .hero-story-card:hover {
+      border-color: #ccc;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
+    }
+    .hero-story-card .cats {
+      margin: 0 0 0.45rem;
+      font-size: 0.7rem;
+      font-weight: 650;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-story-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 750;
+      letter-spacing: -0.03em;
+      line-height: 1.28;
+      margin: 0 0 0.4rem;
+      color: var(--black);
+    }
+    .hero-story-card .deck {
+      margin: 0 0 0.7rem;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: var(--muted-dark);
+    }
+    .hero-story-card .read {
+      font-family: var(--font-display);
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    /* Story sample modal (stays on landing page) */
+    .preview-modal[hidden] { display: none !important; }
+    .preview-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
+    }
+    @media (min-width: 720px) {
+      .preview-modal {
+        align-items: center;
+        padding: 1.5rem;
+      }
+    }
+    .preview-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.45);
+      border: none;
+      cursor: pointer;
+    }
+    .preview-modal-panel {
+      position: relative;
+      z-index: 1;
+      width: min(560px, 100%);
+      max-height: min(88vh, 720px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: var(--white);
+      border-radius: 20px 20px 0 0;
+      padding: 0;
+      box-shadow: var(--shadow-soft);
+    }
+    @media (min-width: 720px) {
+      .preview-modal-panel {
+        border-radius: var(--radius);
+      }
+    }
+    #preview-modal-body {
+      overflow: auto;
+      padding: 1.35rem 1.25rem 0.5rem;
+      flex: 1 1 auto;
+    }
+    @media (min-width: 720px) {
+      #preview-modal-body {
+        padding: 1.6rem 1.6rem 0.65rem;
+      }
+    }
+    .preview-modal-cta-bar {
+      flex: 0 0 auto;
+      padding: 0.95rem 1.25rem 1.25rem;
+      border-top: 1px solid var(--border);
+      background: var(--white);
+    }
+    @media (min-width: 720px) {
+      .preview-modal-cta-bar {
+        padding: 1rem 1.6rem 1.35rem;
+      }
+    }
+    .preview-modal-close {
+      position: absolute;
+      top: 0.85rem;
+      right: 0.85rem;
+      border: none;
+      background: transparent;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 0.35rem;
+    }
+    .preview-modal-close:hover { color: var(--black); }
+    .preview-modal .cats {
+      margin: 0 0 0.55rem;
+      font-size: 0.72rem;
+      font-weight: 650;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-right: 2rem;
+    }
+    .preview-modal h3 {
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.25;
+      margin: 0 0 1rem;
+      padding-right: 1.5rem;
+    }
+    .preview-modal .preview-block-title {
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 1.1rem 0 0.45rem;
+      color: var(--black);
+    }
+    .preview-modal .situation-text {
+      margin: 0;
+      font-size: 0.98rem;
+      line-height: 1.55;
+      color: var(--muted-dark);
+    }
+    .preview-modal .situation-text + .situation-text { margin-top: 0.75rem; }
+    .preview-modal .helped-mini {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.55rem;
+    }
+    .preview-modal .helped-mini li {
+      font-size: 0.92rem;
+      color: var(--muted-dark);
+      line-height: 1.45;
+    }
+    .preview-modal .helped-mini strong {
+      display: block;
+      font-size: 0.92rem;
+      color: var(--black);
+      margin-bottom: 0.1rem;
+    }
+    .preview-modal blockquote {
+      margin: 0;
+      padding: 0;
+      border: none;
+      font-size: 0.98rem;
+      font-style: italic;
+      color: var(--muted-dark);
+      line-height: 1.55;
+    }
+    .preview-modal-cta {
+      margin-top: 1.35rem;
+      padding-top: 1.15rem;
+      border-top: 1px solid var(--border);
+    }
+    .preview-modal-cta .btn { width: 100%; }
+    @media (min-width: 520px) {
+      .preview-modal-cta .btn { width: auto; }
+    }
+    .preview-modal-cta .fine { margin: 0.65rem 0 0; }
     .privacy-note {
       font-size: 0.72rem;
       color: #9a9a9a;
@@ -1313,7 +1531,8 @@
         letter-spacing: -0.03em;
         max-width: none;
       }
-      .hero-copy .hero-lead {
+      .hero-copy .hero-lead-desktop { display: none; }
+      .hero-copy .hero-lead-mobile {
         display: block;
         text-align: left;
         margin: 0 0 12px;
@@ -1323,6 +1542,7 @@
         font-weight: 400;
         color: var(--muted-dark);
       }
+      .hero-story-stack { display: none !important; }
       /* Summary line after the product explanation */
       .hero-copy .hero-support {
         order: 0;
@@ -1371,11 +1591,7 @@
       }
       .mobile-only { display: block; }
       .mobile-proof {
-        padding: 1.75rem 0 0.25rem;
-      }
-      .mobile-proof + .mobile-proof {
-        padding-top: 1.35rem;
-        padding-bottom: 0.5rem;
+        padding: 1.75rem 0 2rem;
       }
       .mobile-proof .section-head {
         margin-bottom: 1.15rem;
@@ -1400,7 +1616,8 @@
         border-top: 1px solid var(--border);
       }
       .get-list li:last-child {
-        border-bottom: 1px solid var(--border);
+        border-bottom: none;
+        padding-bottom: 0.35rem;
       }
       .get-num {
         font-family: var(--font-display);
@@ -1425,18 +1642,35 @@
         line-height: 1.5;
         color: var(--muted-dark);
       }
+      .mobile-example-inline {
+        margin-top: 1.35rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--border);
+      }
+      .mobile-example-label {
+        margin: 0 0 0.75rem;
+        font-size: 0.72rem;
+        font-weight: 650;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
       .mobile-story-card {
         display: block;
+        width: 100%;
+        text-align: left;
         text-decoration: none;
         color: inherit;
-        background: var(--white);
-        border: 1px solid rgba(10, 10, 10, 0.08);
-        border-radius: var(--radius);
-        padding: 1.15rem 1.15rem 1.2rem;
-        box-shadow: var(--shadow-card);
+        font: inherit;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+        box-shadow: none;
       }
       .mobile-story-cats {
-        margin: 0 0 0.55rem;
+        margin: 0 0 0.45rem;
         font-size: 0.72rem;
         font-weight: 650;
         letter-spacing: 0.04em;
@@ -1449,10 +1683,10 @@
         font-weight: 750;
         letter-spacing: -0.03em;
         line-height: 1.3;
-        margin: 0 0 0.45rem;
+        margin: 0 0 0.4rem;
       }
       .mobile-story-card p:not(.mobile-story-cats) {
-        margin: 0 0 0.85rem;
+        margin: 0 0 0.7rem;
         font-size: 0.92rem;
         line-height: 1.5;
         color: var(--muted-dark);
@@ -1665,7 +1899,8 @@
         <div class="hero-copy">
           <p class="eyebrow">Real stories + coach guidance</p>
           <h1>See how real people got through <em>what you’re going through.</em></h1>
-          <p class="hero-lead">Every week, we find real stories from people who faced challenges like yours, what they tried, what seemed to help, and what happened next.</p>
+          <p class="hero-lead hero-lead-desktop">Every week, we find real stories from people who faced challenges like yours, what they tried, what seemed to help, and what happened next. A Coach-Halo coach adds their perspective.</p>
+          <p class="hero-lead hero-lead-mobile">Every week, we find real stories from people who faced challenges like yours, what they tried, what seemed to help, and what happened next.</p>
           <p class="hero-support">Real experiences. Coach perspectives. Stories picked for you.</p>
           <div class="hero-actions">
             <a class="btn btn-primary btn-lg" href="#signup">
@@ -1674,13 +1909,8 @@
             </a>
             <p class="fine">Free every week. Unsubscribe anytime.</p>
           </div>
-          <div class="hero-copy-stack">
-            <p class="hero-sub">Every week, we find real stories from people who faced challenges like yours and made meaningful progress.</p>
-            <p class="hero-sub">See what they struggled with, what they tried, what helped, and what happened next.</p>
-            <p class="hero-sub">Then, a Coach-Halo coach shares their perspective on the story and what stands out to them.</p>
-          </div>
-          <div class="hero-situations">
-            <p class="hero-situations-label">Stories for situations like</p>
+          <!-- Kept for signup JS situation sync; hidden in CSS -->
+          <div class="hero-situations" hidden>
             <div class="pills" id="hero-situation-pills" role="group" aria-label="Choose a situation">
               <button type="button" class="pill" data-situation="Divorce / Separation">Divorce &amp; Separation</button>
               <button type="button" class="pill" data-situation="Breakup">Breakups</button>
@@ -1694,88 +1924,28 @@
               <button type="button" class="pill" data-situation="Major Life Decisions">Major Life Decisions</button>
             </div>
           </div>
-          <p class="privacy-note">
-            <strong>Real experiences. Identities protected.</strong>
-            Stories are based on publicly shared experiences. Identifying details may be changed or removed to protect privacy.
-          </p>
         </div>
 
-        <div class="product-panel">
-          <aside class="story-preview" aria-label="Example Coach-Halo story">
-            <div class="mail-chrome">
-              <div class="mail-chrome-top">
-                <span class="mail-app-label">Inbox</span>
-                <span class="mail-badge">This week’s story</span>
-              </div>
-              <div class="mail-meta">
-                <div><strong>From:</strong> Coach-Halo Stories &lt;stories@coach-halo.com&gt;</div>
-                <div><strong>To:</strong> you</div>
-                <div class="mail-subject">This week’s story: rebuilding after divorce</div>
-              </div>
-            </div>
-            <div class="panel-body">
-              <div class="cat-row">
-                <span class="cat">Divorce</span>
-                <span class="cat">Starting Over</span>
-              </div>
-              <h3>He thought everything would feel better once the divorce was final.</h3>
-              <div class="story-body">
-                <p>For months, he treated the court date like a finish line. Once the paperwork was done, he figured the heaviness would lift, that mornings would feel clearer, weekends less empty, and decisions less exhausting.</p>
-                <p>That didn’t happen. The legal ending closed one chapter, but his routine, friendships, and sense of direction still felt gone. Evenings stretched longer than he expected. He kept reaching for a version of life that no longer existed.</p>
-                <p>What changed wasn’t a dramatic breakthrough. He started with things he could actually control: texting two old friends each week, walking most mornings, and putting a few simple plans on the calendar so Sundays didn’t feel formless.</p>
-                <p>None of it fixed everything. But after a few weeks, his life felt a little more like his again, less about waiting to “get over it,” and more about rebuilding the parts of ordinary life that had disappeared with the relationship.</p>
-              </div>
-              <p class="story-source">Based on a real story shared online. Some details may be changed to protect privacy.</p>
 
-              <div class="preview-block">
-                <h4>What seemed to help</h4>
-                <ul class="helped-list">
-                  <li>
-                    <strong>Reconnecting</strong>
-                    <span>Reaching out to old friends gave his weeks more connection.</span>
-                  </li>
-                  <li>
-                    <strong>Routine</strong>
-                    <span>Exercise and predictable plans created some structure again.</span>
-                  </li>
-                  <li>
-                    <strong>Time</strong>
-                    <span>He stopped expecting himself to immediately “move on.”</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="preview-block coach-perspective">
-                <p class="label">Coach’s perspective</p>
-                <div class="coach-note-head">
-                  <div class="avatar" aria-hidden="true">C</div>
-                  <div>
-                    <strong>Your Coach-Halo coach</strong>
-                    <span>Life &amp; Relationship Coach</span>
-                  </div>
-                </div>
-
-                <p class="coach-subhead">What stands out to me</p>
-                <blockquote>“What stands out to me is that he stopped making ‘getting over it’ the goal and started rebuilding parts of his life that had disappeared with the relationship.”</blockquote>
-
-                <p class="coach-subhead">How I’d think about it</p>
-                <p class="coach-think">I’d be curious about the small areas of life he could influence again — connection, rhythm, and a sense of forward motion — without pressuring the bigger emotional timeline to resolve on a schedule.</p>
-                <p class="coach-think">Often the useful question isn’t “Am I over this yet?” but “What part of my life am I ready to rebuild, even a little?”</p>
-              </div>
-
-              <div class="preview-block reflect-note">
-                <h4>Something to think about</h4>
-                <p>If one part of your life felt more like yours again this week, what would that be?</p>
-              </div>
-
-              <div class="preview-cta">
-                <p class="cta-kicker">Going through something similar?</p>
-                <p class="cta-support">You can talk with the coach whose perspective you just read — about your situation, not someone else’s story.</p>
-                <a class="btn btn-ghost" href="#signup">Talk with this coach</a>
-                <p class="fine">Free · No obligation</p>
-              </div>
-            </div>
-          </aside>
+        <div class="hero-story-stack" aria-label="Example stories you could receive">
+          <button type="button" class="hero-story-card" data-preview-story="divorce-final">
+            <p class="cats">Divorce · Starting Over</p>
+            <h3>He thought everything would feel better once the divorce was final.</h3>
+            <p class="deck">What changed when moving on didn’t happen automatically.</p>
+            <span class="read">Read preview →</span>
+          </button>
+          <button type="button" class="hero-story-card" data-preview-story="career-change">
+            <p class="cats">Career Change</p>
+            <h3>At 42, she realized she didn’t want the career she’d spent 18 years building.</h3>
+            <p class="deck">What she did before making the leap.</p>
+            <span class="read">Read preview →</span>
+          </button>
+          <button type="button" class="hero-story-card" data-preview-story="loneliness">
+            <p class="cats">Loneliness</p>
+            <h3>He moved to a new city at 36 and spent most weekends alone.</h3>
+            <p class="deck">The small changes that helped him rebuild a social life.</p>
+            <span class="read">Read preview →</span>
+          </button>
         </div>
       </div>
     </div>
@@ -1788,38 +1958,36 @@
         </div>
         <ol class="get-list">
           <li>
-            <span class="get-num" aria-hidden="true">1</span>
+            <span class="get-num" aria-hidden="true">01</span>
             <div>
               <strong>A real story</strong>
               <p>Someone who went through something similar, what happened, what they tried, and what changed.</p>
             </div>
           </li>
           <li>
-            <span class="get-num" aria-hidden="true">2</span>
+            <span class="get-num" aria-hidden="true">02</span>
             <div>
               <strong>What seemed to help</strong>
               <p>The habits, decisions, or changes they say helped them move forward.</p>
             </div>
           </li>
           <li>
-            <span class="get-num" aria-hidden="true">3</span>
+            <span class="get-num" aria-hidden="true">03</span>
             <div>
               <strong>A coach’s perspective</strong>
-              <p>A short perspective on what stands out in the story and what may be worth considering.</p>
+              <p>A short perspective on what stands out and what may be worth considering.</p>
             </div>
           </li>
         </ol>
-      </div>
-    </section>
-
-    <section class="mobile-proof mobile-only" id="mobile-example" aria-label="Example story">
-      <div class="wrap">
-        <a class="mobile-story-card" href="#story/divorce" data-story="divorce" data-situation="Divorce / Separation">
-          <p class="mobile-story-cats">Divorce · Starting Over</p>
-          <h3>He thought everything would feel better once the divorce was final.</h3>
-          <p>What happened when the legal ending didn’t bring the fresh start he expected.</p>
-          <span class="read">Read example story →</span>
-        </a>
+        <div class="mobile-example-inline" id="mobile-example">
+          <p class="mobile-example-label">For example</p>
+          <button type="button" class="mobile-story-card" data-preview-story="divorce-final">
+            <p class="mobile-story-cats">Divorce · Starting Over</p>
+            <h3>He thought everything would feel better once the divorce was final.</h3>
+            <p>What happened when the legal ending didn’t bring the fresh start he expected.</p>
+            <span class="read">Read example story →</span>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -1855,7 +2023,7 @@
         <div class="section-head">
           <p class="eyebrow">Example stories</p>
           <h2 id="examples-heading">Stories that might <em>feel familiar</em></h2>
-          <p class="lede">See what others went through, what they tried, what seemed to help, and what happened next.</p>
+          <p class="lede">Browse more situations people ask about. Open any story for the full read.</p>
         </div>
         <div class="card-grid">
           <a class="ex-card" href="#story/divorce" data-story="divorce" data-situation="Divorce / Separation">
@@ -1895,7 +2063,7 @@
             <span class="read">Read Story →</span>
           </a>
         </div>
-        <p class="fine" style="margin-top:1.25rem">Occasionally we also publish deeper features — like collections of people who rebuilt after divorce — but the weekly format stays one story, one coach, one thing to try.</p>
+        <p class="fine" style="margin-top:1.25rem">Occasionally we also publish deeper features, like collections of people who rebuilt after divorce, but the weekly format stays one story, one coach, one thing to try.</p>
       </div>
     </section>
 
@@ -1905,7 +2073,7 @@
           <p class="eyebrow">From story to coach take</p>
           <h2 id="coach-heading" style="max-width:18ch">The story shows you what happened. <em>The coach adds how they’d think about it.</em></h2>
           <p class="lede" style="margin-bottom:0.85rem">Real experiences can show you what other people tried.</p>
-          <p class="lede">Coach-Halo coaches share a short perspective grounded in how they actually coach — not a claim that they worked with the person in the story.</p>
+          <p class="lede">Coach-Halo coaches share a short perspective grounded in how they actually coach, not a claim that they worked with the person in the story.</p>
           <p class="lede" style="margin-bottom:0">If you want more personal support, you can talk it through with a coach anytime.</p>
         </div>
         <aside class="coach-feature-card">
@@ -2121,7 +2289,7 @@
       <div class="wrap">
         <p class="eyebrow">Ready when you are</p>
         <h2 id="final-heading">You don’t have to figure everything out <em>from scratch.</em></h2>
-        <p class="lede">Every week, learn from one real person who faced something similar, see what helped them move forward, and get a short coach perspective — with the option to talk it through if you want.</p>
+        <p class="lede">Every week, learn from one real person who faced something similar, see what helped them move forward, and get a short coach perspective, with the option to talk it through if you want.</p>
         <a class="btn btn-primary btn-lg" href="#signup">Get Stories Matched to Me →</a>
       </div>
     </section>
@@ -2146,6 +2314,14 @@
   </footer>
 
   <iframe name="zapier-frame" id="zapier-frame" title="Hidden" aria-hidden="true" style="position:absolute;width:0;height:0;border:0;visibility:hidden"></iframe>
+
+  <div class="preview-modal" id="story-preview-modal" hidden>
+    <button type="button" class="preview-modal-backdrop" data-preview-close aria-label="Close preview"></button>
+    <div class="preview-modal-panel" role="dialog" aria-modal="true" aria-labelledby="preview-modal-title">
+      <button type="button" class="preview-modal-close" data-preview-close aria-label="Close">×</button>
+      <div id="preview-modal-body"></div>
+    </div>
+  </div>
 
   <script>
     (function () {
@@ -2687,6 +2863,54 @@
         }
       };
 
+      const PREVIEW_SAMPLES = {
+        "divorce-final": {
+          cats: "Divorce · Starting Over",
+          situation: "Divorce / Separation",
+          title: "He thought everything would feel better once the divorce was final.",
+          situationParas: [
+            "For months, he treated the court date like a finish line. Once the paperwork was done, he figured the heaviness would lift, that mornings would feel clearer, weekends less empty, and decisions less exhausting.",
+            "That didn’t happen. The legal ending closed one chapter, but his routine, friendships, and sense of direction still felt gone. What changed wasn’t a dramatic breakthrough. He started with things he could actually control: texting two old friends each week, walking most mornings, and putting a few simple plans on the calendar."
+          ],
+          helped: [
+            { title: "Reconnecting", text: "Reaching out to old friends gave his weeks more connection." },
+            { title: "Routine", text: "Exercise and predictable plans created some structure again." },
+            { title: "Time", text: "He stopped expecting himself to immediately move on." }
+          ],
+          standsOut: "What stands out to me is that he stopped making “getting over it” the goal and started rebuilding parts of his life that had disappeared with the relationship."
+        },
+        "career-change": {
+          cats: "Career Change",
+          situation: "Career Change",
+          title: "At 42, she realized she didn’t want the career she’d spent 18 years building.",
+          situationParas: [
+            "She was good at the work. That was part of the problem. The dissatisfaction showed up as dread on Sunday nights, and a quiet boredom in meetings she used to find energizing.",
+            "Quitting immediately felt irresponsible. So she treated the question like research: conversations in adjacent fields, one evening class, and a small freelance project that answered whether she could stand the work for real hours, not just in fantasy."
+          ],
+          helped: [
+            { title: "Treating it like research", text: "Conversations, a class, and a side project answered questions quitting alone couldn’t." },
+            { title: "Not forcing an overnight leap", text: "She protected financial reality while testing whether the new direction was real." },
+            { title: "Accepting a messy middle", text: "The move still involved tradeoffs: less pay, more learning, fewer tidy narratives." }
+          ],
+          standsOut: "What stands out to me is the tension between sunk cost and aliveness, and how she gave herself evidence before asking her life to absorb a huge bet."
+        },
+        loneliness: {
+          cats: "Loneliness",
+          situation: "Loneliness / Friendships",
+          title: "He moved to a new city at 36 and spent most weekends alone.",
+          situationParas: [
+            "The move made sense on paper. What he underestimated was how long it would take for a place to feel inhabited by people who knew him. Weekends stretched. He’d walk neighborhoods that looked lively and still feel invisible.",
+            "What slowly changed wasn’t a single breakthrough friendship. It was stacking small repetitions: the same coffee shop, the same Wednesday class, saying yes twice to the same acquaintance’s invite instead of waiting to feel instant chemistry."
+          ],
+          helped: [
+            { title: "Repeating the same places", text: "Familiar rooms made it easier to become recognizable to other people." },
+            { title: "Saying yes more than once", text: "A second invite mattered more than chemistry on the first meeting." },
+            { title: "Small commitments", text: "A weekly class beat waiting for a social life to appear all at once." }
+          ],
+          standsOut: "What stands out to me is how loneliness after a move often looks like a failure of personality, when it’s usually a shortage of repeated contact."
+        }
+      };
+
       function escapeHtml(str) {
         return String(str || "")
           .replace(/&/g, "&amp;")
@@ -2786,6 +3010,97 @@
 
       window.addEventListener("hashchange", routeFromHash);
       routeFromHash();
+
+      const previewModal = document.getElementById("story-preview-modal");
+      const previewBody = document.getElementById("preview-modal-body");
+      let previewLastFocus = null;
+
+      function closePreviewModal() {
+        if (!previewModal || previewModal.hidden) return;
+        previewModal.hidden = true;
+        document.body.style.overflow = "";
+        if (previewLastFocus && typeof previewLastFocus.focus === "function") {
+          previewLastFocus.focus();
+        }
+      }
+
+      function openPreviewModal(id) {
+        const sample = PREVIEW_SAMPLES[id];
+        if (!sample || !previewModal || !previewBody) return;
+        previewLastFocus = document.activeElement;
+        const helpedHtml = sample.helped
+          .map(
+            (h) =>
+              "<li><strong>" +
+              escapeHtml(h.title) +
+              "</strong><span>" +
+              escapeHtml(h.text) +
+              "</span></li>"
+          )
+          .join("");
+        const paras = sample.situationParas
+          .map((p) => '<p class="situation-text">' + escapeHtml(p) + "</p>")
+          .join("");
+        previewBody.innerHTML =
+          '<p class="cats">' +
+          escapeHtml(sample.cats) +
+          "</p>" +
+          '<h3 id="preview-modal-title">' +
+          escapeHtml(sample.title) +
+          "</h3>" +
+          '<p class="preview-block-title">The situation</p>' +
+          paras +
+          '<p class="preview-block-title">What seemed to help</p>' +
+          '<ul class="helped-mini">' +
+          helpedHtml +
+          "</ul>" +
+          '<p class="preview-block-title">A Coach-Halo coach’s perspective</p>' +
+          "<blockquote>“" +
+          escapeHtml(sample.standsOut) +
+          "”</blockquote>";
+        let ctaBar = previewModal.querySelector(".preview-modal-cta-bar");
+        if (!ctaBar) {
+          ctaBar = document.createElement("div");
+          ctaBar.className = "preview-modal-cta-bar preview-modal-cta";
+          previewModal.querySelector(".preview-modal-panel").appendChild(ctaBar);
+        }
+        ctaBar.innerHTML =
+          '<a class="btn btn-primary" href="#signup" data-preview-signup="' +
+          escapeHtml(sample.situation) +
+          '">Get Stories Matched to Me →</a>' +
+          '<p class="fine">Free every week. Unsubscribe anytime.</p>';
+        previewModal.hidden = false;
+        document.body.style.overflow = "hidden";
+        const closeBtn = previewModal.querySelector(".preview-modal-close");
+        if (closeBtn) closeBtn.focus();
+      }
+
+      document.addEventListener("click", (e) => {
+        const opener = e.target.closest("[data-preview-story]");
+        if (opener) {
+          e.preventDefault();
+          openPreviewModal(opener.getAttribute("data-preview-story"));
+          return;
+        }
+        if (e.target.closest("[data-preview-close]")) {
+          e.preventDefault();
+          closePreviewModal();
+          return;
+        }
+        const signup = e.target.closest("[data-preview-signup]");
+        if (signup) {
+          e.preventDefault();
+          const situation = signup.getAttribute("data-preview-signup");
+          closePreviewModal();
+          if (situation) selectSituation(situation);
+          const el = document.getElementById("signup");
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closePreviewModal();
+      });
 
       document.getElementById("story-view").addEventListener("click", (e) => {
         const signup = e.target.closest("[data-story-signup]");
@@ -2932,5 +3247,6 @@
       }
     })();
   </script>
+
 </body>
 </html>
