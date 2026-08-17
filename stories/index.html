@@ -1,0 +1,2654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Get free weekly stories from real people who faced challenges like yours. See what they tried, what helped, what changed, and get practical guidance from Coach-Halo coaches." />
+  <title>Coach-Halo Stories | Real experiences and coach perspectives</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --off: #f6f6f6;
+      --off-warm: #faf9f7;
+      --muted: #737373;
+      --muted-dark: #525252;
+      --border: #ebebeb;
+      --accent: #0a0a0a;
+      --ok-bg: #ecfdf5;
+      --ok-border: #a7f3d0;
+      --ok-text: #065f46;
+      --error: #991b1b;
+      --max: 1120px;
+      --radius: 20px;
+      --radius-sm: 14px;
+      --radius-pill: 9999px;
+      --transition: 0.22s ease;
+      --font-display: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+      --font-body: Inter, system-ui, sans-serif;
+      --shadow-card: 0 1px 2px rgba(10, 10, 10, 0.03), 0 18px 48px rgba(10, 10, 10, 0.07);
+      --shadow-soft: 0 24px 64px rgba(10, 10, 10, 0.08);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    button, input, textarea, select { font: inherit; }
+    :focus-visible {
+      outline: 2px solid var(--black);
+      outline-offset: 2px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
+    }
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 16px clamp(1rem, 4vw, 24px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--black);
+    }
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: var(--black);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.65rem;
+      letter-spacing: -0.04em;
+      flex-shrink: 0;
+    }
+    .brand-lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      min-width: 0;
+    }
+    .brand-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.02rem;
+      letter-spacing: -0.03em;
+      color: var(--black);
+    }
+    .brand-sep {
+      width: 1px;
+      height: 0.9em;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .brand-section {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    @media (max-width: 480px) {
+      .brand-sep,
+      .brand-section { display: none; }
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem 1.1rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted-dark);
+      text-decoration: none;
+      padding: 0.45rem 0.1rem;
+    }
+    .nav-link:hover { color: var(--black); }
+    .nav-link.is-active {
+      color: var(--black);
+      font-weight: 600;
+      box-shadow: inset 0 -2px 0 var(--black);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.92rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      padding: 0.78rem 1.4rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.15s ease, background var(--transition), border-color var(--transition), opacity var(--transition), box-shadow var(--transition);
+      line-height: 1.2;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-primary {
+      background: var(--black);
+      color: var(--white);
+      box-shadow: 0 8px 24px rgba(10, 10, 10, 0.14);
+    }
+    .btn-primary:hover { background: #222; color: var(--white); }
+    .btn-ghost {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--black);
+    }
+    .btn-ghost:hover { background: var(--off); }
+    .btn-lg { padding: 1rem 1.65rem; font-size: 1rem; }
+    .btn-block { width: 100%; }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 clamp(1.15rem, 4vw, 1.75rem);
+    }
+    .section {
+      padding: clamp(4.5rem, 10vw, 7rem) 0;
+    }
+    .section-alt { background: var(--off-warm); }
+    .section-head {
+      max-width: 40rem;
+      margin: 0 0 clamp(2rem, 4vw, 2.75rem);
+    }
+    .section-head.center {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    .section-head.center .lede {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .eyebrow {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: var(--muted);
+      margin: 0 0 0.85rem;
+    }
+    .section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.85rem, 4.2vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.12;
+      margin: 0 0 1rem;
+      max-width: 16ch;
+    }
+    .section h2 em,
+    .hero h1 em,
+    .final h2 em {
+      font-style: italic;
+      font-weight: 700;
+    }
+    .lede {
+      font-size: 1.08rem;
+      color: var(--muted-dark);
+      margin: 0 0 1.75rem;
+      max-width: 38rem;
+      line-height: 1.65;
+    }
+    .muted { color: var(--muted); }
+    .fine {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin: 0.75rem 0 0;
+    }
+    .privacy-hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.45;
+      margin: 0.85rem 0 0;
+    }
+    .privacy-hint a {
+      color: var(--muted-dark);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .privacy-hint a:hover { color: var(--black); }
+    .legal-consent {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.45;
+      margin: 0.85rem 0 0;
+    }
+    .legal-consent a {
+      color: var(--muted-dark);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* Hero */
+    .hero-wrap {
+      position: relative;
+      overflow: hidden;
+      border-bottom: none;
+      background:
+        radial-gradient(ellipse 70% 55% at 12% 0%, rgba(253, 224, 231, 0.45) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 50% at 92% 8%, rgba(224, 231, 255, 0.38) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(254, 249, 231, 0.5) 0%, transparent 55%),
+        linear-gradient(180deg, #fff 0%, #fbfbfa 100%);
+    }
+    .hero {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2.25rem, 6vw, 4rem);
+      align-items: center;
+      padding: clamp(3.25rem, 8vw, 5.5rem) 0 clamp(3.75rem, 9vw, 6rem);
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.35rem, 5.6vw, 3.65rem);
+      font-weight: 800;
+      letter-spacing: -0.045em;
+      line-height: 1.05;
+      margin: 0 0 1.25rem;
+      max-width: 12ch;
+    }
+    .hero-sub {
+      font-size: 1.08rem;
+      color: var(--muted-dark);
+      margin: 0 0 0.65rem;
+      max-width: 34rem;
+      line-height: 1.6;
+    }
+    .hero-sub + .hero-sub { margin-bottom: 0.65rem; }
+    .hero-copy-stack .hero-sub:last-of-type { margin-bottom: 1rem; }
+    .hero-support {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--black);
+      margin: 0 0 1.35rem;
+      letter-spacing: -0.01em;
+    }
+    .privacy-note {
+      font-size: 0.72rem;
+      color: #9a9a9a;
+      max-width: 32rem;
+      margin: 1.5rem 0 0;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      line-height: 1.5;
+    }
+    .privacy-note strong {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-transform: none;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+    }
+    .hero-situations {
+      margin: 0 0 1.5rem;
+    }
+    .hero-situations-label {
+      font-size: 0.82rem;
+      font-weight: 550;
+      color: var(--muted);
+      margin: 0 0 0.6rem;
+    }
+    .hero-situations .pills { max-width: 36rem; }
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.45rem;
+    }
+    .hero-actions .fine { margin: 0; }
+
+    .product-panel {
+      position: relative;
+    }
+    .product-panel::before {
+      content: "";
+      position: absolute;
+      inset: 12% -8% -6% 8%;
+      background: radial-gradient(circle at 70% 30%, rgba(253, 224, 231, 0.55), transparent 55%),
+                  radial-gradient(circle at 20% 80%, rgba(224, 231, 255, 0.45), transparent 50%);
+      filter: blur(2px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .story-preview {
+      position: relative;
+      z-index: 1;
+      background: var(--white);
+      border: 1px solid rgba(10, 10, 10, 0.08);
+      border-radius: 22px;
+      box-shadow: var(--shadow-soft);
+      padding: 0;
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .story-preview:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 28px 72px rgba(10, 10, 10, 0.1);
+    }
+    .mail-chrome {
+      padding: 0.85rem 1.2rem 0.95rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #fafafa 0%, #fff 100%);
+    }
+    .mail-chrome-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.7rem;
+    }
+    .mail-app-label {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 650;
+      color: var(--muted);
+      letter-spacing: -0.01em;
+    }
+    .mail-badge {
+      font-size: 0.68rem;
+      font-weight: 650;
+      color: var(--muted-dark);
+      background: var(--off);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 0.2rem 0.55rem;
+    }
+    .mail-meta {
+      display: grid;
+      gap: 0.28rem;
+      font-size: 0.78rem;
+      color: var(--muted-dark);
+      line-height: 1.35;
+    }
+    .mail-meta strong {
+      font-weight: 650;
+      color: var(--black);
+    }
+    .mail-meta .mail-subject {
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      margin-top: 0.2rem;
+    }
+    .panel-body {
+      padding: 1.35rem 1.35rem 1.45rem;
+      max-height: min(72vh, 760px);
+      overflow-y: auto;
+    }
+    .cat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.7rem;
+    }
+    .cat {
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted-dark);
+      background: var(--off);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 0.28rem 0.65rem;
+    }
+    .story-preview h3 {
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem, 2.2vw, 1.4rem);
+      font-weight: 780;
+      letter-spacing: -0.035em;
+      line-height: 1.22;
+      margin: 0 0 1rem;
+    }
+    .story-body {
+      margin: 0 0 0.85rem;
+    }
+    .story-body p {
+      margin: 0 0 0.85rem;
+      font-size: 0.94rem;
+      color: var(--muted-dark);
+      line-height: 1.62;
+    }
+    .story-body p:last-child { margin-bottom: 0; }
+    .story-source {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.45;
+      margin: 0 0 1.35rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .preview-block {
+      padding: 1.15rem 0 0;
+      margin: 0;
+      border-top: none;
+    }
+    .preview-block + .preview-block {
+      margin-top: 0.15rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border);
+    }
+    .preview-block h4 {
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      font-weight: 750;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.85rem;
+      color: var(--black);
+    }
+    .helped-list {
+      display: grid;
+      gap: 0.85rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .helped-list li {
+      margin: 0;
+    }
+    .helped-list strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.2rem;
+      color: var(--black);
+    }
+    .helped-list span {
+      display: block;
+      font-size: 0.86rem;
+      color: var(--muted-dark);
+      line-height: 1.5;
+    }
+    .coach-perspective > .label {
+      font-size: 0.72rem;
+      font-weight: 650;
+      color: var(--muted);
+      margin: 0 0 0.65rem;
+    }
+    .coach-note-head {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.95rem;
+    }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--black);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+    .story-preview .avatar {
+      width: 32px;
+      height: 32px;
+      background: #e8e8e8;
+      color: var(--muted-dark);
+      font-size: 0.7rem;
+    }
+    .coach-note-head strong {
+      display: block;
+      font-size: 0.86rem;
+      font-weight: 650;
+    }
+    .coach-note-head span {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+    .coach-subhead {
+      font-size: 0.78rem;
+      font-weight: 650;
+      color: var(--muted);
+      margin: 0 0 0.4rem;
+    }
+    .coach-perspective blockquote {
+      margin: 0 0 1rem;
+      padding: 0;
+      border: none;
+      font-size: 0.9rem;
+      color: var(--muted-dark);
+      font-style: italic;
+      line-height: 1.55;
+    }
+    .coach-think {
+      margin: 0 0 0.25rem;
+      font-size: 0.88rem;
+      color: var(--muted-dark);
+      line-height: 1.55;
+    }
+    .reflect-note {
+      margin: 0;
+    }
+    .reflect-note h4 {
+      font-size: 0.82rem;
+      font-weight: 650;
+      color: var(--muted);
+      margin: 0 0 0.4rem;
+    }
+    .reflect-note p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted-dark);
+      font-style: italic;
+      line-height: 1.5;
+    }
+    .preview-cta {
+      margin-top: 0.15rem;
+      padding-top: 1.15rem;
+      border-top: 1px solid var(--border);
+    }
+    .preview-cta .cta-kicker {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 750;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      margin: 0 0 0.35rem;
+    }
+    .preview-cta .cta-support {
+      font-size: 0.84rem;
+      color: var(--muted-dark);
+      margin: 0 0 0.75rem;
+      line-height: 1.45;
+    }
+    .preview-cta .btn {
+      font-size: 0.82rem;
+      padding: 0.55rem 1rem;
+    }
+    .preview-cta .fine {
+      margin: 0.55rem 0 0;
+    }
+
+    /* Legacy helpers still used outside hero card */
+    .helped {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1rem;
+      display: grid;
+      gap: 0.3rem;
+    }
+    .helped li {
+      font-size: 0.9rem;
+      padding-left: 1rem;
+      position: relative;
+    }
+    .helped li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--black);
+    }
+    .coach-note {
+      background: var(--off-warm);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.95rem 1rem;
+      margin-top: 0.25rem;
+    }
+    .coach-note blockquote {
+      margin: 0 0 0.65rem;
+      font-size: 0.9rem;
+      color: var(--muted-dark);
+      font-style: italic;
+    }
+    .reflect {
+      font-size: 0.85rem;
+      margin: 0 0 0.85rem;
+      color: var(--black);
+    }
+    .reflect strong { font-weight: 650; }
+    .coach-note-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.45rem;
+      margin-top: 0.65rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+    .coach-note-cta p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--muted-dark);
+      font-style: normal;
+    }
+    .coach-note-cta .btn {
+      font-size: 0.8rem;
+      padding: 0.55rem 0.95rem;
+    }
+
+    /* Pills */
+    .pill-group { margin-bottom: 1.5rem; }
+    .pill-group h3 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .pill {
+      appearance: none;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 0.5rem 0.9rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted-dark);
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition), color var(--transition);
+    }
+    .pill:hover { border-color: #ccc; color: var(--black); }
+    .pill[aria-pressed="true"] {
+      background: var(--black);
+      border-color: var(--black);
+      color: var(--white);
+    }
+
+    /* How it works */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(1.25rem, 3vw, 2rem);
+      margin-top: 0.25rem;
+      counter-reset: step;
+    }
+    .step-card {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      position: relative;
+    }
+    .step-card + .step-card {
+      border-left: 1px solid var(--border);
+      padding-left: clamp(1.25rem, 3vw, 2rem);
+    }
+    .step-num {
+      font-family: var(--font-display);
+      font-weight: 650;
+      font-size: 0.8rem;
+      letter-spacing: 0.01em;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .step-time {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted-dark);
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 0.2rem 0.55rem;
+    }
+    .step-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 750;
+      letter-spacing: -0.03em;
+      margin: 0 0 0.65rem;
+      line-height: 1.25;
+    }
+    .step-card p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--muted-dark);
+      line-height: 1.55;
+    }
+
+    /* Email preview */
+    .inbox {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      max-width: 720px;
+    }
+    .inbox-bar {
+      background: var(--off);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .inbox-body { padding: 1.35rem 1.35rem 1.5rem; }
+    .inbox-body h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin: 0 0 0.25rem;
+    }
+    .inbox-meta {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin: 0 0 1.25rem;
+    }
+    .mail-story {
+      border-top: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+    .mail-story:last-of-type { border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
+    .mail-story h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin: 0.35rem 0 0.4rem;
+      letter-spacing: -0.02em;
+    }
+    .mail-story p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--muted-dark);
+    }
+    .mail-bits {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 0.75rem;
+      margin-top: 0.55rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .week-q {
+      background: var(--off-warm);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .week-q p { margin: 0.35rem 0 0; font-size: 0.95rem; font-style: italic; }
+    .from-coach {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 1rem;
+      font-size: 0.88rem;
+      color: var(--muted-dark);
+    }
+
+    /* Story cards grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.15rem;
+    }
+    .ex-card {
+      background: var(--white);
+      border: 1px solid rgba(10, 10, 10, 0.08);
+      border-radius: var(--radius);
+      padding: 1.45rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      text-align: left;
+      cursor: pointer;
+      width: 100%;
+      font: inherit;
+      color: inherit;
+      text-decoration: none;
+    }
+    .ex-card:hover {
+      transform: translateY(-4px);
+      border-color: transparent;
+      box-shadow: var(--shadow-card);
+    }
+    .ex-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.12rem;
+      font-weight: 750;
+      letter-spacing: -0.03em;
+      margin: 0;
+      line-height: 1.28;
+    }
+    .ex-card p {
+      margin: 0;
+      flex: 1;
+      font-size: 0.92rem;
+      color: var(--muted-dark);
+    }
+    .ex-card .read {
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-top: 0.45rem;
+    }
+
+    /* Coach diff */
+    .coach-diff {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: clamp(1.75rem, 4vw, 2.75rem);
+      align-items: start;
+    }
+    .coach-feature-card {
+      background: var(--white);
+      border: 1px solid rgba(10, 10, 10, 0.08);
+      border-radius: 22px;
+      padding: 1.55rem;
+      box-shadow: var(--shadow-soft);
+    }
+    .coach-feature-card .topics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0.85rem 0 1rem;
+    }
+    .coach-feature-card blockquote {
+      margin: 0 0 1rem;
+      font-size: 0.98rem;
+      color: var(--muted-dark);
+      font-style: italic;
+      line-height: 1.55;
+    }
+
+    /* Signup */
+    #signup.section { padding-bottom: clamp(4.5rem, 10vw, 7rem); }
+    .signup-shell {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--white);
+      border: 1px solid rgba(10, 10, 10, 0.08);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: clamp(1.6rem, 3.5vw, 2.15rem);
+    }
+    .signup-shell > .eyebrow { text-align: center; }
+    .signup-shell > h2 {
+      text-align: center;
+      max-width: none;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .signup-shell > .lede {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .progress {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.35rem;
+      flex-wrap: wrap;
+    }
+    .progress-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted-dark);
+    }
+    .dots {
+      display: flex;
+      gap: 0.4rem;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+    .dot.is-on { background: var(--black); }
+    .dot.is-done { background: #a3a3a3; }
+
+    .wizard-step { display: none; }
+    .wizard-step.is-active { display: block; animation: fadeIn 0.28s ease; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+    .wizard-step h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 750;
+      letter-spacing: -0.025em;
+      margin: 0 0 0.35rem;
+    }
+    .wizard-step .hint {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin: 0 0 1.1rem;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.55rem;
+      margin-bottom: 1rem;
+    }
+    .choice {
+      appearance: none;
+      text-align: left;
+      background: var(--off-warm);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 0.95rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+    }
+    .choice:hover { border-color: #ccc; }
+    .choice[aria-pressed="true"] {
+      background: var(--white);
+      border-color: var(--black);
+      box-shadow: inset 0 0 0 1px var(--black);
+    }
+
+    .field { margin-bottom: 1rem; }
+    .field label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 0.85rem;
+      background: var(--white);
+      color: var(--black);
+    }
+    .field textarea { min-height: 120px; resize: vertical; }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: #bbb;
+      outline: 2px solid rgba(10,10,10,0.12);
+      outline-offset: 0;
+    }
+    .error-msg {
+      color: var(--error);
+      font-size: 0.82rem;
+      margin: 0.35rem 0 0;
+      display: none;
+    }
+    .error-msg.is-show { display: block; }
+    .wizard-nav {
+      display: flex;
+      gap: 0.65rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .wizard-nav .btn { flex: 1; min-width: 120px; }
+
+    .on-list {
+      background: var(--ok-bg);
+      border: 1px solid var(--ok-border);
+      color: var(--ok-text);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 0.95rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1.1rem;
+    }
+    .offer-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.15rem;
+      background: var(--off-warm);
+      margin-bottom: 1rem;
+    }
+    .offer-card .why-label {
+      font-size: 0.75rem;
+      font-weight: 650;
+      color: var(--muted);
+      margin: 0.55rem 0 0.35rem;
+    }
+    .offer-card .why {
+      font-size: 0.9rem;
+      color: var(--muted-dark);
+      margin: 0 0 0.35rem;
+      line-height: 1.5;
+    }
+    .offer-card .discovery-interest {
+      font-size: 0.95rem;
+      font-weight: 650;
+      color: var(--black);
+      margin: 0.95rem 0 0.4rem;
+      line-height: 1.4;
+    }
+    .offer-card .discovery-pitch {
+      font-size: 0.9rem;
+      color: var(--muted-dark);
+      margin: 0 0 1rem;
+      line-height: 1.5;
+    }
+    .offer-avatar {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      overflow: hidden;
+      font-size: 0.72rem;
+    }
+    .offer-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .offer-avatar.has-photo {
+      background: transparent;
+    }
+    .offer-avatar.has-photo #coach-initial {
+      display: none;
+    }
+    .offer-card .coach-note-head strong {
+      font-size: 1.02rem;
+    }
+    .offer-match-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin: -0.35rem 0 0.75rem;
+    }
+    .slots { display: grid; gap: 0.55rem; margin-bottom: 0.75rem; }
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+      font-size: 0.88rem;
+      margin: 0.75rem 0 1rem;
+    }
+    .check-row input { margin-top: 0.2rem; }
+    .thank-you {
+      text-align: center;
+      padding: 0.75rem 0 0.5rem;
+      max-width: 28rem;
+      margin: 0 auto;
+    }
+    .thank-you h3 {
+      font-family: var(--font-display);
+      font-size: clamp(1.55rem, 3vw, 1.85rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin: 0 0 1rem;
+    }
+    .thank-you .thanks-body {
+      color: var(--muted-dark);
+      margin: 0 0 0.85rem;
+      font-size: 1.02rem;
+      line-height: 1.55;
+    }
+    .thank-you .thanks-stories {
+      color: var(--muted-dark);
+      margin: 0 0 1.35rem;
+      font-size: 1.02rem;
+      line-height: 1.55;
+    }
+    .thank-you .thanks-spam {
+      font-size: 0.78rem;
+      color: #9a9a9a;
+      margin: 0;
+      line-height: 1.45;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Trust */
+    .trust {
+      font-size: 0.88rem;
+      color: var(--muted);
+      max-width: 48rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .trust p { margin: 0 0 0.55rem; }
+
+    /* Final CTA */
+    .final {
+      text-align: center;
+      padding: clamp(5rem, 12vw, 8rem) 0;
+      background:
+        radial-gradient(ellipse 55% 60% at 50% 0%, rgba(253, 224, 231, 0.35) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 50% at 80% 100%, rgba(224, 231, 255, 0.28) 0%, transparent 55%),
+        var(--off-warm);
+    }
+    .final h2 {
+      max-width: 14ch;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: clamp(2rem, 5vw, 3.1rem);
+    }
+    .final .lede {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 34rem;
+      margin-bottom: 1.75rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0 2.5rem;
+    }
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.5rem;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.15rem;
+    }
+    .footer-links a {
+      font-size: 0.875rem;
+      color: var(--muted-dark);
+      text-decoration: none;
+    }
+    .footer-links a:hover { color: var(--black); }
+    .footer-brand {
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      text-decoration: none;
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero h1 { max-width: none; }
+      .steps { grid-template-columns: 1fr; }
+      .step-card + .step-card {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--border);
+        padding-top: 1.5rem;
+        margin-top: 0.25rem;
+      }
+      .coach-diff { grid-template-columns: 1fr; }
+      .card-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .choice-grid { grid-template-columns: 1fr; }
+      .nav-actions .nav-link:not(.is-active) { display: none; }
+    }
+
+    /* Dedicated story views (hash routes) */
+    body.is-reading-story #landing-main { display: none; }
+    body.is-reading-story .nav-link.is-active {
+      box-shadow: none;
+      font-weight: 500;
+      color: var(--muted-dark);
+    }
+    #story-view {
+      display: none;
+      background:
+        radial-gradient(ellipse 60% 40% at 10% 0%, rgba(253, 224, 231, 0.28) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 35% at 90% 5%, rgba(224, 231, 255, 0.22) 0%, transparent 50%),
+        var(--white);
+      min-height: 70vh;
+      padding-bottom: clamp(3rem, 8vw, 5rem);
+    }
+    body.is-reading-story #story-view { display: block; }
+    .story-article {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: clamp(1.5rem, 4vw, 2.75rem) clamp(1.15rem, 4vw, 1.75rem) 0;
+    }
+    .story-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.88rem;
+      font-weight: 550;
+      color: var(--muted-dark);
+      text-decoration: none;
+      margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
+    }
+    .story-back:hover { color: var(--black); }
+    .story-article-header {
+      margin-bottom: clamp(2rem, 5vw, 2.75rem);
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .story-article-header .cat {
+      margin-bottom: 1rem;
+    }
+    .story-article-header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4.5vw, 2.55rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.15;
+      margin: 0 0 0.85rem;
+    }
+    .story-deck {
+      font-size: 1.08rem;
+      color: var(--muted-dark);
+      line-height: 1.55;
+      margin: 0;
+      max-width: 36rem;
+    }
+    .story-prose p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--muted-dark);
+      margin: 0 0 1.15rem;
+    }
+    .story-prose p:last-child { margin-bottom: 0; }
+    .story-disclosure {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-style: italic;
+      margin: 1.5rem 0 0;
+      line-height: 1.45;
+    }
+    .story-section {
+      margin-top: clamp(2.25rem, 5vw, 3rem);
+      padding-top: clamp(1.75rem, 4vw, 2.25rem);
+      border-top: 1px solid var(--border);
+    }
+    .story-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+      font-weight: 750;
+      letter-spacing: -0.03em;
+      margin: 0 0 1.15rem;
+      max-width: none;
+    }
+    .story-helped-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 1.15rem;
+    }
+    .story-helped-list strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 0.98rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.25rem;
+      color: var(--black);
+    }
+    .story-helped-list span {
+      display: block;
+      font-size: 0.98rem;
+      color: var(--muted-dark);
+      line-height: 1.55;
+    }
+    .story-coach-label {
+      font-size: 0.8rem;
+      font-weight: 650;
+      color: var(--muted);
+      margin: 0 0 0.85rem;
+    }
+    .story-coach-sub {
+      font-size: 0.82rem;
+      font-weight: 650;
+      color: var(--muted);
+      margin: 0 0 0.45rem;
+    }
+    .story-section blockquote {
+      margin: 0 0 1.25rem;
+      padding: 0;
+      border: none;
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--muted-dark);
+      line-height: 1.6;
+    }
+    .story-section .coach-think {
+      margin: 0 0 0.85rem;
+      font-size: 1.02rem;
+      color: var(--muted-dark);
+      line-height: 1.6;
+      font-style: normal;
+    }
+    .story-reflect-q {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 650;
+      letter-spacing: -0.025em;
+      line-height: 1.4;
+      margin: 0;
+      color: var(--black);
+    }
+    .story-subscribe {
+      margin-top: clamp(2.5rem, 6vw, 3.5rem);
+      padding: clamp(1.5rem, 4vw, 2rem);
+      background: var(--off-warm);
+      border: 1px solid rgba(10, 10, 10, 0.06);
+      border-radius: 20px;
+      text-align: center;
+    }
+    .story-subscribe h2 {
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
+      margin: 0 0 0.65rem;
+      max-width: 16ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .story-subscribe .lede {
+      margin: 0 auto 1.25rem;
+      text-align: center;
+      font-size: 0.98rem;
+    }
+    .story-subscribe .fine {
+      margin: 0.65rem 0 0;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="/stories/">
+        <span class="brand-mark" aria-hidden="true">CH</span>
+        <span class="brand-lockup">
+          <span class="brand-name">Coach-Halo</span>
+          <span class="brand-sep" aria-hidden="true"></span>
+          <span class="brand-section">Stories</span>
+        </span>
+      </a>
+      <div class="nav-actions">
+        <a class="nav-link is-active" href="/stories/" aria-current="page">Stories</a>
+        <a class="nav-link" href="/">For Coaches</a>
+        <a class="btn btn-primary" href="#signup">Get Free Stories</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="landing-main">
+    <div class="hero-wrap" id="top">
+      <div class="wrap hero">
+        <div>
+          <p class="eyebrow">Real stories + coach guidance</p>
+          <h1>See how real people got through <em>what you’re going through.</em></h1>
+          <div class="hero-copy-stack">
+            <p class="hero-sub">Every week, we find real stories from people who faced challenges like yours and made meaningful progress.</p>
+            <p class="hero-sub">See what they struggled with, what they tried, what helped, and what happened next.</p>
+            <p class="hero-sub">Then, a Coach-Halo coach shares their perspective on the story and what stands out to them.</p>
+          </div>
+          <p class="hero-support">Real experiences. Coach perspectives. Stories picked for you.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary btn-lg" href="#signup">Get Stories Matched to Me →</a>
+            <p class="fine">Free every week. Unsubscribe anytime.</p>
+          </div>
+          <div class="hero-situations">
+            <p class="hero-situations-label">Stories for situations like</p>
+            <div class="pills" id="hero-situation-pills" role="group" aria-label="Choose a situation">
+              <button type="button" class="pill" data-situation="Divorce / Separation">Divorce &amp; Separation</button>
+              <button type="button" class="pill" data-situation="Breakup">Breakups</button>
+              <button type="button" class="pill" data-situation="Starting Over">Starting Over</button>
+              <button type="button" class="pill" data-situation="Career Change">Career Change</button>
+              <button type="button" class="pill" data-situation="Job Loss">Job Loss</button>
+              <button type="button" class="pill" data-situation="Feeling Stuck">Feeling Stuck</button>
+              <button type="button" class="pill" data-situation="Loneliness / Friendships">Loneliness &amp; Friendships</button>
+              <button type="button" class="pill" data-situation="Dating Again">Dating Again</button>
+              <button type="button" class="pill" data-situation="Feeling Stuck">Confidence</button>
+              <button type="button" class="pill" data-situation="Major Life Decisions">Major Life Decisions</button>
+            </div>
+          </div>
+          <p class="privacy-note">
+            <strong>Real experiences. Identities protected.</strong>
+            Stories are based on publicly shared experiences. Identifying details may be changed or removed to protect privacy.
+          </p>
+        </div>
+
+        <div class="product-panel">
+          <aside class="story-preview" aria-label="Example Coach-Halo story">
+            <div class="mail-chrome">
+              <div class="mail-chrome-top">
+                <span class="mail-app-label">Inbox</span>
+                <span class="mail-badge">This week’s story</span>
+              </div>
+              <div class="mail-meta">
+                <div><strong>From:</strong> Coach-Halo Stories &lt;stories@coach-halo.com&gt;</div>
+                <div><strong>To:</strong> you</div>
+                <div class="mail-subject">This week’s story: rebuilding after divorce</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="cat-row">
+                <span class="cat">Divorce</span>
+                <span class="cat">Starting Over</span>
+              </div>
+              <h3>He thought everything would feel better once the divorce was final.</h3>
+              <div class="story-body">
+                <p>For months, he treated the court date like a finish line. Once the paperwork was done, he figured the heaviness would lift, that mornings would feel clearer, weekends less empty, and decisions less exhausting.</p>
+                <p>That didn’t happen. The legal ending closed one chapter, but his routine, friendships, and sense of direction still felt gone. Evenings stretched longer than he expected. He kept reaching for a version of life that no longer existed.</p>
+                <p>What changed wasn’t a dramatic breakthrough. He started with things he could actually control: texting two old friends each week, walking most mornings, and putting a few simple plans on the calendar so Sundays didn’t feel formless.</p>
+                <p>None of it fixed everything. But after a few weeks, his life felt a little more like his again, less about waiting to “get over it,” and more about rebuilding the parts of ordinary life that had disappeared with the relationship.</p>
+              </div>
+              <p class="story-source">Based on a real story shared online. Some details may be changed to protect privacy.</p>
+
+              <div class="preview-block">
+                <h4>What seemed to help</h4>
+                <ul class="helped-list">
+                  <li>
+                    <strong>Reconnecting</strong>
+                    <span>Reaching out to old friends gave his weeks more connection.</span>
+                  </li>
+                  <li>
+                    <strong>Routine</strong>
+                    <span>Exercise and predictable plans created some structure again.</span>
+                  </li>
+                  <li>
+                    <strong>Time</strong>
+                    <span>He stopped expecting himself to immediately “move on.”</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="preview-block coach-perspective">
+                <p class="label">Coach’s perspective</p>
+                <div class="coach-note-head">
+                  <div class="avatar" aria-hidden="true">C</div>
+                  <div>
+                    <strong>Your Coach-Halo coach</strong>
+                    <span>Life &amp; Relationship Coach</span>
+                  </div>
+                </div>
+
+                <p class="coach-subhead">What stands out to me</p>
+                <blockquote>“What stands out to me is that he stopped making ‘getting over it’ the goal and started rebuilding parts of his life that had disappeared with the relationship.”</blockquote>
+
+                <p class="coach-subhead">How I’d think about it</p>
+                <p class="coach-think">I’d be curious about the small areas of life he could influence again — connection, rhythm, and a sense of forward motion — without pressuring the bigger emotional timeline to resolve on a schedule.</p>
+                <p class="coach-think">Often the useful question isn’t “Am I over this yet?” but “What part of my life am I ready to rebuild, even a little?”</p>
+              </div>
+
+              <div class="preview-block reflect-note">
+                <h4>Something to think about</h4>
+                <p>If one part of your life felt more like yours again this week, what would that be?</p>
+              </div>
+
+              <div class="preview-cta">
+                <p class="cta-kicker">Going through something similar?</p>
+                <p class="cta-support">You can talk with the coach whose perspective you just read — about your situation, not someone else’s story.</p>
+                <a class="btn btn-ghost" href="#signup">Talk with this coach</a>
+                <p class="fine">Free · No obligation</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <section class="section section-alt" id="how" aria-labelledby="how-heading">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">How it works</p>
+          <h2 id="how-heading">Real experiences. <em>Thoughtful perspectives.</em></h2>
+          <p class="lede">Learn from someone who’s been through something similar, then see what a coach notices about their experience.</p>
+        </div>
+        <div class="steps">
+          <article class="step-card">
+            <div class="step-num">Step 1 <span class="step-time">~1 min</span></div>
+            <h3>Tell us what you’re going through</h3>
+            <p>Choose the challenges you’re facing so we know which stories are most relevant to you.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-num">Step 2 <span class="step-time">Weekly</span></div>
+            <h3>Learn from someone who’s been there</h3>
+            <p>We find compelling real-world stories from people who faced similar challenges: what they struggled with, what they tried, what seemed to help, and what happened next.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-num">Step 3 <span class="step-time">With every story</span></div>
+            <h3>See a coach’s perspective</h3>
+            <p>A Coach-Halo coach shares what stands out to them and how they’d think about the experience through their coaching approach.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="examples" aria-labelledby="examples-heading">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Example stories</p>
+          <h2 id="examples-heading">Stories that might <em>feel familiar</em></h2>
+          <p class="lede">See what others went through, what they tried, what seemed to help, and what happened next.</p>
+        </div>
+        <div class="card-grid">
+          <a class="ex-card" href="#story/divorce" data-story="divorce" data-situation="Divorce / Separation">
+            <span class="cat">Divorce</span>
+            <h3>He couldn’t stop checking what his ex was doing. Here’s what finally helped.</h3>
+            <p>What changed when he stopped trying to control what happened outside his own life.</p>
+            <span class="read">Read Story →</span>
+          </a>
+          <a class="ex-card" href="#story/starting-over" data-story="starting-over" data-situation="Starting Over">
+            <span class="cat">Starting Over</span>
+            <h3>At 39, he realized almost his entire social life disappeared after his separation.</h3>
+            <p>The small routines and social experiments that helped him rebuild.</p>
+            <span class="read">Read Story →</span>
+          </a>
+          <a class="ex-card" href="#story/career-change" data-story="career-change" data-situation="Career Change">
+            <span class="cat">Career Change</span>
+            <h3>At 42, she realized she didn’t want the career she’d spent 18 years building.</h3>
+            <p>What she did before making the leap and what happened afterward.</p>
+            <span class="read">Read Story →</span>
+          </a>
+          <a class="ex-card" href="#story/loneliness" data-story="loneliness" data-situation="Loneliness / Friendships">
+            <span class="cat">Loneliness</span>
+            <h3>He moved to a new city at 36 and spent most weekends alone.</h3>
+            <p>One year later, his life looked completely different.</p>
+            <span class="read">Read Story →</span>
+          </a>
+          <a class="ex-card" href="#story/feeling-stuck" data-story="feeling-stuck" data-situation="Feeling Stuck">
+            <span class="cat">Feeling Stuck</span>
+            <h3>She didn’t need a complete reinvention. She needed one useful first move.</h3>
+            <p>The small change that helped her regain momentum.</p>
+            <span class="read">Read Story →</span>
+          </a>
+          <a class="ex-card" href="#story/dating-again" data-story="dating-again" data-situation="Dating Again">
+            <span class="cat">Dating Again</span>
+            <h3>He waited two years after divorce before dating seriously again.</h3>
+            <p>What he wishes he had understood before starting.</p>
+            <span class="read">Read Story →</span>
+          </a>
+        </div>
+        <p class="fine" style="margin-top:1.25rem">Occasionally we also publish deeper features — like collections of people who rebuilt after divorce — but the weekly format stays one story, one coach, one thing to try.</p>
+      </div>
+    </section>
+
+    <section class="section" id="coach" aria-labelledby="coach-heading">
+      <div class="wrap coach-diff">
+        <div>
+          <p class="eyebrow">From story to coach take</p>
+          <h2 id="coach-heading" style="max-width:18ch">The story shows you what happened. <em>The coach adds how they’d think about it.</em></h2>
+          <p class="lede" style="margin-bottom:0.85rem">Real experiences can show you what other people tried.</p>
+          <p class="lede">Coach-Halo coaches share a short perspective grounded in how they actually coach — not a claim that they worked with the person in the story.</p>
+          <p class="lede" style="margin-bottom:0">If you want more personal support, you can talk it through with a coach anytime.</p>
+        </div>
+        <aside class="coach-feature-card">
+          <p class="label" style="margin:0 0 0.65rem">Coach’s perspective</p>
+          <div class="coach-note-head">
+            <div class="avatar" style="width:48px;height:48px;font-size:0.72rem" aria-hidden="true">CH</div>
+            <div>
+              <strong style="font-size:1.05rem">Coach-Halo coach</strong>
+              <span>Life &amp; relationship coaching</span>
+            </div>
+          </div>
+          <p class="label" style="margin:0.85rem 0 0.4rem">Topics</p>
+          <div class="topics">
+            <span class="cat">Divorce</span>
+            <span class="cat">Relationships</span>
+            <span class="cat">Major life transitions</span>
+            <span class="cat">Starting over</span>
+          </div>
+          <blockquote>“Progress often starts before the larger situation is resolved. The first goal is usually finding one part of life the person can influence again.”</blockquote>
+          <a class="btn btn-ghost" href="#signup">Talk with a coach</a>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="signup" aria-labelledby="signup-heading">
+      <div class="wrap">
+        <div class="signup-shell">
+          <p class="eyebrow">Free weekly stories</p>
+          <h2 id="signup-heading">What are you going through <em>right now?</em></h2>
+          <p class="lede">Your answers help us choose stories and coach perspectives that are more relevant to what you’re going through.</p>
+
+          <div class="progress" id="wizard-progress" aria-live="polite">
+            <span class="progress-label" id="progress-label">Step 1 of 5 · Situation</span>
+            <div class="dots" aria-hidden="true">
+              <span class="dot is-on" data-dot="1"></span>
+              <span class="dot" data-dot="2"></span>
+              <span class="dot" data-dot="3"></span>
+              <span class="dot" data-dot="4"></span>
+              <span class="dot" data-dot="5"></span>
+            </div>
+          </div>
+
+          <!-- Step 1 -->
+          <div class="wizard-step is-active" data-step="1" role="group" aria-labelledby="step1-title">
+            <h3 id="step1-title">What are you going through?</h3>
+            <p class="hint">Pick the closest fit. You can refine this later.</p>
+            <div class="choice-grid" id="situation-choices">
+              <button type="button" class="choice" data-value="Divorce / Separation">Divorce / Separation</button>
+              <button type="button" class="choice" data-value="Breakup">Breakup</button>
+              <button type="button" class="choice" data-value="Career Change">Career Change</button>
+              <button type="button" class="choice" data-value="Job Loss">Job Loss</button>
+              <button type="button" class="choice" data-value="Feeling Stuck">Feeling Stuck</button>
+              <button type="button" class="choice" data-value="Starting Over">Starting Over</button>
+              <button type="button" class="choice" data-value="Loneliness / Friendships">Loneliness / Friendships</button>
+              <button type="button" class="choice" data-value="Dating Again">Dating Again</button>
+              <button type="button" class="choice" data-value="Major Life Decisions">Major Life Decisions</button>
+              <button type="button" class="choice" data-value="Other">Other</button>
+            </div>
+            <p class="error-msg" id="err-situation" role="alert">Please choose a situation to continue.</p>
+            <div class="wizard-nav">
+              <button type="button" class="btn btn-primary" data-next>Continue</button>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="wizard-step" data-step="2" role="group" aria-labelledby="step2-title">
+            <h3 id="step2-title">What are you trying to figure out right now? (optional)</h3>
+            <p class="hint">A sentence or two can help us find stories that feel more relevant.</p>
+            <div class="field">
+              <label for="struggles">Your situation, in your words</label>
+              <textarea id="struggles" name="struggles" maxlength="2000" placeholder="I’m trying to understand how other people stopped letting the divorce consume everything and started building their life again."></textarea>
+            </div>
+            <p class="privacy-hint">Please don’t include medical, financial, legal, or other highly sensitive information you don’t need to share with us.</p>
+            <div class="wizard-nav">
+              <button type="button" class="btn btn-ghost" data-back>Back</button>
+              <button type="button" class="btn btn-primary" data-next>Continue</button>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="wizard-step" data-step="3" role="group" aria-labelledby="step3-title">
+            <h3 id="step3-title">Where should we send your stories?</h3>
+            <p class="hint">Free weekly emails. Unsubscribe anytime.</p>
+            <div class="field">
+              <label for="first-name">First name</label>
+              <input id="first-name" name="first_name" type="text" autocomplete="given-name" required />
+              <p class="error-msg" id="err-name" role="alert">Please enter your first name.</p>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+              <p class="error-msg" id="err-email" role="alert">Please enter a valid email.</p>
+            </div>
+            <p class="legal-consent">
+              By signing up, you agree to receive Coach-Halo Stories and related emails, and to our
+              <a href="/terms/">Terms of Use</a>
+              and
+              <a href="/privacy/">Privacy Policy</a>.
+              You can unsubscribe anytime.
+            </p>
+            <div class="wizard-nav">
+              <button type="button" class="btn btn-ghost" data-back>Back</button>
+              <button type="button" class="btn btn-primary" data-next id="save-lead-btn">Get My Weekly Stories</button>
+            </div>
+          </div>
+
+          <!-- Step 4: Coach offer -->
+          <div class="wizard-step" data-step="4" role="group" aria-labelledby="step4-title">
+            <div class="on-list" role="status">You’re on the list. We’ll start looking for stories that match what you’re going through.</div>
+            <h3 id="step4-title">Want more personal support?</h3>
+            <p class="hint">Optional. You’ll still receive your weekly Stories either way.</p>
+
+            <div id="coach-offer-main">
+              <div class="offer-card">
+                <div class="coach-note-head">
+                  <div class="avatar offer-avatar" id="coach-avatar-wrap" aria-hidden="true">
+                    <img id="coach-photo" alt="" hidden width="48" height="48" />
+                    <span id="coach-initial">CH</span>
+                  </div>
+                  <div>
+                    <strong id="coach-name-display">A Coach-Halo coach</strong>
+                    <span id="coach-role-display">Matched to situations like yours</span>
+                  </div>
+                </div>
+                <p class="why-label">Why we matched you</p>
+                <p class="why" id="coach-why">Based on what you shared, we can introduce you to a Coach-Halo coach whose work aligns with situations like yours.</p>
+                <p class="discovery-interest" id="coach-interest-heading">Interested in working with a coach?</p>
+                <p class="discovery-pitch" id="coach-discovery-pitch">Start with a free discovery call to talk about what you’re looking for and see if working together feels like a good fit. If you decide to continue, the coach can walk you through their coaching options and pricing.</p>
+                <button type="button" class="btn btn-primary btn-block" id="connect-coach-btn">Schedule a free discovery call with a coach</button>
+                <p class="fine" id="coach-connect-note">We’ll introduce you by email so you can find a time.</p>
+                <p class="privacy-hint">If you request an introduction to a coach, we’ll share the information needed to connect you with that coach.</p>
+              </div>
+              <button type="button" class="btn btn-ghost btn-block" id="skip-coach-btn">Just send me my stories</button>
+              <div class="wizard-nav" style="margin-top:0.85rem">
+                <button type="button" class="btn btn-ghost" data-back disabled title="Signup already saved">Back</button>
+              </div>
+            </div>
+
+            <div id="coach-availability" hidden>
+              <div class="offer-card">
+                <p class="label">When works for a free discovery call?</p>
+                <div class="field">
+                  <label for="timezone">Your timezone</label>
+                  <select id="timezone" name="timezone">
+                    <option value="">Select timezone</option>
+                    <option value="America/Los_Angeles">Pacific (PT)</option>
+                    <option value="America/Denver">Mountain (MT)</option>
+                    <option value="America/Chicago">Central (CT)</option>
+                    <option value="America/New_York">Eastern (ET)</option>
+                    <option value="Europe/London">London (UK)</option>
+                    <option value="UTC">UTC</option>
+                  </select>
+                  <p class="error-msg" id="err-tz" role="alert">Please choose a timezone.</p>
+                </div>
+                <div class="slots">
+                  <div class="field" style="margin:0">
+                    <label for="slot1">Option 1</label>
+                    <input id="slot1" type="datetime-local" />
+                  </div>
+                  <div class="field" style="margin:0">
+                    <label for="slot2">Option 2 (optional)</label>
+                    <input id="slot2" type="datetime-local" />
+                  </div>
+                  <div class="field" style="margin:0">
+                    <label for="slot3">Option 3 (optional)</label>
+                    <input id="slot3" type="datetime-local" />
+                  </div>
+                </div>
+                <p class="error-msg" id="err-slots" role="alert">Add at least one time window.</p>
+                <div class="field">
+                  <label for="topic">Anything you’d like to discuss? (optional)</label>
+                  <textarea id="topic" rows="3" placeholder="e.g. rebuilding after divorce, dating again, feeling stuck"></textarea>
+                </div>
+                <label class="check-row">
+                  <input type="checkbox" id="attend-confirm" />
+                  <span>I can make the time I share, and I’m okay with Coach-Halo emailing an intro to a matched coach for a free discovery call.</span>
+                </label>
+                <p class="error-msg" id="err-confirm" role="alert">Please confirm so we can make the intro.</p>
+                <p class="privacy-hint">Confirming shares with the matched coach what they need for this intro (such as your name, email, situation topic, availability, and optional discussion note). We don’t share more than needed to make the connection.</p>
+                <button type="button" class="btn btn-primary btn-block" id="confirm-connect-btn">Confirm discovery call intro</button>
+                <button type="button" class="btn btn-ghost btn-block" id="back-to-offer" style="margin-top:0.55rem">Back</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5: Thank you -->
+          <div class="wizard-step" data-step="5" role="status">
+            <div class="thank-you">
+              <h3 id="thanks-title">You’re in.</h3>
+              <p class="thanks-body" id="thanks-body">Watch your inbox for a welcome email from Joaquin, creator of Coach-Halo.</p>
+              <p class="thanks-stories" id="thanks-stories">We’ll also start sending you free weekly stories based on what you told us you’re going through.</p>
+              <p class="thanks-spam" id="thanks-spam">Don’t see our welcome email? Check your spam or junk folder just in case it landed there.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="trust" aria-labelledby="trust-heading">
+      <div class="wrap">
+        <h2 id="trust-heading" style="max-width:none;text-align:center;margin-left:auto;margin-right:auto;font-size:clamp(1.15rem,2.5vw,1.35rem)">About these stories</h2>
+        <div class="trust">
+          <p>Stories are based on publicly shared experiences and may be summarized, edited, or anonymized for clarity and privacy.</p>
+          <p>Identifying details may be removed or changed to protect the people involved.</p>
+          <p>Coach-Halo coach commentary is an independent interpretation of the story unless we explicitly state that the coach personally worked with the individual.</p>
+          <p>Individual experiences are not guarantees that the same approach will work for someone else.</p>
+          <p>Coach perspectives are educational and are not a replacement for medical, mental health, legal, or financial advice.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="final" aria-labelledby="final-heading">
+      <div class="wrap">
+        <p class="eyebrow">Ready when you are</p>
+        <h2 id="final-heading">You don’t have to figure everything out <em>from scratch.</em></h2>
+        <p class="lede">Every week, learn from one real person who faced something similar, see what helped them move forward, and get a short coach perspective — with the option to talk it through if you want.</p>
+        <a class="btn btn-primary btn-lg" href="#signup">Get Stories Matched to Me →</a>
+      </div>
+    </section>
+  </main>
+
+  <div id="story-view" aria-live="polite">
+    <article class="story-article" id="story-article"></article>
+  </div>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <a class="footer-brand" href="/">Coach-Halo</a>
+      <div class="footer-links">
+        <a href="/stories/">Stories</a>
+        <a href="/">For Coaches</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
+        <a href="/coach-terms/">Coach Terms</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
+    </div>
+  </footer>
+
+  <iframe name="zapier-frame" id="zapier-frame" title="Hidden" aria-hidden="true" style="position:absolute;width:0;height:0;border:0;visibility:hidden"></iframe>
+
+  <script>
+    (function () {
+      const SIGNUP_API = "/.netlify/functions/stories-signup";
+      const ZAPIER_WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/18483741/4t60ed9/";
+      const MATCH_API_CANDIDATES = [
+        "/.netlify/functions/match-coach",
+        "https://job-halo.com/.netlify/functions/match-coach"
+      ];
+      const STEP_LABELS = {
+        1: "Situation",
+        2: "Your words",
+        3: "Email",
+        4: "Coach intro",
+        5: "Done"
+      };
+
+      const SITUATION_CATEGORY = {
+        "Divorce / Separation": "Relationship Coaching",
+        "Breakup": "Relationship Coaching",
+        "Dating Again": "Relationship Coaching",
+        "Loneliness / Friendships": "Relationship Coaching",
+        "Career Change": "Career Coaching",
+        "Job Loss": "Career Coaching",
+        "Feeling Stuck": "Life Coaching",
+        "Starting Over": "Life Coaching",
+        "Major Life Decisions": "Life Coaching",
+        "Other": "Life Coaching"
+      };
+
+      const CAREER_HINTS = /\b(job|career|work|layoff|laid[- ]?off|unemploy|interview|resume|linkedin|promotion|boss|office|salary|hiring|fired|redundan)/i;
+      const RELATIONSHIP_HINTS = /\b(divorce|separat|break[- ]?up|ex[- ]|dating|relationship|marriage|partner|lonely|friendship|widow)/i;
+
+      const state = {
+        step: 1,
+        situation: "",
+        struggles: "",
+        firstName: "",
+        email: "",
+        recordId: null,
+        coachingInterest: "pending_coach_connect",
+        connected: false,
+        coachCategory: "",
+        matchedCoach: null
+      };
+
+      const progressLabel = document.getElementById("progress-label");
+      const dots = document.querySelectorAll(".dot");
+      const steps = document.querySelectorAll(".wizard-step");
+
+      function emailOk(v) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || "").trim());
+      }
+
+      function setStep(n) {
+        state.step = n;
+        steps.forEach((el) => {
+          el.classList.toggle("is-active", Number(el.dataset.step) === n);
+        });
+        progressLabel.textContent = "Step " + n + " of 5 · " + STEP_LABELS[n];
+        dots.forEach((d) => {
+          const i = Number(d.dataset.dot);
+          d.classList.toggle("is-on", i === n);
+          d.classList.toggle("is-done", i < n);
+        });
+        const shell = document.querySelector(".signup-shell");
+        if (shell && n > 1) shell.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      function showErr(id, on) {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle("is-show", !!on);
+      }
+
+      function resolveCoachCategory(situation, struggles) {
+        const base = SITUATION_CATEGORY[situation] || "Life Coaching";
+        const text = String(struggles || "");
+        if (base === "Life Coaching" || situation === "Other" || situation === "Feeling Stuck" || situation === "Starting Over" || situation === "Major Life Decisions") {
+          if (CAREER_HINTS.test(text)) return "Career Coaching";
+          if (RELATIONSHIP_HINTS.test(text)) return "Relationship Coaching";
+        }
+        if (situation === "Confidence") {
+          if (CAREER_HINTS.test(text)) return "Career Coaching";
+          return "Life Coaching";
+        }
+        return base;
+      }
+
+      function coachFirstName(coach) {
+        if (!coach) return "a coach";
+        if (coach.short) return coach.short;
+        const name = String(coach.name || "").trim();
+        return name.split(/[\s—(]/)[0] || "a coach";
+      }
+
+      function situationForCopy() {
+        const s = String(state.situation || "").trim();
+        if (!s || s === "Other") return "what you’re going through";
+        return s.toLowerCase();
+      }
+
+      function formatFocusList(items) {
+        const clean = (items || [])
+          .map((x) => String(x || "").trim())
+          .filter(Boolean)
+          .slice(0, 3);
+        if (!clean.length) return "";
+        if (clean.length === 1) return clean[0];
+        if (clean.length === 2) return clean[0] + " and " + clean[1];
+        return clean[0] + ", " + clean[1] + ", and " + clean[2];
+      }
+
+      function coachFocusPhrase(coach) {
+        const areas = coach && (coach.focus_areas || coach.specialties || coach.focusAreas);
+        if (Array.isArray(areas) && areas.length) {
+          const listed = formatFocusList(areas);
+          if (listed) return listed;
+        }
+        if (typeof areas === "string" && areas.trim()) {
+          const parts = areas.split(/[,;/|]+/).map((s) => s.trim()).filter(Boolean);
+          const listed = formatFocusList(parts);
+          if (listed) return listed;
+        }
+
+        const title = String((coach && coach.title) || "").trim();
+        const cat = String((coach && coach.matched_category) || state.coachCategory || "").trim();
+        const titleLower = title.toLowerCase();
+        const genericTitle =
+          !title ||
+          titleLower === "coach" ||
+          titleLower === "coach-halo coach" ||
+          titleLower === cat.toLowerCase() ||
+          /^(career|relationship|life)\s+coach(ing)?$/i.test(title);
+
+        if (!genericTitle) {
+          return title.replace(/^./, (c) => c.toLowerCase());
+        }
+
+        if (/career/i.test(cat)) {
+          return "career transitions and navigating periods of professional change";
+        }
+        if (/relationship/i.test(cat)) {
+          return "relationships and navigating personal change";
+        }
+        return "life transitions and navigating periods of change";
+      }
+
+      function buildWhyMatchedCopy(coach) {
+        const situation = situationForCopy();
+        if (!coach || !coach.name) {
+          return (
+            "Based on what you shared about " +
+            situation +
+            ", we can introduce you to a Coach-Halo coach whose work aligns with situations like yours."
+          );
+        }
+        const first = coachFirstName(coach);
+        return (
+          "Based on what you shared about " +
+          situation +
+          ", " +
+          first +
+          "'s coaching focuses on " +
+          coachFocusPhrase(coach) +
+          "."
+        );
+      }
+
+      function setDiscoveryOfferCopy(firstName) {
+        const first = firstName || "a coach";
+        const withName = first !== "a coach";
+        document.getElementById("coach-interest-heading").textContent =
+          "Interested in working with " + first + "?";
+        document.getElementById("coach-discovery-pitch").textContent = withName
+          ? "Start with a free discovery call to talk about what you’re looking for and see if working together feels like a good fit. If you decide to continue, " +
+            first +
+            " can walk you through their coaching options and pricing."
+          : "Start with a free discovery call to talk about what you’re looking for and see if working together feels like a good fit. If you decide to continue, the coach can walk you through their coaching options and pricing.";
+        document.getElementById("connect-coach-btn").textContent =
+          "Schedule a free discovery call with " + first;
+        document.getElementById("coach-connect-note").textContent =
+          "We’ll introduce you by email so you can find a time.";
+      }
+
+      function fillGenericCoachUI() {
+        state.matchedCoach = null;
+        const wrap = document.getElementById("coach-avatar-wrap");
+        const img = document.getElementById("coach-photo");
+        const initial = document.getElementById("coach-initial");
+        wrap.classList.remove("has-photo");
+        img.hidden = true;
+        img.removeAttribute("src");
+        initial.textContent = "CH";
+        document.getElementById("coach-name-display").textContent = "A Coach-Halo coach";
+        document.getElementById("coach-role-display").textContent = "Matched to situations like yours";
+        document.getElementById("coach-why").textContent = buildWhyMatchedCopy(null);
+        setDiscoveryOfferCopy("a coach");
+      }
+
+      function fillCoachUI(coach) {
+        if (!coach || !coach.name) {
+          fillGenericCoachUI();
+          return;
+        }
+        state.matchedCoach = coach;
+        const first = coachFirstName(coach);
+        const wrap = document.getElementById("coach-avatar-wrap");
+        const img = document.getElementById("coach-photo");
+        const initial = document.getElementById("coach-initial");
+        const photo = String(coach.image || "").trim();
+        if (photo) {
+          img.src = photo;
+          img.alt = coach.name;
+          img.hidden = false;
+          wrap.classList.add("has-photo");
+        } else {
+          img.hidden = true;
+          img.removeAttribute("src");
+          wrap.classList.remove("has-photo");
+          initial.textContent = (first.charAt(0) || "C").toUpperCase();
+        }
+        document.getElementById("coach-name-display").textContent = coach.name;
+        document.getElementById("coach-role-display").textContent =
+          coach.title || "Coach-Halo coach";
+        document.getElementById("coach-why").textContent = buildWhyMatchedCopy(coach);
+        setDiscoveryOfferCopy(first);
+      }
+
+      async function matchCoachForSignup() {
+        state.coachCategory = resolveCoachCategory(state.situation, state.struggles);
+        const body = {
+          category: state.coachCategory,
+          coachingTypeCategory: state.coachCategory,
+          goals: state.struggles,
+          notes: state.situation,
+          source: "stories-landing"
+        };
+        for (const url of MATCH_API_CANDIDATES) {
+          try {
+            const res = await fetch(url, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(body)
+            });
+            if (!res.ok) continue;
+            const data = await res.json().catch(() => null);
+            if (data && data.ok && data.name) return data;
+          } catch (err) {
+            /* try next candidate */
+          }
+        }
+        return null;
+      }
+
+      function coachPayloadFields() {
+        const c = state.matchedCoach;
+        if (!c) {
+          return {
+            recommendedCoach: "matched_coach",
+            coachCategory: state.coachCategory || "",
+            matchedCoachId: "",
+            matchedCoachName: "",
+            matchedCoachEmail: ""
+          };
+        }
+        return {
+          recommendedCoach: c.name,
+          coachCategory: c.matched_category || state.coachCategory || "",
+          matchedCoachId: c.record_id || "",
+          matchedCoachName: c.name || "",
+          matchedCoachEmail: c.coach_email || "",
+          matchedCoachShort: c.short || coachFirstName(c)
+        };
+      }
+
+      function sendToZapier(flatFields) {
+        const iframe = document.getElementById("zapier-frame");
+        if (!iframe || !ZAPIER_WEBHOOK_URL) return;
+        const zform = document.createElement("form");
+        zform.method = "POST";
+        zform.action = ZAPIER_WEBHOOK_URL;
+        zform.target = iframe.name || "zapier-frame";
+        zform.style.display = "none";
+        Object.keys(flatFields).forEach((key) => {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = key;
+          input.value = flatFields[key] == null ? "" : String(flatFields[key]);
+          zform.appendChild(input);
+        });
+        document.body.appendChild(zform);
+        zform.submit();
+        document.body.removeChild(zform);
+      }
+
+      function zapierFlatFromPayload(payload) {
+        const signedUpAt = payload.signedUpAt || new Date().toISOString();
+        return {
+          event_type: payload.action || "lead_saved",
+          source: payload.source || "stories-landing",
+          first_name: payload.firstName || "",
+          email: payload.email || "",
+          situation: payload.situation || "",
+          struggles: payload.struggles || "",
+          coaching_interest: payload.coachingInterest || "",
+          coach_category: payload.coachCategory || "",
+          recommended_coach: payload.recommendedCoach || "",
+          matched_coach_id: payload.matchedCoachId || "",
+          matched_coach_name: payload.matchedCoachName || "",
+          matched_coach_email: payload.matchedCoachEmail || "",
+          matched_coach_short: payload.matchedCoachShort || "",
+          record_id: payload.recordId || "",
+          status: payload.status || "subscribed",
+          signed_up_at: signedUpAt,
+          "Signed Up At": signedUpAt,
+          // Complimentary intro step (always present so Zapier can map them)
+          availability_timezone: payload.availabilityTimezone || "",
+          availability_slot1: payload.availabilitySlot1 || "",
+          availability_slot2: payload.availabilitySlot2 || "",
+          availability_slot3: payload.availabilitySlot3 || "",
+          discussion_topic: payload.discussionTopic || "",
+          coach_interest: payload.coachInterest != null ? String(payload.coachInterest) : ""
+        };
+      }
+
+      async function saveLead(action, extra) {
+        const payload = Object.assign({
+          action: action,
+          recordId: state.recordId,
+          firstName: state.firstName,
+          email: state.email,
+          situation: state.situation,
+          struggles: state.struggles,
+          source: "stories-landing",
+          status: "subscribed",
+          signedUpAt: new Date().toISOString(),
+          coachingInterest: state.coachingInterest
+        }, coachPayloadFields(), extra || {});
+
+        sendToZapier(zapierFlatFromPayload(payload));
+
+        try {
+          const res = await fetch(SIGNUP_API, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          if (!res.ok) throw new Error("API " + res.status);
+          const data = await res.json().catch(() => ({}));
+          if (data.recordId) state.recordId = data.recordId;
+          return { ok: true, mock: false, data: data };
+        } catch (err) {
+          if (action === "lead_saved" && !state.recordId) {
+            state.recordId = "local_" + Date.now();
+          }
+          console.info("Stories signup mock path:", action, payload);
+          return { ok: true, mock: true };
+        }
+      }
+
+      document.querySelectorAll("#situation-choices .choice").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll("#situation-choices .choice").forEach((b) => b.setAttribute("aria-pressed", "false"));
+          btn.setAttribute("aria-pressed", "true");
+          state.situation = btn.dataset.value;
+          document.querySelectorAll("#hero-situation-pills .pill").forEach((b) => {
+            b.setAttribute("aria-pressed", b.dataset.situation === btn.dataset.value ? "true" : "false");
+          });
+          showErr("err-situation", false);
+        });
+      });
+
+      function selectSituation(value) {
+        if (!value) return;
+        state.situation = value;
+        document.querySelectorAll("#hero-situation-pills .pill").forEach((b) => {
+          b.setAttribute("aria-pressed", b.dataset.situation === value ? "true" : "false");
+        });
+        document.querySelectorAll("#situation-choices .choice").forEach((c) => {
+          c.setAttribute("aria-pressed", c.dataset.value === value ? "true" : "false");
+        });
+        showErr("err-situation", false);
+      }
+
+      document.querySelectorAll("#hero-situation-pills .pill").forEach((btn) => {
+        btn.setAttribute("aria-pressed", "false");
+        btn.addEventListener("click", () => {
+          selectSituation(btn.dataset.situation);
+          document.getElementById("signup").scrollIntoView({ behavior: "smooth" });
+        });
+      });
+
+      document.querySelectorAll("[data-scroll-signup]").forEach((el) => {
+        el.addEventListener("click", () => {
+          document.getElementById("signup").scrollIntoView({ behavior: "smooth" });
+        });
+      });
+
+      const SAMPLE_STORIES = {
+        divorce: {
+          slug: "divorce",
+          category: "Divorce",
+          situation: "Divorce / Separation",
+          title: "He couldn’t stop checking what his ex was doing. Here’s what finally helped.",
+          deck: "What changed when he stopped trying to control what happened outside his own life.",
+          paragraphs: [
+            "After the divorce was finalized, he told himself the hardest part was over. The paperwork was done. The apartment was quieter. What he didn’t expect was how often his thumb still opened her social profiles without him deciding to.",
+            "It wasn’t dramatic every time. Sometimes it was thirty seconds between meetings. Sometimes it was late at night, when the day finally slowed down and there was nothing left to organize. He’d tell himself he was only checking once, then find an hour gone.",
+            "What unsettled him wasn’t only what he saw. It was the way checking made the rest of his evening feel smaller. Plans with friends felt harder to enjoy. Even good days ended with the same loop: open the app, scroll, close it, feel worse, open it again.",
+            "He tried willpower first. Deleted the apps. Reinstalled them two days later. Made rules (“only weekends”), then broke them by Wednesday. The urge didn’t disappear because he named it “bad.” If anything, the secrecy made it sharper.",
+            "What eventually helped wasn’t a grand decision to “move on.” He made checking slightly harder: logged out, removed saved passwords, put the phone in another room after 9 p.m., and paired that with something else to do when the urge showed up: a short walk, a text to a friend, finishing a half-watched show.",
+            "None of it felt elegant. Some nights he still checked. But over a few weeks, the checking stopped being the default ending to every day. He noticed he had more attention left for his own routines, and for people who were actually still in his life.",
+            "He wouldn’t say he’s “over it.” He would say the urge visits less often, and when it does, it doesn’t get to run the whole evening anymore."
+          ],
+          helped: [
+            { title: "Creating distance", text: "He made it harder to impulsively check what his ex was doing." },
+            { title: "Redirecting his attention", text: "He started putting some of that energy back into his own routines and relationships." },
+            { title: "Letting it take time", text: "He didn’t expect the urge to disappear immediately." }
+          ],
+          standsOut: "What stands out to me isn’t simply that he stopped checking. It’s that he began shifting his attention from a life he could no longer control toward one he could actually influence.",
+          thinkAbout: "After a separation, it’s understandable to stay mentally connected to the other person’s life. I’d be curious about what that checking is providing in the moment, and what could gradually begin taking its place.",
+          reflect: "How much of your attention right now is going toward something you can’t control?"
+        },
+        "starting-over": {
+          slug: "starting-over",
+          category: "Starting Over",
+          situation: "Starting Over",
+          title: "At 39, he realized almost his entire social life disappeared after his separation.",
+          deck: "The small routines and social experiments that helped him rebuild.",
+          paragraphs: [
+            "For years, his weekends had a shape he barely noticed: her friends, couple dinners, shared group chats that quietly assumed they were a unit. After the separation, those invitations thinned out. Not cruelly, just naturally. People didn’t know what to say. He didn’t know who to text first.",
+            "Saturday mornings used to fill themselves. Suddenly they didn’t. He’d clean the kitchen, scroll, tell himself he should “get out more,” then end up watching something alone until it was dark again.",
+            "What surprised him most was how rusty the basics felt. Asking someone to grab coffee. Showing up to a meetup where he knew nobody. Saying yes to a coworker’s casual invite when his instinct was to protect the evening.",
+            "He started small on purpose. One recurring plan a week: a climbing gym drop-in, then a neighborhood run club, then coffee with a friend he hadn’t seen since before the relationship. Some outings were awkward. A few felt pointless. He went anyway.",
+            "The turning point wasn’t a new best friend appearing overnight. It was realizing that social life after a breakup often has to be rebuilt the way fitness is: inconsistently at first, then with enough repetition that it stops feeling like a performance.",
+            "A year later, his calendar still had empty weekends. But it also had people who knew him as himself, not as half of a couple. That didn’t erase the loneliness of the first months. It did make the loneliness less permanent."
+          ],
+          helped: [
+            { title: "One recurring plan", text: "A single weekly commitment gave his weekends a place to start." },
+            { title: "Low-stakes invitations", text: "Coffee, run club, and gym drop-ins were easier than trying to rebuild a whole social circle at once." },
+            { title: "Showing up imperfectly", text: "Awkward outings still counted. Repetition mattered more than chemistry on day one." }
+          ],
+          standsOut: "What stands out to me is how much of his social world had been organized around a relationship, and how rebuilding required treating friendship as something he practiced, not something that should just return.",
+          thinkAbout: "I’d be curious what “starting over” looks like in the smallest possible unit: one recurring plan, one invitation , rather than waiting until he felt ready for a full social life again.",
+          reflect: "If your social world got smaller after a change, what’s one low-stakes way you could practice being around people again?"
+        },
+        "career-change": {
+          slug: "career-change",
+          category: "Career Change",
+          situation: "Career Change",
+          title: "At 42, she realized she didn’t want the career she’d spent 18 years building.",
+          deck: "What she did before making the leap and what happened afterward.",
+          paragraphs: [
+            "She was good at the work. That was part of the problem. Promotions had arrived on schedule. People described her as steady. On paper, the career looked like something you weren’t supposed to walk away from.",
+            "The dissatisfaction didn’t arrive as a dramatic meltdown. It showed up as dread on Sunday nights, and a quiet boredom in meetings she used to find energizing. She kept waiting for the feeling to pass. It didn’t.",
+            "Quitting immediately felt irresponsible: mortgage, kids’ schedules, identity wrapped into a title. So she didn’t. She started treating the question like research instead of a cliff jump.",
+            "Over six months she talked to people in adjacent fields, took one evening class, and ran a small freelance project on the side that paid almost nothing but answered a specific question: could she stand doing this kind of work for real hours, not just in fantasy?",
+            "Some conversations were discouraging. The class was harder than she expected. The side project clarified both what she liked and what she still underestimated about the transition.",
+            "When she eventually made a move, it wasn’t into a dream job with a perfect story. It was into a role that paid less at first and required learning curves she found humbling. She still has days where she wonders if she made it harder than it needed to be.",
+            "What changed most wasn’t that every doubt disappeared. It’s that the Sunday-night dread softened, replaced by a different kind of stress, the kind that comes with building something she actually chose."
+          ],
+          helped: [
+            { title: "Treating it like research", text: "Conversations, a class, and a side project answered questions quitting alone couldn’t." },
+            { title: "Not forcing an overnight leap", text: "She protected financial reality while testing whether the new direction was real." },
+            { title: "Accepting a messy middle", text: "The move still involved tradeoffs: less pay, more learning, fewer tidy narratives." }
+          ],
+          standsOut: "What stands out to me is the tension between sunk cost and aliveness, and how she gave herself evidence before asking her life to absorb a huge bet.",
+          thinkAbout: "I’d be curious what information she’s still missing, and what small experiment could reduce that uncertainty without requiring her to burn the whole path down first.",
+          reflect: "What would you need to learn through a conversation, a class, or a small test , before a bigger career decision felt clearer?"
+        },
+        loneliness: {
+          slug: "loneliness",
+          category: "Loneliness",
+          situation: "Loneliness / Friendships",
+          title: "He moved to a new city at 36 and spent most weekends alone.",
+          deck: "One year later, his life looked completely different.",
+          paragraphs: [
+            "The move made sense on paper: a better job, a nicer apartment, a city he’d always said he wanted. What he underestimated was how long it would take for a place to feel inhabited by people who knew him.",
+            "Weekends stretched. He’d walk neighborhoods that looked lively and still feel invisible. Group chats from his old city kept moving without him. He told friends back home he was “settling in,” which mostly meant he was alone with grocery runs and streaming.",
+            "He tried the obvious things , an app for meeting people, a professional mixer, a volunteer shift. Some were fine. Most were effortful in a way that made him want to retreat the second he got home.",
+            "What slowly changed wasn’t a single breakthrough friendship. It was stacking small repetitions: the same coffee shop, the same Wednesday class, saying yes twice to the same acquaintance’s invite instead of waiting to feel instant chemistry.",
+            "A few people stuck. More didn’t. He learned that adult friendship in a new city often looks like parallel orbits that occasionally overlap, not the ready-made circles he had at 22.",
+            "A year later, he still spent some weekends alone. The difference was that alone no longer meant stranded. There were a handful of people he could text without drafting the message for twenty minutes, and plans that didn’t all depend on him inventing them from scratch."
+          ],
+          helped: [
+            { title: "Repeated small contact", text: "Same places and same people made connection less dependent on one perfect outing." },
+            { title: "Lowering the chemistry bar", text: "He stopped requiring instant closeness before a second invite counted as progress." },
+            { title: "Accepting uneven weeks", text: "Some lonely weekends remained. They just stopped defining the whole year." }
+          ],
+          standsOut: "What stands out to me is how loneliness after a move often isn’t a character flaw: it’s a lack of shared history, and shared history takes repetition.",
+          thinkAbout: "I’d be curious what “enough connection” looks like in practical terms for him, not a packed social calendar, but a few reliable overlaps he can return to.",
+          reflect: "Where in your week could the same people see you more than once, even in a small way?"
+        },
+        "feeling-stuck": {
+          slug: "feeling-stuck",
+          category: "Feeling Stuck",
+          situation: "Feeling Stuck",
+          title: "She didn’t need a complete reinvention. She needed one useful first move.",
+          deck: "The small change that helped her regain momentum.",
+          paragraphs: [
+            "Her list of things to fix had grown so long it stopped being motivating. Health, career, apartment, relationships, money: every area felt overdue. On bad days, starting anywhere felt like admitting how behind she was.",
+            "She’d tried sweeping plans before: new morning routines, ambitious month-long challenges, color-coded resets that lasted nine days. Each collapse confirmed the story that she couldn’t stick with anything.",
+            "What shifted wasn’t a sudden surge of discipline. It was narrowing the question from “How do I overhaul my life?” to “What’s one area where a small win would make the rest feel slightly less heavy?”",
+            "She chose sleep, not because it was glamorous, but because everything else got sharper when she was exhausted. For three weeks her only “project” was a consistent wind-down and a phone charger outside the bedroom.",
+            "It didn’t fix her job or her dating life. It did make mornings less foggy, which made one hard conversation at work easier to have, which made the stuck feeling less total.",
+            "She still has a long list. The difference is she no longer treats the whole list as the starting line. Momentum came from one bounded move: unfinished elsewhere, but no longer frozen everywhere."
+          ],
+          helped: [
+            { title: "Narrowing the field", text: "One area replaced an overwhelming reinvention plan." },
+            { title: "Choosing a leverage point", text: "Sleep wasn’t the whole problem , it was a place where progress spilled into other days." },
+            { title: "Dropping the all-or-nothing frame", text: "Other areas stayed imperfect while one useful change got room to stick." }
+          ],
+          standsOut: "What stands out to me is how “stuck” often comes from too many open loops at once, and how one concrete move can restore a sense of agency without requiring a full life redesign.",
+          thinkAbout: "I’d be curious which part of her life, if it improved even slightly, would make the other pressures feel more workable, not solved, just less fused together.",
+          reflect: "If you could only improve one small area this month, which one would make everything else feel a little more possible?"
+        },
+        "dating-again": {
+          slug: "dating-again",
+          category: "Dating Again",
+          situation: "Dating Again",
+          title: "He waited two years after divorce before dating seriously again.",
+          deck: "What he wishes he had understood before starting.",
+          paragraphs: [
+            "Two years wasn’t a carefully researched timeline. It was how long it took before the idea of dating felt less like betrayal and more like a maybe. Friends had opinions. Some said he was waiting too long, others said he wasn’t ready. He mostly felt unsure.",
+            "When he finally said yes to a setup, he expected clarity: either sparks or an obvious no. Instead he got something murkier: pleasant dinners that left him comparing every detail to a marriage that no longer existed.",
+            "Early dates surfaced questions he thought he’d already answered. Was he lonely, or interested in this person? Was caution wisdom, or was he still organizing his life around an old relationship by refusing anything new?",
+            "He dated lightly for a while: fewer apps, more willingness to end things that felt forced. He also noticed a pattern: he sometimes chose people who felt “safe” because they asked little of him emotionally, then felt bored and blamed dating itself.",
+            "What he eventually understood wasn’t that two years was the correct wait for everyone. It was that readiness wasn’t a switch. It showed up unevenly: more available some months, more raw on anniversaries, more open when his own life felt full enough that dating wasn’t the only source of meaning.",
+            "He’s seeing someone now, carefully. It still gets complicated. The useful change is that he’s less interested in performing “ready” and more honest about what he’s actually available for."
+          ],
+          helped: [
+            { title: "Dropping the perfect timeline", text: "Two years was his pace, not a rule he needed everyone else to validate." },
+            { title: "Noticing comparison", text: "He saw when dates were really about his past relationship, not the person in front of him." },
+            { title: "Building a life alongside dating", text: "Dating mattered more when it wasn’t the only place he looked for connection or purpose." }
+          ],
+          standsOut: "What stands out to me is how “readiness” after divorce is often treated like a finish line. When it’s usually uneven, and honesty about that unevenness matters more than the number of years.",
+          thinkAbout: "I’d be curious what he’s hoping dating will prove, and what he’d want dating to be for if it didn’t have to fix loneliness or rewrite the past.",
+          reflect: "If you started dating again, what would you want it to be for , besides proving that you’re ready?"
+        }
+      };
+
+      function escapeHtml(str) {
+        return String(str || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function renderStoryArticle(story) {
+        const helpedHtml = story.helped
+          .map(
+            (h) =>
+              "<li><strong>" +
+              escapeHtml(h.title) +
+              "</strong><span>" +
+              escapeHtml(h.text) +
+              "</span></li>"
+          )
+          .join("");
+        const proseHtml = story.paragraphs
+          .map((p) => "<p>" + escapeHtml(p) + "</p>")
+          .join("");
+        return (
+          '<a class="story-back" href="#examples">← Back to Stories</a>' +
+          '<header class="story-article-header">' +
+          '<span class="cat">' +
+          escapeHtml(story.category) +
+          "</span>" +
+          "<h1>" +
+          escapeHtml(story.title) +
+          "</h1>" +
+          '<p class="story-deck">' +
+          escapeHtml(story.deck) +
+          "</p>" +
+          "</header>" +
+          '<div class="story-prose">' +
+          proseHtml +
+          '<p class="story-disclosure">Sample story inspired by common experiences people share publicly online.</p>' +
+          "</div>" +
+          '<section class="story-section" aria-labelledby="helped-heading">' +
+          '<h2 id="helped-heading">What seemed to help</h2>' +
+          '<ul class="story-helped-list">' +
+          helpedHtml +
+          "</ul>" +
+          "</section>" +
+          '<section class="story-section" aria-labelledby="coach-heading-story">' +
+          '<h2 id="coach-heading-story">A Coach-Halo coach’s perspective</h2>' +
+          '<p class="story-coach-sub">What stands out to me</p>' +
+          "<blockquote>“" +
+          escapeHtml(story.standsOut) +
+          "”</blockquote>" +
+          '<p class="story-coach-sub">How I’d think about it</p>' +
+          '<p class="coach-think">“' +
+          escapeHtml(story.thinkAbout) +
+          "”</p>" +
+          "</section>" +
+          '<section class="story-section" aria-labelledby="reflect-heading">' +
+          '<h2 id="reflect-heading">Something to think about</h2>' +
+          '<p class="story-reflect-q">' +
+          escapeHtml(story.reflect) +
+          "</p>" +
+          "</section>" +
+          '<section class="story-subscribe" aria-labelledby="story-cta-heading">' +
+          '<h2 id="story-cta-heading">Going through something similar?</h2>' +
+          '<p class="lede">Every week, we find real stories from people dealing with situations like yours, what helped them move forward, and perspectives from Coach-Halo coaches.</p>' +
+          '<a class="btn btn-primary btn-lg" href="#signup" data-story-signup="' +
+          escapeHtml(story.situation) +
+          '">Get Stories Matched to Me →</a>' +
+          '<p class="fine">Free every week. Unsubscribe anytime.</p>' +
+          "</section>"
+        );
+      }
+
+      function showLanding() {
+        document.body.classList.remove("is-reading-story");
+        const article = document.getElementById("story-article");
+        if (article) article.innerHTML = "";
+      }
+
+      function openStory(slug) {
+        const story = SAMPLE_STORIES[slug];
+        if (!story) {
+          showLanding();
+          return;
+        }
+        document.body.classList.add("is-reading-story");
+        document.getElementById("story-article").innerHTML = renderStoryArticle(story);
+        window.scrollTo(0, 0);
+      }
+
+      function routeFromHash() {
+        const hash = (location.hash || "").replace(/^#/, "");
+        const match = hash.match(/^story\/([a-z0-9-]+)$/i);
+        if (match) openStory(match[1].toLowerCase());
+        else showLanding();
+      }
+
+      window.addEventListener("hashchange", routeFromHash);
+      routeFromHash();
+
+      document.getElementById("story-view").addEventListener("click", (e) => {
+        const signup = e.target.closest("[data-story-signup]");
+        if (signup) {
+          e.preventDefault();
+          const situation = signup.getAttribute("data-story-signup");
+          showLanding();
+          history.replaceState(null, "", "#signup");
+          if (situation) selectSituation(situation);
+          setTimeout(() => {
+            const el = document.getElementById("signup");
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+          }, 30);
+          return;
+        }
+        const back = e.target.closest(".story-back");
+        if (back) {
+          /* hashchange handles showLanding */
+        }
+      });
+
+      document.querySelectorAll("[data-next]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          if (state.step === 1) {
+            if (!state.situation) {
+              showErr("err-situation", true);
+              return;
+            }
+            setStep(2);
+            return;
+          }
+          if (state.step === 2) {
+            state.struggles = document.getElementById("struggles").value.trim();
+            setStep(3);
+            return;
+          }
+          if (state.step === 3) {
+            const name = document.getElementById("first-name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            let bad = false;
+            if (!name) { showErr("err-name", true); bad = true; } else showErr("err-name", false);
+            if (!emailOk(email)) { showErr("err-email", true); bad = true; } else showErr("err-email", false);
+            if (bad) return;
+
+            state.firstName = name;
+            state.email = email;
+            state.coachingInterest = "pending_coach_connect";
+
+            const saveBtn = document.getElementById("save-lead-btn");
+            saveBtn.disabled = true;
+            saveBtn.textContent = "Matching a coach…";
+
+            const coach = await matchCoachForSignup();
+            if (coach) fillCoachUI(coach);
+            else fillGenericCoachUI();
+
+            saveBtn.textContent = "Saving…";
+            await saveLead("lead_saved");
+            saveBtn.disabled = false;
+            saveBtn.textContent = "Get My Weekly Stories";
+
+            document.getElementById("coach-offer-main").hidden = false;
+            document.getElementById("coach-availability").hidden = true;
+            setStep(4);
+          }
+        });
+      });
+
+      document.querySelectorAll("[data-back]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          if (btn.disabled) return;
+          if (state.step === 2) setStep(1);
+          else if (state.step === 3) setStep(2);
+        });
+      });
+
+      document.getElementById("connect-coach-btn").addEventListener("click", () => {
+        document.getElementById("coach-offer-main").hidden = true;
+        document.getElementById("coach-availability").hidden = false;
+        try {
+          const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          const sel = document.getElementById("timezone");
+          if ([].some.call(sel.options, (o) => o.value === tz)) sel.value = tz;
+        } catch (e) { /* ignore */ }
+      });
+
+      document.getElementById("back-to-offer").addEventListener("click", () => {
+        document.getElementById("coach-availability").hidden = true;
+        document.getElementById("coach-offer-main").hidden = false;
+      });
+
+      document.getElementById("skip-coach-btn").addEventListener("click", async () => {
+        state.coachingInterest = "declined_coach_connect";
+        await saveLead("coach_connect_declined");
+        finishThanks(false);
+      });
+
+      document.getElementById("confirm-connect-btn").addEventListener("click", async () => {
+        const tz = document.getElementById("timezone").value;
+        const s1 = document.getElementById("slot1").value;
+        const s2 = document.getElementById("slot2").value;
+        const s3 = document.getElementById("slot3").value;
+        const confirmed = document.getElementById("attend-confirm").checked;
+        let bad = false;
+        if (!tz) { showErr("err-tz", true); bad = true; } else showErr("err-tz", false);
+        if (!s1) { showErr("err-slots", true); bad = true; } else showErr("err-slots", false);
+        if (!confirmed) { showErr("err-confirm", true); bad = true; } else showErr("err-confirm", false);
+        if (bad) return;
+
+        state.coachingInterest = "requested_complimentary_connect";
+        state.connected = true;
+        await saveLead("coach_connect_request", {
+          coachInterest: true,
+          availabilityTimezone: tz,
+          availabilitySlot1: s1,
+          availabilitySlot2: s2 || "",
+          availabilitySlot3: s3 || "",
+          discussionTopic: document.getElementById("topic").value.trim()
+        });
+        finishThanks(true);
+      });
+
+      function finishThanks(withCoach) {
+        const title = document.getElementById("thanks-title");
+        const body = document.getElementById("thanks-body");
+        const stories = document.getElementById("thanks-stories");
+        title.textContent = "You’re in.";
+        if (withCoach && state.matchedCoach && state.matchedCoach.name) {
+          const coachName = String(state.matchedCoach.name).trim();
+          body.textContent =
+            "Watch your inbox for a welcome email from Joaquin, creator of Coach-Halo, and an introduction to " +
+            coachName +
+            ".";
+        } else if (withCoach) {
+          body.textContent =
+            "Watch your inbox for a welcome email from Joaquin, creator of Coach-Halo, and an introduction to your matched coach.";
+        } else {
+          body.textContent =
+            "Watch your inbox for a welcome email from Joaquin, creator of Coach-Halo.";
+        }
+        stories.textContent =
+          "We’ll also start sending you free weekly stories based on what you told us you’re going through.";
+        setStep(5);
+      }
+    })();
+  </script>
+</body>
+</html>

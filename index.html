@@ -58,9 +58,54 @@
       gap: 16px;
     }
     .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       font-weight: 700;
       letter-spacing: -0.02em;
       color: var(--text);
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: #0a0a0a;
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.65rem;
+      letter-spacing: -0.04em;
+      flex-shrink: 0;
+    }
+    .logo-lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      min-width: 0;
+    }
+    .logo-name {
+      font-weight: 700;
+      color: var(--text);
+    }
+    .logo-sep {
+      width: 1px;
+      height: 0.85em;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .logo-section {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    @media (max-width: 480px) {
+      .logo-sep,
+      .logo-section { display: none; }
     }
     .nav-links {
       display: flex;
@@ -432,11 +477,18 @@
 <body>
   <header>
     <nav class="nav" aria-label="Primary">
-      <span class="logo">Coach-Halo</span>
+      <a class="logo" href="/">
+        <span class="logo-mark" aria-hidden="true">CH</span>
+        <span class="logo-lockup">
+          <span class="logo-name">Coach-Halo</span>
+          <span class="logo-sep" aria-hidden="true"></span>
+          <span class="logo-section">For Coaches</span>
+        </span>
+      </a>
       <div class="nav-links">
         <a href="https://calendly.com/coach-halo/coah-halo-discovery-call" target="_blank" rel="noopener noreferrer">📞 Book a call</a>
         <a href="#pricing">See pricing</a>
-        <a class="btn btn-ghost login-btn" href="coach-portal.html">
+        <a class="btn btn-ghost login-btn" href="/coach-portal.html">
           <span>Log in</span>
           <span class="login-sub">Paid coaches only</span>
         </a>
@@ -458,7 +510,7 @@
           <a class="btn btn-ghost" href="#pricing">See plans</a>
         </div>
         <p class="trust">
-          Trusted by 60+ coaches · Cancel anytime ·
+          Trusted by 100+ coaches · Cancel anytime ·
           <a href="https://job-halo.com/coaching">See the public coach directory</a>
         </p>
       </div>
@@ -483,8 +535,7 @@
     <section id="how">
       <h2>Why Join Our Network of Coaches?</h2>
       <p class="section-intro">
-        When you sign up, you'll start receiving AI-matched coaching opportunities directly in your inbox.
-        From there, you can boost your visibility with optional upgrades whenever you're ready.
+        When you join, Coach-Halo works to connect you with potential clients through a growing network of lead sources, including direct outreach, Thumbtack, Bark, Coach-Halo Stories, and people actively looking for coaching. We match opportunities based on your focus areas, ideal client, and coaching approach.
       </p>
       <div class="grid-4">
         <article class="feature">
@@ -521,8 +572,16 @@
           <p style="font-size:0.88rem;font-weight:600;">— Brittany S., Career Coach</p>
         </article>
         <article class="plan">
-          <p style="font-size:1rem;line-height:1.65;color:var(--muted);flex:1;margin:0 0 20px;">"Coach-Halo made it easy to connect with tech professionals who actually need support. Within weeks, I had three serious leads — no ad spend, no lead generation hustle."</p>
-          <p style="font-size:0.88rem;font-weight:600;">— Zeid T., Career Coach</p>
+          <p style="font-size:1rem;line-height:1.65;color:var(--muted);flex:1;margin:0 0 20px;">"Very simple to navigate, open a profile, and lovely follow-up on every lead. Reliable and trustworthy. I like that each client is interviewed and filtered for safety."</p>
+          <p style="font-size:0.88rem;font-weight:600;">— Anette L., Lifestyle and Wellness Coach</p>
+        </article>
+        <article class="plan">
+          <p style="font-size:1rem;line-height:1.65;color:var(--muted);flex:1;margin:0 0 20px;">"What I appreciate about Coach-Halo is the thoughtful, data-driven approach. It feels intentional and transparent, not hype-driven. Joaquin clearly cares about both coaches and their clients. I absolutely recommend Coach-Halo."</p>
+          <p style="font-size:0.88rem;font-weight:600;">— Denise F., Create Loudly</p>
+        </article>
+        <article class="plan">
+          <p style="font-size:1rem;line-height:1.65;color:var(--muted);flex:1;margin:0 0 20px;">"Coach-Halo is very committed to ensuring good matches between coaches and people looking to grow. They are responsive and easy to get ahold of with questions or to collaborate."</p>
+          <p style="font-size:0.88rem;font-weight:600;">— Jake R., Financial Coach, Founder</p>
         </article>
       </div>
     </section>
@@ -559,7 +618,7 @@
       </p>
       <div class="toggle" role="group" aria-label="Billing period" id="billing-toggle">
         <button type="button" class="active" data-period="monthly" aria-pressed="true">Monthly</button>
-        <button type="button" data-period="annual" aria-pressed="false">Annual — save 30%</button>
+        <button type="button" data-period="annual" aria-pressed="false">Annual: save 30%</button>
       </div>
 
       <div class="plans">
@@ -574,9 +633,10 @@
             <li>AI powered lead matching using your full coaching profile</li>
             <li>Opportunities based on real demand</li>
             <li>Managed outreach &amp; follow-ups across multiple channels</li>
+            <li>Exposure to potential clients through Coach-Halo Stories</li>
             <li>Leads booked directly to your calendar</li>
             <li>Featured placement in the Coach-Halo directory</li>
-            <li>Monthly profile performance report</li>
+            <li>Coach portal to keep track of outreach activity</li>
             <li>Monthly office hours with the founder</li>
             <li>Cancel anytime</li>
           </ul>
@@ -588,10 +648,35 @@
     <section class="faq" id="faq">
       <h2>Frequently asked questions</h2>
       <details>
+        <summary>What’s the difference between free and paid?</summary>
+        <p>
+          Free is a preview of Coach-Halo’s matching system. You may receive alerts for real opportunities where your profile would have been a potential match.
+        </p>
+        <p>
+          Paid is the full service. We actively match your profile, conduct personalized outreach, follow up with potential clients, and work to turn interest into introductions and discovery conversations.
+        </p>
+        <p>
+          Free alert frequency does not reflect the significantly higher volume of matching and outreach performed for paid coaches.
+        </p>
+      </details>
+      <details>
+        <summary>Can I pursue opportunities I receive on the free plan?</summary>
+        <p>
+          Yes. When a free alert comes from a public lead marketplace, such as Bark or Thumbtack, we may include a link to the original listing. You can choose to pursue it directly through that platform at your own cost and discretion.
+        </p>
+      </details>
+      <details>
         <summary>How often will my profile be shared with potential coachees?</summary>
+        <!-- FLAG before publish: verify "40–60 qualified match opportunities per month" is still accurate and supportable. -->
         <p>
           Coach-Halo facilitates 40–60 qualified match opportunities per month across the platform. The number of times your profile is shown depends on your niche, demand, positioning, and availability.
           We focus on high-intent visibility, not inflated numbers.
+        </p>
+      </details>
+      <details>
+        <summary>Where do Coach-Halo opportunities come from?</summary>
+        <p>
+          Coach-Halo generates potential coaching opportunities through multiple channels, including direct outreach, advertising, referrals, Thumbtack, Bark, our coach directory, and Coach-Halo Stories. Stories helps us reach people who may be navigating a challenge before they're ready to actively search for a coach. When someone expresses interest in personal coaching, we can match them with a relevant coach based on their needs and the coach's focus and approach.
         </p>
       </details>
       <details>
@@ -603,6 +688,7 @@
       </details>
       <details>
         <summary>Where are potential coachees located?</summary>
+        <!-- FLAG before publish: verify geographic mix percentages (75% US / ~20% Canada+Europe) if still cited. -->
         <p>
           Approximately 75% of match opportunities come from the United States. Around 20% come from Canada and European countries, with the remaining percentage coming from other regions.
           One of the unique advantages of coaching is the ability to create meaningful impact across borders. Location is rarely a limitation when building a global practice.
@@ -617,15 +703,7 @@
         <p>You do. You set your own pricing, availability, and terms. We simply help connect you with potential clients.</p>
       </details>
       <details>
-        <summary>I just want to be listed in the directory. Can I do that?</summary>
-        <p>
-          Yes. You can <a href="https://buy.stripe.com/8x228sf050tl03RdmM1gt0S" target="_blank" rel="noopener noreferrer">join the Coach Directory for $99.99 per year</a>. This gives you a public coach profile and allows people to contact you directly.
-          It does not include AI matching, managed outreach, or priority directory placement.
-          If you want AI-powered matching and priority placement, you can upgrade to the AI Matching plan at any time.
-        </p>
-      </details>
-      <details>
-        <summary>I still have questions — can I contact you?</summary>
+        <summary>I still have questions. Can I contact you?</summary>
         <p>
           Absolutely! Feel free to email us at
           <a href="mailto:hello@coach-halo.com">hello@coach-halo.com</a>,
@@ -663,11 +741,11 @@
   <footer>
     <p>Headquartered in San Francisco, California · © 2026 JH People Insights LLC, doing business as Coach-Halo.com. All rights reserved.</p>
     <p>
-      <a href="#">Terms and Conditions</a>
-      · <a href="#">Privacy Policy</a>
-      · <a href="#">Data Retention Policy</a>
-      · <a href="#">Data Sharing Policy</a>
-      · <a href="#">Cookie Policy</a>
+      <a href="/stories/">Stories</a>
+      · <a href="/privacy/">Privacy</a>
+      · <a href="/terms/">Terms</a>
+      · <a href="/coach-terms/">Coach Terms</a>
+      · <a href="/disclaimer/">Disclaimer</a>
     </p>
   </footer>
 
@@ -692,7 +770,7 @@
         if (annual) {
           if (amountEl) amountEl.textContent = "$25";
           if (billedEl) {
-            billedEl.textContent = "Billed annually · $420/yr total · Save 30% vs monthly";
+            billedEl.textContent = "Billed annually · $300/yr total · Save 30% vs monthly";
             billedEl.hidden = false;
           }
           if (joinBtn) joinBtn.href = ANNUAL_URL;
