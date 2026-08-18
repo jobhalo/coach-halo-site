@@ -1872,6 +1872,27 @@
     .story-subscribe .fine {
       margin: 0.65rem 0 0;
     }
+    body.connect-flow .hero-wrap,
+    body.connect-flow #what-you-get,
+    body.connect-flow #how,
+    body.connect-flow #examples,
+    body.connect-flow #coach,
+    body.connect-flow #trust,
+    body.connect-flow .final,
+    body.connect-flow .nav-actions .btn-primary {
+      display: none !important;
+    }
+    body.connect-flow #signup {
+      padding-top: clamp(1.5rem, 5vw, 3rem);
+      padding-bottom: clamp(3rem, 8vw, 5rem);
+    }
+    body.connect-flow #wizard-progress,
+    body.connect-flow .on-list {
+      display: none;
+    }
+    body.connect-flow #back-to-offer {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -2101,9 +2122,9 @@
     <section class="section section-alt" id="signup" aria-labelledby="signup-heading">
       <div class="wrap">
         <div class="signup-shell">
-          <p class="eyebrow">Free weekly stories</p>
+          <p class="eyebrow" id="signup-eyebrow">Free weekly stories</p>
           <h2 id="signup-heading">What are you going through <em>right now?</em></h2>
-          <p class="lede">Your answers help us choose stories and coach perspectives that are more relevant to what you’re going through.</p>
+          <p class="lede" id="signup-lede">Your answers help us choose stories and coach perspectives that are more relevant to what you’re going through.</p>
 
           <div class="progress" id="wizard-progress" aria-live="polite">
             <span class="progress-label" id="progress-label">Step 1 of 5 · Situation</span>
@@ -2214,6 +2235,18 @@
 
             <div id="coach-availability" hidden>
               <div class="offer-card">
+                <div id="connect-identity" hidden>
+                  <div class="field">
+                    <label for="connect-first-name">First name</label>
+                    <input id="connect-first-name" type="text" autocomplete="given-name" />
+                    <p class="error-msg" id="err-connect-name" role="alert">Please enter your first name.</p>
+                  </div>
+                  <div class="field">
+                    <label for="connect-email">Email</label>
+                    <input id="connect-email" type="email" autocomplete="email" />
+                    <p class="error-msg" id="err-connect-email" role="alert">Please enter the email you used for Stories.</p>
+                  </div>
+                </div>
                 <p class="label">When works for a free discovery call?</p>
                 <div class="field">
                   <label for="timezone">Your timezone</label>
@@ -2365,7 +2398,9 @@
         coachingInterest: "pending_coach_connect",
         connected: false,
         coachCategory: "",
-        matchedCoach: null
+        matchedCoach: null,
+        leadSource: "stories-landing",
+        connectFlow: false
       };
 
       const progressLabel = document.getElementById("progress-label");
@@ -2655,7 +2690,7 @@
           email: state.email,
           situation: state.situation,
           struggles: state.struggles,
-          source: "stories-landing",
+          source: state.leadSource || "stories-landing",
           status: "subscribed",
           signedUpAt: new Date().toISOString(),
           coachingInterest: state.coachingInterest
@@ -3001,6 +3036,87 @@
         window.scrollTo(0, 0);
       }
 
+      function parseConnectQuery() {
+        const q = new URLSearchParams(location.search);
+        if (q.get("connect") !== "1") return null;
+        return {
+          email: (q.get("email") || "").trim(),
+          firstName: (q.get("first") || "").trim(),
+          recordId: (q.get("rid") || "").trim(),
+          situation: (q.get("sit") || "").trim(),
+          coach: {
+            record_id: (q.get("cid") || "").trim(),
+            name: (q.get("cname") || "").trim(),
+            title: (q.get("ctitle") || "").trim(),
+            image: (q.get("cimage") || "").trim(),
+            coach_email: (q.get("cemail") || "").trim(),
+            short: (q.get("cshort") || "").trim()
+          }
+        };
+      }
+
+      function setSignupHeadingText(before, emText) {
+        const h2 = document.getElementById("signup-heading");
+        if (!h2) return;
+        h2.textContent = "";
+        h2.appendChild(document.createTextNode(before));
+        const em = document.createElement("em");
+        em.textContent = emText;
+        h2.appendChild(em);
+      }
+
+      function openEmailConnectFlow(params) {
+        state.connectFlow = true;
+        state.leadSource = "stories-email-cta";
+        state.email = params.email || "";
+        state.firstName = params.firstName || "";
+        state.recordId = params.recordId || null;
+        state.coachingInterest = "pending_coach_connect";
+        if (params.situation) selectSituation(params.situation);
+        document.body.classList.add("connect-flow");
+
+        const eyebrow = document.getElementById("signup-eyebrow");
+        const lede = document.getElementById("signup-lede");
+        const coach = params.coach || {};
+        if (coach.name) fillCoachUI(coach);
+        else fillGenericCoachUI();
+        const first = coachFirstName(state.matchedCoach);
+        if (eyebrow) eyebrow.textContent = "Free discovery call";
+        setSignupHeadingText("Confirm a time with ", first);
+        if (lede) {
+          lede.textContent =
+            "Share a few times that work. We’ll email an intro to " +
+            first +
+            " so you can see if working together feels like a fit. That call is not a free coaching session.";
+        }
+
+        document.getElementById("coach-offer-main").hidden = true;
+        document.getElementById("coach-availability").hidden = false;
+        const backOffer = document.getElementById("back-to-offer");
+        if (backOffer) backOffer.hidden = true;
+
+        const identity = document.getElementById("connect-identity");
+        if (identity) {
+          const needName = !state.firstName;
+          const needEmail = !state.email;
+          identity.hidden = !(needName || needEmail);
+          const nameInput = document.getElementById("connect-first-name");
+          const emailInput = document.getElementById("connect-email");
+          if (nameInput && state.firstName) nameInput.value = state.firstName;
+          if (emailInput && state.email) emailInput.value = state.email;
+        }
+
+        try {
+          const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          const sel = document.getElementById("timezone");
+          if (sel && [].some.call(sel.options, function (o) { return o.value === tz; })) sel.value = tz;
+        } catch (e) { /* ignore */ }
+
+        setStep(4);
+        const signup = document.getElementById("signup");
+        if (signup) signup.scrollIntoView({ behavior: "auto", block: "start" });
+      }
+
       function routeFromHash() {
         const hash = (location.hash || "").replace(/^#/, "");
         const match = hash.match(/^story\/([a-z0-9-]+)$/i);
@@ -3010,6 +3126,8 @@
 
       window.addEventListener("hashchange", routeFromHash);
       routeFromHash();
+      const connectParams = parseConnectQuery();
+      if (connectParams) openEmailConnectFlow(connectParams);
 
       const previewModal = document.getElementById("story-preview-modal");
       const previewBody = document.getElementById("preview-modal-body");
@@ -3193,6 +3311,10 @@
       });
 
       document.getElementById("skip-coach-btn").addEventListener("click", async () => {
+        if (state.connectFlow) {
+          window.location.href = "/stories/";
+          return;
+        }
         state.coachingInterest = "declined_coach_connect";
         await saveLead("coach_connect_declined");
         finishThanks(false);
@@ -3205,6 +3327,17 @@
         const s3 = document.getElementById("slot3").value;
         const confirmed = document.getElementById("attend-confirm").checked;
         let bad = false;
+        if (state.connectFlow) {
+          const ident = document.getElementById("connect-identity");
+          if (ident && !ident.hidden) {
+            const n = (document.getElementById("connect-first-name").value || "").trim();
+            const e = (document.getElementById("connect-email").value || "").trim();
+            if (!n) { showErr("err-connect-name", true); bad = true; } else showErr("err-connect-name", false);
+            if (!emailOk(e)) { showErr("err-connect-email", true); bad = true; } else showErr("err-connect-email", false);
+            if (n) state.firstName = n;
+            if (emailOk(e)) state.email = e;
+          }
+        }
         if (!tz) { showErr("err-tz", true); bad = true; } else showErr("err-tz", false);
         if (!s1) { showErr("err-slots", true); bad = true; } else showErr("err-slots", false);
         if (!confirmed) { showErr("err-confirm", true); bad = true; } else showErr("err-confirm", false);
@@ -3227,6 +3360,21 @@
         const title = document.getElementById("thanks-title");
         const body = document.getElementById("thanks-body");
         const stories = document.getElementById("thanks-stories");
+        const spam = document.getElementById("thanks-spam");
+        if (state.connectFlow && withCoach) {
+          const coachName = state.matchedCoach && state.matchedCoach.name
+            ? String(state.matchedCoach.name).trim()
+            : "your matched coach";
+          title.textContent = "Request sent.";
+          body.textContent =
+            "We’ll email an introduction to " +
+            coachName +
+            " with the times you shared. That call is a free discovery call to see if working together feels like a fit. It is not a free coaching session.";
+          stories.textContent = "You’ll keep receiving your weekly stories.";
+          if (spam) spam.hidden = true;
+          setStep(5);
+          return;
+        }
         title.textContent = "You’re in.";
         if (withCoach && state.matchedCoach && state.matchedCoach.name) {
           const coachName = String(state.matchedCoach.name).trim();
