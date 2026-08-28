@@ -1745,6 +1745,9 @@
         var goalsRaw = (document.getElementById("goals").value || "").trim();
         var goals = sitLabel ? ("[Selected situation: " + sitLabel + "]\n\n" + goalsRaw) : goalsRaw;
         var utm = getUtmParams();
+        var guessedTz = "";
+        try { guessedTz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) { guessedTz = ""; }
+        var tz = getMatchTimezoneValue() || guessedTz;
         return {
           firstName: (document.getElementById("firstName").value || "").trim(),
           email: (document.getElementById("email").value || "").trim(),
@@ -1757,6 +1760,7 @@
           goalsRaw: goalsRaw,
           startDate: startDate,
           timeline: startDate,
+          timezone: tz,
           style: (document.querySelector('input[name="style"]:checked') || {}).value || "",
           genderPreference: (document.querySelector('input[name="genderPreference"]:checked') || {}).value || "",
           notes: (document.getElementById("notes").value || "").trim(),
@@ -1943,9 +1947,10 @@
         matchState.matchedCoachPhoto = match.image || "";
         matchState.matchedCoachTestimonial = match.review || "";
         matchState.matchedCoachTestimonialBy = match.reviewBy || "";
-        matchState.matchedCoachMatchReason =
-          "Based on your goals" + stylePart + ", " + (match.short || match.name) +
-          " appears to be one of the strongest available matches in our network." + genderPart;
+        matchState.matchedCoachMatchReason = match.match_reason
+          ? match.match_reason
+          : ("Based on your goals" + stylePart + ", " + (match.short || match.name) +
+          " appears to be one of the strongest available matches in our network." + genderPart);
         var matchTz = getMatchTimezoneEl();
         if (matchTz && !matchTz.value) {
           var guess = "";
@@ -2249,7 +2254,9 @@
           } else {
             var msg = matchFailureMessage(matchReady);
             var errCode = (matchReady && matchReady.error) ? matchReady.error : "unknown";
-            sendLeadToZapier(payload, null, "findyourcoach_match_failed", errCode === "no_match" ? "no_match" : "error", errCode);
+            if (errCode !== "no_match") {
+              sendLeadToZapier(payload, null, "findyourcoach_match_failed", "error", errCode);
+            }
             if (matchError) {
               form.style.display = "";
               if (progressEl) progressEl.style.display = "";
