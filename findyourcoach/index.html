@@ -8,9 +8,10 @@
   <script defer data-website-id="dfid_ImJXeenE5zJoIlqGSMtN5" data-domain="coach-halo.com" src="https://datafa.st/js/script.js"></script>
   <style>
     :root {
-      --bg: #ffffff;
-      --surface: #fafafa;
-      --border: #e8e8e8;
+      --bg: #faf8f4;
+      --bg-soft: #f3eee6;
+      --surface: #ffffff;
+      --border: #e6e0d6;
       --text: #0a0a0a;
       --muted: #6b6b6b;
       --accent: #0a0a0a;
@@ -28,10 +29,14 @@
     body {
       margin: 0;
       font-family: var(--font);
-      background: var(--bg);
+      background:
+        radial-gradient(ellipse 90% 42% at 50% -8%, #f6efe4 0%, transparent 58%),
+        var(--bg);
       color: var(--text);
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
+    body.modal-open { overflow: hidden; }
     a { color: var(--text); text-underline-offset: 2px; }
     a:hover { color: var(--muted); }
 
@@ -845,12 +850,104 @@
     }
     footer p { margin: 0 0 8px; }
     footer a { color: var(--muted); text-decoration: none; }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+    }
+    .offer { font-size: 1.02rem; }
+    #thumbtack-proof { display: inline-flex; flex-direction: column; align-items: flex-start; text-decoration: none; }
+    #coaching-type-fieldset[hidden] { display: none !important; }
+    dialog::backdrop { background: rgba(42, 28, 16, 0.42); }
+    .skip {
+      position: absolute;
+      left: 12px;
+      top: -40px;
+      z-index: 100;
+      background: var(--accent);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    .skip:focus { top: 12px; }
+    .brand { display: inline-flex; align-items: center; gap: 8px; }
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.64rem;
+      letter-spacing: -0.04em;
+    }
+    .booking-note { margin: 14px 0 0; font-size: 0.86rem; color: var(--muted); }
+    .example-grid { display: grid; gap: 14px; }
+    @media (min-width: 760px) { .example-grid { grid-template-columns: 1fr 1fr; } }
+    .example-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 20px 18px 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    .example-kicker {
+      margin: 0 0 8px;
+      font-size: 0.72rem;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .example-more { display: none; margin-top: 8px; }
+    .example-card.is-open .example-more { display: block; }
+    .example-actions {
+      margin-top: auto;
+      padding-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 16px;
+    }
+    .text-btn {
+      background: none;
+      border: 0;
+      padding: 8px 0;
+      min-height: 44px;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .find-support {
+      font-size: 0.88rem;
+      font-weight: 650;
+      text-decoration: none;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    input[type="text"], input[type="email"], input[type="date"], select, textarea {
+      background: #fff;
+      font-size: 16px;
+    }
+    header { background: rgba(250, 248, 244, 0.92); }
   </style>
 </head>
 <body>
+  <a class="skip" href="#matching-form">Skip to form</a>
   <header>
     <nav class="nav" aria-label="Main">
-      <a class="logo" href="/">Coach-Halo</a>
+      <a class="logo brand" href="/"><span class="brand-mark" aria-hidden="true">CH</span><span class="brand-name">Coach-Halo</span></a>
       <div class="nav-links">
         <a href="#how-it-works">How it works</a>
         <a href="#faq">FAQ</a>
@@ -862,51 +959,58 @@
     <!-- Hero + form above the fold -->
     <section class="hero-funnel" id="matching-form" aria-labelledby="hero-heading">
       <div class="hero-copy">
-        <span class="eyebrow">Free coach matching</span>
-        <h1 id="hero-heading">Get matched with the right coach for your next step</h1>
-        <p class="lead">
-          Tell us what you need. We will pair you with a vetted coach from our network and introduce you for a complimentary first conversation.
+        <h1 id="hero-heading">Support for what comes next.</h1>
+        <p class="lead">Talk through what you’re facing, clarify what matters to you, and explore your next steps with a life coach.</p>
+        <p class="offer" style="margin:0 0 8px;font-weight:650;">Your first discovery call is free.</p>
+        <p class="hero-proof" style="margin:0 0 18px;">
+          <a id="thumbtack-proof" href="https://www.thumbtack.com/ca/san-francisco/resume-writers-and-editors/ch-coaching/service/552112721800904704" target="_blank" rel="noopener noreferrer" aria-label="5.0 on Thumbtack · Top Pro · Read reviews." aria-haspopup="dialog" aria-controls="tt-dialog" aria-expanded="false">
+            <span class="hero-proof-rating" aria-hidden="true" style="display:flex;align-items:center;gap:6px;color:#00b67a;font-weight:700;">5.0 <span>★★★★★</span></span>
+            <span class="hero-proof-pro" aria-hidden="true" style="display:inline-flex;align-items:center;gap:6px;color:#6b6f76;font-size:0.82rem;margin-top:3px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 18 18" focusable="false"><path fill="#FFCB42" d="M12.885 5.08H5.42v8.484h7.465z"/><path fill="#009FD9" fill-rule="evenodd" d="M9.466.295a.87.87 0 0 0-.932 0l-1.366.866a.87.87 0 0 1-.502.134l-1.615-.067a.87.87 0 0 0-.807.467l-.75 1.432a.87.87 0 0 1-.367.367l-1.432.75a.87.87 0 0 0-.467.807l.067 1.615a.87.87 0 0 1-.135.502L.295 8.534a.87.87 0 0 0 0 .932l.865 1.366c.095.15.142.324.135.502l-.067 1.615a.87.87 0 0 0 .467.807l1.432.75a.87.87 0 0 1 .367.367l.75 1.432a.87.87 0 0 0 .807.467l1.615-.067a.87.87 0 0 1 .502.135l1.366.865a.87.87 0 0 0 .932 0l1.366-.865a.87.87 0 0 1 .502-.135l1.615.067a.87.87 0 0 0 .807-.467l.75-1.432a.87.87 0 0 1 .367-.367l1.432-.75a.87.87 0 0 0 .467-.807l-.067-1.615a.87.87 0 0 1 .135-.502l.865-1.366a.87.87 0 0 0 0-.932l-.865-1.366a.87.87 0 0 1-.135-.502l.067-1.615a.87.87 0 0 0-.467-.807l-1.432-.75a.87.87 0 0 1-.367-.367l-.75-1.432a.87.87 0 0 0-.807-.467l-1.615.067a.87.87 0 0 1-.502-.134zm.692 2.917L9.194 2.6a.36.36 0 0 0-.388 0l-.964.611a1.4 1.4 0 0 1-.796.214l-1.14-.047a.36.36 0 0 0-.336.193l-.53 1.012a1.4 1.4 0 0 1-.582.582l-1.012.53a.36.36 0 0 0-.193.335L3.3 7.171a1.4 1.4 0 0 1-.214.796l-.61.964a.36.36 0 0 0 0 .388l.61.964c.15.238.225.515.214.796l-.047 1.14c-.006.14.07.271.193.336l1.012.53c.249.13.452.333.582.582l.53 1.012c.065.124.195.2.335.194l1.141-.048c.28-.011.558.063.796.214l.964.61c.119.076.27.076.388 0l.964-.61a1.4 1.4 0 0 1 .796-.214l1.14.048c.14.005.271-.07.336-.194l.53-1.012a1.4 1.4 0 0 1 .582-.582l1.012-.53a.36.36 0 0 0 .193-.335l-.047-1.141a1.4 1.4 0 0 1 .214-.796l.61-.964a.36.36 0 0 0 0-.388l-.61-.964a1.4 1.4 0 0 1-.214-.796l.047-1.14a.36.36 0 0 0-.193-.336l-1.012-.53a1.4 1.4 0 0 1-.582-.582l-.53-1.012a.36.36 0 0 0-.335-.193l-1.141.047a1.4 1.4 0 0 1-.796-.213M9.466 2.17a.87.87 0 0 0-.932 0l-.965.612a.87.87 0 0 1-.502.134l-1.14-.047a.87.87 0 0 0-.808.466l-.53 1.012a.87.87 0 0 1-.367.367l-1.012.53a.87.87 0 0 0-.466.807l.047 1.141a.87.87 0 0 1-.135.502l-.61.965a.87.87 0 0 0 0 .932l.61.965a.87.87 0 0 1 .135.502l-.047 1.14a.87.87 0 0 0 .466.808l1.012.53a.87.87 0 0 1 .367.367l.53 1.012a.87.87 0 0 0 .807.466l1.141-.047a.87.87 0 0 1 .502.135l.965.61c.284.181.647.181.932 0l.965-.61a.87.87 0 0 1 .502-.135l1.14.047a.87.87 0 0 0 .808-.466l.53-1.012a.87.87 0 0 1 .367-.367l1.012-.53a.87.87 0 0 0 .466-.807l-.047-1.141a.87.87 0 0 1 .134-.502l.612-.965a.87.87 0 0 0 0-.932l-.612-.965a.87.87 0 0 1-.134-.502l.047-1.14a.87.87 0 0 0-.466-.808l-1.012-.53a.87.87 0 0 1-.367-.367l-.53-1.012a.87.87 0 0 0-.807-.466l-1.141.047a.87.87 0 0 1-.502-.134zm-.72 4.082a.17.17 0 0 1 .323 0l.58 1.745a.17.17 0 0 0 .162.117h1.872a.17.17 0 0 1 .098.308L10.274 9.49a.17.17 0 0 0-.063.192l.577 1.734a.17.17 0 0 1-.259.192l-1.523-1.08a.17.17 0 0 0-.197 0l-1.523 1.08a.17.17 0 0 1-.259-.192l.577-1.734a.17.17 0 0 0-.063-.192L6.034 8.422a.17.17 0 0 1 .098-.308h1.872a.17.17 0 0 0 .161-.117z" clip-rule="evenodd"/></svg>
+              Top Pro
+            </span>
+          </a>
         </p>
-        <ul class="trust-badges" aria-label="Why Coach-Halo">
-          <li><span class="check" aria-hidden="true">✓</span><span><strong>60+ vetted coaches</strong> in career, life, relationship, leadership, wellness, and financial coaching</span></li>
-          <li><span class="check" aria-hidden="true">✓</span><span><strong>Human-reviewed matching</strong>, not an automated blast</span></li>
-          <li><span class="check" aria-hidden="true">✓</span><span><strong>Complimentary first conversation</strong> with your matched coach</span></li>
-          <li><span class="check" aria-hidden="true">✓</span><span><strong>No obligation.</strong> Explore before you commit</span></li>
-          <li><span class="check" aria-hidden="true">✓</span><span><strong>Typically matched within seconds</strong></span></li>
-        </ul>
-        <div class="network-viz">
-          <p>Matching you from our coach network</p>
-          <div
-            class="coach-network-grid"
-            id="coach-network-grid"
-            role="img"
-            aria-label="Photos of coaches in the Coach-Halo matching network"
-          ></div>
-          <div class="process-steps-mini">
-            <span class="active">Your goals</span>
-            <span>Review</span>
-            <span>Match</span>
-            <span>Intro call</span>
-          </div>
-          <p class="caption">60+ vetted coaches available · Specialty-matched to your needs</p>
-        </div>
+
       </div>
 
       <div class="hero-form">
         <div class="form-card" id="form-card">
           <div class="form-card-head" id="form-card-head">
-            <strong>Start your free match</strong>
-            <span>About 2 minutes · Step <span id="step-indicator">1</span> of 4</span>
+            <strong>Request a free discovery call</strong>
+            <span>About 2 minutes · Step <span id="step-indicator">1</span> of 5</span>
           </div>
 
           <form id="match-form" novalidate>
             <div class="progress" id="wizard-progress" aria-hidden="true">
-              <span class="on"></span><span></span><span></span><span></span>
+              <span class="on"></span><span></span><span></span><span></span><span></span>
             </div>
 
             <div class="wizard-step on" id="step-1" data-step="1" role="group" aria-labelledby="step1-title">
-              <p class="form-step-label">Step 1 of 4</p>
-              <h3 class="form-step-title" id="step1-title">Let’s get started</h3>
+              <p class="form-step-label">Step 1 of 5</p>
+              <h3 class="form-step-title" id="step1-title">What would you like support with?</h3>
+              <fieldset>
+                <legend class="visually-hidden">Situation</legend>
+                <div class="type-grid situation-grid">
+                  <label class="radio-card"><input type="radio" name="situation" value="breakup-or-separation" required /><span>Breakup or separation</span></label>
+                  <label class="radio-card"><input type="radio" name="situation" value="starting-over" /><span>Starting over</span></label>
+                  <label class="radio-card"><input type="radio" name="situation" value="relationships" /><span>Relationships</span></label>
+                  <label class="radio-card"><input type="radio" name="situation" value="confidence" /><span>Confidence</span></label>
+                  <label class="radio-card"><input type="radio" name="situation" value="feeling-stuck" /><span>Feeling stuck</span></label>
+                  <label class="radio-card"><input type="radio" name="situation" value="money-habits-financial-goals" /><span>Money habits &amp; financial goals</span></label>
+                  <label class="radio-card" style="grid-column:1/-1"><input type="radio" name="situation" value="something-else" /><span>Something else</span></label>
+                </div>
+              </fieldset>
+              <p class="field-error" id="err-situation">Please choose a situation to continue.</p>
+              <p class="form-microcopy" style="text-align:left;">Your answer helps us suggest a relevant coach.</p>
+              <div class="form-actions">
+                <button type="button" class="btn btn-primary" data-action="next">Continue</button>
+              </div>
+            </div>
+
+            <div class="wizard-step" id="step-2" data-step="2" role="group" aria-labelledby="step2-title">
+              <p class="form-step-label">Step 2 of 5</p>
+              <h3 class="form-step-title" id="step2-title">Let’s get started</h3>
               <label for="firstName">First name</label>
               <input type="text" id="firstName" name="firstName" autocomplete="given-name" required />
               <p class="field-error" id="err-name">Please enter your first name.</p>
@@ -919,10 +1023,10 @@
               <p class="form-microcopy">No spam · Unsubscribe anytime · We never sell your info</p>
             </div>
 
-            <div class="wizard-step" id="step-2" data-step="2" role="group" aria-labelledby="step2-title">
-              <p class="form-step-label">Step 2 of 4</p>
-              <h3 class="form-step-title" id="step2-title">Your goals</h3>
-              <fieldset>
+            <div class="wizard-step" id="step-3" data-step="3" role="group" aria-labelledby="step3-title">
+              <p class="form-step-label">Step 3 of 5</p>
+              <h3 class="form-step-title" id="step3-title">Your goals</h3>
+              <fieldset id="coaching-type-fieldset" hidden>
                 <legend>What type of coaching are you looking for?</legend>
                 <div class="type-grid">
                   <label class="radio-card">
@@ -965,6 +1069,7 @@
               </fieldset>
               <p class="field-error" id="err-type">Please select a coaching type.</p>
               <label for="goals">What are you hoping to work on?</label>
+              <p class="field-hint">Answers help us suggest a relevant coach. You don’t need to share medical, legal, or other highly sensitive details.</p>
               <textarea id="goals" name="goals" placeholder="A few sentences help us match you better…" required></textarea>
               <p class="field-error" id="err-goals">Please tell us what you want to work on.</p>
               <div class="form-actions">
@@ -973,9 +1078,9 @@
               </div>
             </div>
 
-            <div class="wizard-step" id="step-3" data-step="3" role="group" aria-labelledby="step3-title">
-              <p class="form-step-label">Step 3 of 4</p>
-              <h3 class="form-step-title" id="step3-title">Coaching preferences</h3>
+            <div class="wizard-step" id="step-4" data-step="4" role="group" aria-labelledby="step4-title">
+              <p class="form-step-label">Step 4 of 5</p>
+              <h3 class="form-step-title" id="step4-title">Coaching preferences</h3>
               <fieldset>
                 <legend>Preferred coaching style</legend>
                 <div class="radio-grid">
@@ -1003,9 +1108,9 @@
               </div>
             </div>
 
-            <div class="wizard-step" id="step-4" data-step="4" role="group" aria-labelledby="step4-title">
-              <p class="form-step-label">Step 4 of 4</p>
-              <h3 class="form-step-title" id="step4-title">When would you like to start?</h3>
+            <div class="wizard-step" id="step-5" data-step="5" role="group" aria-labelledby="step5-title">
+              <p class="form-step-label">Step 5 of 5</p>
+              <h3 class="form-step-title" id="step5-title">When would you like to start?</h3>
               <p class="field-hint">Choose your preferred start date. After we match you with a coach, you&rsquo;ll pick a specific time in your time zone.</p>
               <label for="startDate">Preferred start date</label>
               <input type="date" id="startDate" name="startDate" required />
@@ -1077,6 +1182,7 @@
                 <p class="field-error" id="err-custom-availability">Please share your availability.</p>
               </div>
               <div class="match-actions">
+                <p class="field-error" id="err-lead-save">We could not save your request. Your answers are still here — please try Continue again, or email info@coach-halo.com.</p>
                 <button type="button" class="btn btn-primary" id="btn-confirm-time">Continue</button>
               </div>
             </div>
@@ -1085,109 +1191,120 @@
           <!-- Confirmation after time selection; coach is NOT notified until user replies to email -->
           <div class="confirmation-panel" id="confirmation-panel" role="status" aria-live="polite">
             <div class="confirmation-card">
-              <h2>Great! Your match request has been submitted.</h2>
-              <p id="confirmation-email-line">We've sent a confirmation email to your email.</p>
-              <p>Please check your inbox (and spam folder just in case) and <strong>reply to confirm</strong> your appointment request.</p>
+              <h2>Your request has been saved.</h2>
+              <p id="confirmation-email-line">If email delivery succeeds, you will receive a confirmation message at the address you provided.</p>
+              <p>Please check your inbox (and spam folder) and <strong>reply to that email</strong> if you want to proceed. Your selected time is a preference, not a reserved appointment.</p>
               <p><strong>Your coach has not been notified yet.</strong></p>
-              <p id="confirmation-intro-line">Once we receive your confirmation, we'll personally connect you with your matched coach and help finalize scheduling.</p>
+              <p id="confirmation-intro-line">After you confirm by email, we’ll introduce you to your matched coach and help finalize scheduling.</p>
               <p class="muted-block">We only introduce coaches to people who confirm their interest and intention to attend. This helps us respect our coaches' time and provide a better experience for everyone.</p>
             </div>
           </div>
         </div>
-        <p class="form-below-trust">Free coach matching · No credit card required · No obligation</p>
+        <p class="form-below-trust">A request is not a confirmed booking. Your first discovery call is free.</p>
       </div>
     </section>
 
+    <section class="block" id="testimonials-public" aria-labelledby="testimonials-heading">
+      <h2 id="testimonials-heading">What clients say</h2>
+      <p class="section-intro">Hear from clients of coaches in our network. Featured profiles below are examples, not your match.</p>
+      <div class="trust-grid">
+        <article class="trust-card"><p>“Denise guided me through major life transitions with calm, supportive energy that led to meaningful breakthroughs.”</p><p><strong>Kris F.</strong> · Client of Denise Foss, Coach/Owner.</p></article>
+        <article class="trust-card"><p>“I never knew finance could be fun! Jake makes our coaching session engaging and thought provoking.”</p><p><strong>Emily</strong> · Client of Jake Randall, Financial Coach, Founder.</p></article>
+        <article class="trust-card"><p>“Annette met me with calm clarity and zero judgment. Together, we built healthier habits, honest communication, and real confidence.”</p><p><strong>A client</strong> · Client of Annette Lagunes, Lifestyle &amp; Wellness Coach.</p></article>
+        <article class="trust-card"><p>“I was able to have a meeting with Denise Foss regarding some potential options for life coaching and career growth. We discussed at length what the program would look like and she also provided me with Ray Dalio’s Principles assessment.”</p><p><strong>Jesse S.</strong> · Client of Denise Foss, Coach/Owner. · <a href="https://www.thumbtack.com/ca/san-francisco/resume-writers-and-editors/ch-coaching/service/552112721800904704" target="_blank" rel="noopener noreferrer">View on Thumbtack</a></p></article>
+        <article class="trust-card"><p>“Tanya has an uncanny ability to get to the root of an issue fast and then hold a safe, high-energy container for real change.”</p><p><strong>Amy</strong> · Client of Tanya Scott, Business and Spiritual Coach.</p></article>
+        <article class="trust-card"><p>“Working on a creative book project, I hit repeated roadblocks and lost momentum. Denise helped me refocus, refine my pitch, navigate tools efficiently, and stay grounded through the process.”</p><p><strong>Edana S.</strong> · Client of Denise Foss, Coach/Owner.</p></article>
+      </div>
+    </section>
+    <section class="block" id="coaches" aria-labelledby="coaches-heading">
+      <h2 id="coaches-heading">Meet some of our coaches</h2>
+      <p class="section-intro">Matched around your goals, preferences, and schedule. Your suggested coach is chosen by matching — not limited to these three profiles.</p>
+      <div class="trust-grid">
+        <article class="trust-card"><img src="https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1770438035347-Coach+Annette+L.jpg" alt="Annette Lagunes" width="72" height="72" style="border-radius:12px;object-fit:cover;" /><h3>Annette Lagunes</h3><p><strong>Lifestyle &amp; Wellness Coach</strong></p><p>Annette works with women navigating transitions, relationship strain, loss, or feeling overwhelmed and stuck. Her approach is practical and action-based: start where you are, decide what needs to change, and build habits without guilt or shame.</p></article>
+        <article class="trust-card"><img src="https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1768078850239-Coach_Denise.JPG" alt="Denise Foss" width="72" height="72" style="border-radius:12px;object-fit:cover;" /><h3>Denise Foss</h3><p><strong>Coach/Owner</strong></p><p>Denise works with people at a pivot point, when life or work no longer fits and they want a clearer next step without burnout. She blends clarity, mindset, and structure to help people move forward with momentum.</p></article>
+        <article class="trust-card"><img src="https://outseta-production-template-images.s3.us-east-1.amazonaws.com/1768002079091-Coach_Jake.jpg" alt="Jake Randall" width="72" height="72" style="border-radius:12px;object-fit:cover;" /><h3>Jake Randall</h3><p><strong>Financial Coach, Founder</strong></p><p>Jake works with people who want to get organized with money, feel more in control, and make a plan they can follow. He keeps coaching simple and approachable, with manageable action steps and accountability.</p></article>
+      </div>
+      <p style="margin-top:16px;"><a class="btn btn-primary" href="#matching-form" style="width:auto;display:inline-flex;">Find my match</a></p>
+    </section>
     <section class="block" id="how-it-works" aria-labelledby="how-heading">
-      <h2 id="how-heading">How matching works</h2>
-      <p class="section-intro">Four simple steps from your first answer to a coach introduction.</p>
+      <h2 id="how-heading">How it works</h2>
+      <p class="section-intro">A short request, a suggested match, then an email confirmation before anyone is introduced.</p>
       <div class="steps-grid">
         <article class="step-card">
           <span class="step-num" aria-hidden="true">1</span>
-          <h3>Tell us what you're looking for</h3>
-          <p>Share your goals, timeline, and preferences in the short form above.</p>
+          <h3>Share</h3>
+          <p>Tell us what you’d like support with.</p>
         </article>
         <article class="step-card">
           <span class="step-num" aria-hidden="true">2</span>
-          <h3>We review your goals</h3>
-          <p>A real person reads your answers and identifies the best fit.</p>
+          <h3>Match</h3>
+          <p>Receive a suggested coach match.</p>
         </article>
         <article class="step-card">
           <span class="step-num" aria-hidden="true">3</span>
-          <h3>We match you with a coach</h3>
-          <p>We pick from 60+ vetted coaches based on specialty and capacity.</p>
+          <h3>Confirm</h3>
+          <p>Confirm by email so we can introduce you and help finalize scheduling.</p>
         </article>
-        <article class="step-card">
-          <span class="step-num" aria-hidden="true">4</span>
-          <h3>Confirm and meet your coach</h3>
-          <p>Choose a time, confirm by email, then we introduce you for a complimentary intro call.</p>
+      </div>
+      <p class="booking-note">A request is not a confirmed booking.</p>
+    </section>
+
+    <section class="block" id="perspectives" aria-labelledby="perspectives-heading">
+      <h2 id="perspectives-heading">Does this sound familiar?</h2>
+      <p class="section-intro">A different way to look at what you’re going through.</p>
+      <div class="example-grid">
+        <article class="example-card">
+          <p class="example-kicker">Coach-Halo perspective</p>
+          <h3>After a breakup or split</h3>
+          <p>Old routines often continue after a relationship ends. A useful first step is to change one leftover habit in your week, instead of waiting until you feel over it.</p>
+          <p class="example-more">Ask: what still happens as if that person were part of the day—an evening, a commute, a phone check? Pick one of those and decide what you will do instead, even if it is small and repeatable. If you want help noticing the pattern and choosing a next step, you can request a coach match.</p>
+          <div class="example-actions">
+            <button type="button" class="text-btn" data-toggle-more aria-expanded="false">Read more</button>
+            <a class="find-support" href="#matching-form">Find support</a>
+          </div>
+        </article>
+        <article class="example-card">
+          <p class="example-kicker">Coach-Halo perspective</p>
+          <h3>When life looks fine from the outside</h3>
+          <p>A job, relationship, or routine can look solid while you feel disconnected from it. A useful first step is to name one part that still works and one part you would change.</p>
+          <p class="example-more">That mix can last a long time when nothing has gone wrong enough to “justify” a change. You do not need a crisis to look at it. If you want a sounding board, a discovery call can help you sort what to keep and what to question.</p>
+          <div class="example-actions">
+            <button type="button" class="text-btn" data-toggle-more aria-expanded="false">Read more</button>
+            <a class="find-support" href="#matching-form">Find support</a>
+          </div>
         </article>
       </div>
     </section>
-
-    <section class="block" id="trust" aria-labelledby="trust-heading">
-      <h2 id="trust-heading">Why people trust Coach-Halo</h2>
-      <p class="section-intro">Built for people actively looking for support, not a directory you have to search alone.</p>
-      <div class="trust-grid">
-        <article class="trust-card">
-          <strong>60+ vetted coaches</strong>
-          <p>Career, life, relationship, leadership, wellness, financial coaching, and more. Each coach is onboarded to our network.</p>
-        </article>
-        <article class="trust-card">
-          <strong>Human-reviewed matching</strong>
-          <p>Your submission is read by our team before we make an introduction.</p>
-        </article>
-        <article class="trust-card">
-          <strong>Complimentary first conversation</strong>
-          <p>Most matches include a no-cost intro call so you can see if it's the right fit.</p>
-        </article>
-        <article class="trust-card">
-          <strong>No obligation</strong>
-          <p>Explore coaching at your pace. There's no commitment required to get matched.</p>
-        </article>
-        <article class="trust-card">
-          <strong>Fast turnaround</strong>
-          <p>We typically respond with a coach introduction within seconds.</p>
-        </article>
-        <article class="trust-card">
-          <strong>Privacy respected</strong>
-          <p>We don't sell your information. Unsubscribe anytime from our emails.</p>
-        </article>
-      </div>
-    </section>
-
     <section class="block" id="faq" aria-labelledby="faq-heading">
-      <h2 id="faq-heading">Frequently asked questions</h2>
+      <h2 id="faq-heading">FAQ</h2>
       <div class="faq-list">
         <details class="faq-item">
-          <summary>Why use Coach-Halo instead of finding a coach myself?</summary>
-          <p>You certainly can search for a coach on your own.</p>
-          <p>Coach-Halo saves you the time and guesswork of sorting through dozens of profiles, websites, and coaching styles. We learn about your situation first, then introduce you to a coach who is likely to be a strong fit from the start.</p>
+          <summary>What can a coach help me with?</summary>
+          <p>A coach can help you clarify goals, consider your options, build habits, and follow through on changes. The support depends on the coach’s experience and your situation.</p>
         </details>
         <details class="faq-item">
-          <summary>Is Coach-Halo matching really free?</summary>
-          <p>Yes. Submitting the form and receiving a coach introduction is completely free.</p>
-          <p>We review your goals and personally introduce you to a coach who fits what you're looking for. Your first conversation is complimentary, so you can see if it's the right fit before making any commitment.</p>
+          <summary>What’s the difference between coaching and therapy?</summary>
+          <p>Coaching focuses on goals, decisions, habits, and accountability. Therapy is provided by licensed mental-health professionals and can address emotional difficulties and mental-health conditions, including diagnosis and treatment. Both can explore present challenges and future goals. Coaching does not replace mental-health care.</p>
         </details>
         <details class="faq-item">
-          <summary>How long does it take to get matched?</summary>
-          <p>Most people receive a coach introduction within seconds.</p>
-          <p>Every submission is reviewed by a real person, not an automated system, so we can make thoughtful matches based on your goals, preferences, and timeline.</p>
+          <summary>Can a coach help me with budgeting and money habits?</summary>
+          <p>A financial coach can help you work on a budget, savings habits, everyday financial organization, and progress toward your goals. Specific services vary by coach. Financial coaching does not automatically include personalized investment, tax, or legal advice; those services require an appropriately qualified professional.</p>
         </details>
         <details class="faq-item">
-          <summary>What happens during the first conversation?</summary>
-          <p>Think of it as an introduction, not a sales call.</p>
-          <p>You'll have a chance to discuss your goals, learn about the coach's approach, ask questions, and decide whether you'd like to work together. There is no obligation to continue.</p>
+          <summary>What happens during the free discovery call?</summary>
+          <p>You can share what you’d like help with, ask questions, and learn how the coach works. It’s an introductory conversation to explore whether their approach fits your needs. Your first discovery call is free.</p>
         </details>
         <details class="faq-item">
-          <summary>How do you choose my coach?</summary>
-          <p>We consider what you'd like help with, your goals, preferred coaching style, timeline, and coach availability.</p>
-          <p>Our goal isn't to send you a random coach. It's to introduce you to someone who is genuinely well-positioned to help.</p>
+          <summary>How do you match me with a coach?</summary>
+          <p>We use the information you share to suggest a coach based on your goals, preferences, and the coach’s areas of experience. Featured profiles on this page are examples and do not limit matching.</p>
         </details>
         <details class="faq-item">
-          <summary>What types of coaching are available?</summary>
-          <p>Our network includes coaches specializing in career transitions, job search, leadership, life coaching, relationships, confidence and mindset, health and wellness, and family coaching.</p>
-          <p>Not sure what kind of coaching you need? That's perfectly okay. We'll help point you in the right direction.</p>
+          <summary>What does ongoing coaching cost?</summary>
+          <p>Ongoing coaching fees vary by coach and service. Ask your coach about their rates and what’s included before agreeing to continue.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is my selected time a confirmed booking?</summary>
+          <p>No. Your selected time is a preference, not a reserved appointment. After you confirm by email that you’d like to proceed, we’ll introduce you to the coach and help finalize scheduling.</p>
         </details>
       </div>
     </section>
@@ -1195,8 +1312,20 @@
 
   <footer>
     <p>Headquartered in San Francisco, California · © 2026 JH People Insights LLC, doing business as Coach-Halo.com. All rights reserved.</p>
-    <p><a href="#">Terms and Conditions</a> · <a href="#">Privacy Policy</a></p>
+    <p><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="/coach-terms/">Coach Terms</a> · <a href="/disclaimer/">Disclaimer</a></p>
   </footer>
+
+
+  <dialog class="tt-dialog" id="tt-dialog" aria-labelledby="tt-modal-title" style="border:0;padding:16px;background:transparent;max-width:none;width:100%;">
+    <div style="position:relative;background:#fff;border-radius:18px;padding:22px 20px 18px;max-width:26rem;margin:12vh auto 0;box-shadow:0 18px 44px rgba(42,28,16,0.12);">
+      <button type="button" id="tt-dialog-close" aria-label="Close" style="position:absolute;top:8px;right:8px;min-width:44px;min-height:44px;border:0;background:transparent;font-size:1.35rem;cursor:pointer;">×</button>
+      <h2 id="tt-modal-title" style="margin:0 36px 10px 0;font-size:1.2rem;">Read our reviews on Thumbtack</h2>
+      <p style="color:#5e584f;font-size:0.94rem;line-height:1.5;">You’re heading to our Thumbtack profile to read reviews. If you’d like to connect with a coach, please request your free discovery call here on Coach-Halo.</p>
+      <a class="btn btn-primary" id="tt-continue" href="https://www.thumbtack.com/ca/san-francisco/resume-writers-and-editors/ch-coaching/service/552112721800904704" target="_blank" rel="noopener noreferrer">Continue to Thumbtack reviews</a>
+      <p style="font-size:0.78rem;color:#7a746b;margin:8px 0;">Opens in a new tab</p>
+      <button type="button" class="btn btn-ghost" id="tt-find" style="width:100%;">Find my coach</button>
+    </div>
+  </dialog>
 
   <script>
     (function () {
@@ -1355,7 +1484,9 @@
       }
 
       var currentStep = 1;
-      var totalSteps = 4;
+      var totalSteps = 5;
+      var isConfirming = false;
+      var confirmIdempotencyKey = "";
       var form = document.getElementById("match-form");
       var progressEl = document.getElementById("wizard-progress");
       var matchingPanel = document.getElementById("matching-panel");
@@ -1373,11 +1504,7 @@
       var lastMatchResult = null;
 
       /* INTEGRATION: replace with live slots from scheduling API per matched coach */
-      var PLACEHOLDER_AVAILABILITY = [
-        { id: "slot-1", label: "Tuesday 4:00 PM ET", value: "Tuesday 4:00 PM ET" },
-        { id: "slot-2", label: "Wednesday 12:00 PM ET", value: "Wednesday 12:00 PM ET" },
-        { id: "slot-3", label: "Thursday 5:30 PM ET", value: "Thursday 5:30 PM ET" }
-      ];
+      var PLACEHOLDER_AVAILABILITY = [];
 
       /* Dynamic match state — populated after match-coach API (see applyMatchToUI) */
       var matchState = {
@@ -1395,10 +1522,43 @@
 
       function getUtmParams() {
         var params = {};
-        new URLSearchParams(window.location.search).forEach(function (value, key) {
+        var search = new URLSearchParams(window.location.search);
+        search.forEach(function (value, key) {
           if (key.indexOf("utm_") === 0) params[key] = value;
         });
+        var ref = search.get("ref");
+        if (ref) params.ref = ref;
         return params;
+      }
+
+      var SITUATION_MAP = {
+        "breakup-or-separation": { type: "Life coaching", category: "Life Coaching", label: "Breakup or separation" },
+        "starting-over": { type: "Life coaching", category: "Life Coaching", label: "Starting over" },
+        "relationships": { type: "Relationship & marriage", category: "Marriage and Relationship Counseling", label: "Relationships" },
+        "confidence": { type: "Life coaching", category: "Life Coaching", label: "Confidence" },
+        "feeling-stuck": { type: "Life coaching", category: "Life Coaching", label: "Feeling stuck" },
+        "money-habits-financial-goals": { type: "Financial wellness", category: "Personal Financial Planning", label: "Money habits & financial goals" },
+        "something-else": null
+      };
+
+      function selectedSituation() {
+        var el = document.querySelector('input[name="situation"]:checked');
+        return el ? el.value : "";
+      }
+
+      function syncCoachingTypeFromSituation() {
+        var sit = selectedSituation();
+        var fieldset = document.getElementById("coaching-type-fieldset");
+        var mapped = SITUATION_MAP[sit];
+        if (sit === "something-else") {
+          if (fieldset) fieldset.hidden = false;
+          return;
+        }
+        if (fieldset) fieldset.hidden = true;
+        if (!mapped) return;
+        document.querySelectorAll('input[name="coachingType"]').forEach(function (input) {
+          input.checked = input.value === mapped.type && (input.getAttribute("data-category") || "") === mapped.category;
+        });
       }
 
       function showStep(n) {
@@ -1429,6 +1589,13 @@
       }
 
       function validateStep1() {
+        var ok = !!document.querySelector('input[name="situation"]:checked');
+        showError("err-situation", !ok);
+        if (ok) syncCoachingTypeFromSituation();
+        return ok;
+      }
+
+      function validateStep2() {
         var first = document.getElementById("firstName");
         var email = document.getElementById("email");
         var ok = true;
@@ -1441,9 +1608,9 @@
         return ok;
       }
 
-      function validateStep2() {
+      function validateStep3() {
         var ok = true;
-        if (!document.querySelector('input[name="coachingType"]:checked')) {
+        if (selectedSituation() === "something-else" && !document.querySelector('input[name="coachingType"]:checked')) {
           showError("err-type", true); ok = false;
         } else { showError("err-type", false); }
         if (!(document.getElementById("goals").value || "").trim()) {
@@ -1452,7 +1619,7 @@
         return ok;
       }
 
-      function validateStep3() {
+      function validateStep4() {
         var ok = true;
         if (!document.querySelector('input[name="style"]:checked')) {
           showError("err-style", true); ok = false;
@@ -1463,7 +1630,7 @@
         return ok;
       }
 
-      function validateStep4() {
+      function validateStep5() {
         var ok = true;
         var startEl = document.getElementById("startDate");
         var startVal = startEl ? (startEl.value || "").trim() : "";
@@ -1554,6 +1721,7 @@
           if (currentStep === 1 && !validateStep1()) return;
           if (currentStep === 2 && !validateStep2()) return;
           if (currentStep === 3 && !validateStep3()) return;
+          if (currentStep === 4 && !validateStep4()) return;
           if (currentStep < totalSteps) showStep(currentStep + 1);
         }
         if (btn.getAttribute("data-action") === "back" && currentStep > 1) {
@@ -1568,23 +1736,34 @@
       }
 
       function buildPayload() {
+        syncCoachingTypeFromSituation();
         var typeInput = document.querySelector('input[name="coachingType"]:checked');
+        var sit = selectedSituation();
+        var mapped = SITUATION_MAP[sit];
+        var sitLabel = mapped ? mapped.label : (sit === "something-else" ? "Something else" : sit);
         var startDate = (document.getElementById("startDate").value || "").trim();
+        var goalsRaw = (document.getElementById("goals").value || "").trim();
+        var goals = sitLabel ? ("[Selected situation: " + sitLabel + "]\n\n" + goalsRaw) : goalsRaw;
+        var utm = getUtmParams();
         return {
           firstName: (document.getElementById("firstName").value || "").trim(),
           email: (document.getElementById("email").value || "").trim(),
+          situation: sit,
+          situationLabel: sitLabel,
           coachingType: typeInput ? typeInput.value : "",
           coachingTypeCategory: typeInput ? (typeInput.getAttribute("data-category") || "") : "",
           coachingTypeUnsure: typeInput && typeInput.getAttribute("data-unsure") === "true",
-          goals: (document.getElementById("goals").value || "").trim(),
+          goals: goals,
+          goalsRaw: goalsRaw,
           startDate: startDate,
           timeline: startDate,
           style: (document.querySelector('input[name="style"]:checked') || {}).value || "",
           genderPreference: (document.querySelector('input[name="genderPreference"]:checked') || {}).value || "",
           notes: (document.getElementById("notes").value || "").trim(),
           source: "findyourcoach",
+          landingRef: utm.ref || "",
           submittedAt: new Date().toISOString(),
-          utm: getUtmParams()
+          utm: utm
         };
       }
 
@@ -1619,13 +1798,33 @@
           selectedTimeSlot: payload.selectedTimeSlot || "",
           userTimezone: payload.timezoneLabel || payload.timezone || "",
           userAvailabilityPreferences: payload.startDate || "",
-          coach_notified: false
+          coach_notified: false,
+          idempotency_key: payload.idempotencyKey || ""
         };
-        fetch(LEAD_LOG_API_URL, {
+        var controller = typeof AbortController === "function" ? new AbortController() : null;
+        var timer = window.setTimeout(function () {
+          if (controller) controller.abort();
+        }, 20000);
+        var opts = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
-        }).catch(function () {});
+        };
+        if (controller) opts.signal = controller.signal;
+        return fetch(LEAD_LOG_API_URL, opts).then(function (res) {
+          return res.text().then(function (text) {
+            var data = {};
+            try { data = JSON.parse(text); } catch (e) { data = {}; }
+            var ok = res.ok && data && data.ok === true;
+            return { ok: ok, httpStatus: res.status, data: data, raw: text };
+          });
+        }).then(function (result) {
+          window.clearTimeout(timer);
+          return result;
+        }, function (err) {
+          window.clearTimeout(timer);
+          throw err;
+        });
       }
 
       function resolveAvailabilitySlots(match, payload, timeZone) {
@@ -1642,17 +1841,19 @@
             };
           });
         } else {
-          raw = PLACEHOLDER_AVAILABILITY.map(function (s, i) {
-            return { id: s.id || "slot-" + i, label: s.label, value: s.value || s.label, start_iso: "" };
-          });
+          raw = [];
         }
-        if (startDate) {
-          raw = raw.filter(function (s) {
-            if (!s.start_iso) return true;
+        var now = Date.now();
+        raw = raw.filter(function (s) {
+          if (!s.start_iso) return false;
+          var t = new Date(s.start_iso).getTime();
+          if (!(t > now)) return false;
+          if (startDate) {
             var key = localDateKeyFromIso(s.start_iso, tz);
-            return key && key >= startDate;
-          });
-        }
+            if (!(key && key >= startDate)) return false;
+          }
+          return true;
+        });
         return raw.map(function (s, i) {
           var label = s.start_iso ? formatSlotLabelFromIso(s.start_iso, tz) : s.label;
           return {
@@ -1674,6 +1875,15 @@
         var hint = document.getElementById("slot-start-date-hint");
         if (hint) hint.textContent = formatStartDateHint(lastFormPayload.startDate);
         showError("err-no-slots", !slots.length);
+        var noneCb = document.getElementById("none-times-work");
+        var wrap = document.getElementById("custom-availability-wrap");
+        if (!slots.length) {
+          if (noneCb) noneCb.checked = true;
+          if (wrap) wrap.classList.add("on");
+          document.querySelectorAll('input[name="preferredSlot"]').forEach(function (el) {
+            el.disabled = true;
+          });
+        }
       }
 
       function renderSlotPicker(slots) {
@@ -1750,9 +1960,16 @@
         matchState.userAvailabilityPreferences = payload.startDate || "";
 
         var photoEl = document.getElementById("match-coach-photo");
-        if (match.image) {
-          photoEl.src = match.image;
-          photoEl.alt = match.name + ", " + match.title;
+        if (photoEl) {
+          if (match.image) {
+            photoEl.src = match.image;
+            photoEl.alt = (match.name || "Matched coach") + (match.title ? ", " + match.title : "");
+            photoEl.style.display = "";
+          } else {
+            photoEl.removeAttribute("src");
+            photoEl.alt = "";
+            photoEl.style.display = "none";
+          }
         }
 
         document.getElementById("match-coach-name").textContent = matchState.matchedCoachName;
@@ -1873,31 +2090,49 @@
       }
 
       function fetchCoachMatch(payload) {
-        return fetch(MATCH_API_URL, {
+        var controller = typeof AbortController === "function" ? new AbortController() : null;
+        var timer = window.setTimeout(function () {
+          if (controller) controller.abort();
+        }, 20000);
+        var opts = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
-        }).then(function (res) {
+        };
+        if (controller) opts.signal = controller.signal;
+        return fetch(MATCH_API_URL, opts).then(function (res) {
           return res.text().then(function (text) {
             return parseMatchResponse(res, text);
           });
+        }).catch(function (err) {
+          var aborted = err && (err.name === "AbortError" || String(err).indexOf("abort") !== -1);
+          return {
+            httpOk: false,
+            data: {
+              ok: false,
+              error: aborted ? "timeout" : "network",
+              message: aborted
+                ? "Matching took too long. Please try again, or email info@coach-halo.com."
+                : String(err)
+            }
+          };
+        }).then(function (result) {
+          window.clearTimeout(timer);
+          return result;
         });
       }
 
       function showMatchResult(payload, match) {
         clearMatchError();
-        applyMatchToUI(payload, match);
         if (confirmationPanel) confirmationPanel.classList.remove("on");
-        successPanel.classList.add("on");
-        updateProcessMini(4);
-        successPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
         var noneCb = document.getElementById("none-times-work");
         if (noneCb) noneCb.checked = false;
         var customWrap = document.getElementById("custom-availability-wrap");
         if (customWrap) customWrap.classList.remove("on");
-        document.querySelectorAll('input[name="preferredSlot"]').forEach(function (el) {
-          el.disabled = false;
-        });
+        applyMatchToUI(payload, match);
+        successPanel.classList.add("on");
+        updateProcessMini(4);
+        successPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
 
       function showConfirmation(payload, match) {
@@ -1907,7 +2142,7 @@
           var emailLine = document.getElementById("confirmation-email-line");
           if (emailLine && payload.email) {
             emailLine.textContent =
-              "We've sent a confirmation email to " + payload.email + ".";
+              "If email delivery succeeds, you will receive a confirmation message at " + payload.email + ".";
           }
           var introLine = document.getElementById("confirmation-intro-line");
           if (introLine && match && match.name) {
@@ -1955,7 +2190,7 @@
       function handleMatchFormSubmit(event) {
         event.preventDefault();
         if (isMatching) return;
-        if (!validateStep4()) return;
+        if (!validateStep5()) return;
         var payload = buildPayload();
         var submitBtn = form.querySelector('button[type="submit"]');
         var matchError = document.getElementById("match-error");
@@ -1995,6 +2230,9 @@
           }
           if (data.error === "network") {
             return "We could not reach the matching service. Please check your connection and try again, or email info@coach-halo.com.";
+          }
+          if (data.error === "timeout") {
+            return data.message || "Matching took too long. Please try again, or email info@coach-halo.com.";
           }
           if (data.error === "proxy_failed" || data.error === "match_failed" || data.error === "invalid_json") {
             return "Something went wrong while matching coaches. Please try again or email info@coach-halo.com.";
@@ -2057,21 +2295,121 @@
       var btnConfirmTime = document.getElementById("btn-confirm-time");
       if (btnConfirmTime) {
         btnConfirmTime.addEventListener("click", function () {
+          if (isConfirming) return;
           if (!validateTimeSelection()) return;
           if (!lastFormPayload || !lastMatchResult) return;
+          if (!confirmIdempotencyKey) {
+            confirmIdempotencyKey = (window.crypto && crypto.randomUUID)
+              ? crypto.randomUUID()
+              : String(Date.now()) + "-" + Math.random().toString(16).slice(2);
+          }
           var confirmPayload = buildConfirmationPayload(lastFormPayload, lastMatchResult);
+          confirmPayload.idempotencyKey = confirmIdempotencyKey;
+          isConfirming = true;
+          btnConfirmTime.disabled = true;
+          showError("err-lead-save", false);
           sendLeadToZapier(
             confirmPayload,
             lastMatchResult,
             "findyourcoach_confirmed",
             "confirmed",
             ""
-          );
-          showConfirmation(lastFormPayload, lastMatchResult);
+          ).then(function (result) {
+            if (result && result.ok) {
+              showConfirmation(lastFormPayload, lastMatchResult);
+            } else {
+              if (successPanel) successPanel.classList.add("on");
+              showError("err-lead-save", true);
+              isConfirming = false;
+              btnConfirmTime.disabled = false;
+              btnConfirmTime.removeAttribute("disabled");
+              btnConfirmTime.scrollIntoView({ block: "nearest" });
+            }
+          }).catch(function () {
+            if (successPanel) successPanel.classList.add("on");
+            showError("err-lead-save", true);
+            isConfirming = false;
+            btnConfirmTime.disabled = false;
+            btnConfirmTime.removeAttribute("disabled");
+          });
         });
       }
 
+      var sitInputs = document.querySelectorAll('input[name="situation"]');
+      sitInputs.forEach(function (input) {
+        input.addEventListener("change", syncCoachingTypeFromSituation);
+      });
+
+      document.querySelectorAll("[data-toggle-more]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var card = button.closest(".example-card");
+          if (!card) return;
+          var open = card.classList.toggle("is-open");
+          button.setAttribute("aria-expanded", open ? "true" : "false");
+          button.textContent = open ? "Show less" : "Read more";
+        });
+      });
+      document.querySelectorAll("[data-toggle-review]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var card = button.closest(".t-card, .trust-card");
+          if (!card) return;
+          var open = card.classList.toggle("is-open");
+          button.setAttribute("aria-expanded", open ? "true" : "false");
+          button.textContent = open ? "Show less" : "Read full review";
+        });
+      });
+
+      (function initThumbtackModal() {
+        var trigger = document.getElementById("thumbtack-proof");
+        var dialog = document.getElementById("tt-dialog");
+        var closeBtn = document.getElementById("tt-dialog-close");
+        var findBtn = document.getElementById("tt-find");
+        var continueLink = document.getElementById("tt-continue");
+        if (!trigger || !dialog || typeof dialog.showModal !== "function") return;
+        var returnToForm = false;
+        function openModal(event) {
+          event.preventDefault();
+          returnToForm = false;
+          dialog.showModal();
+          trigger.setAttribute("aria-expanded", "true");
+          document.body.classList.add("modal-open");
+          closeBtn.focus();
+        }
+        function closeModal() { if (dialog.open) dialog.close(); }
+        trigger.addEventListener("click", openModal);
+        closeBtn.addEventListener("click", function () { returnToForm = false; closeModal(); });
+        findBtn.addEventListener("click", function () { returnToForm = true; closeModal(); });
+        continueLink.addEventListener("click", function () { returnToForm = false; closeModal(); });
+        dialog.addEventListener("click", function (event) {
+          if (event.target === dialog) { returnToForm = false; closeModal(); }
+        });
+        dialog.addEventListener("close", function () {
+          trigger.setAttribute("aria-expanded", "false");
+          document.body.classList.remove("modal-open");
+          if (returnToForm) {
+            returnToForm = false;
+            var formWrap = document.getElementById("matching-form");
+            var heading = document.getElementById("step1-title");
+            if (formWrap) formWrap.scrollIntoView({ block: "start" });
+            if (heading) heading.focus();
+          } else {
+            trigger.focus();
+          }
+        });
+      })();
+
       showStep(1);
+
+      (function setStartDateMin() {
+        var el = document.getElementById("startDate");
+        if (!el) return;
+        var now = new Date();
+        var m = String(now.getMonth() + 1);
+        var d = String(now.getDate());
+        if (m.length < 2) m = "0" + m;
+        if (d.length < 2) d = "0" + d;
+        el.min = now.getFullYear() + "-" + m + "-" + d;
+      })();
     })();
   </script>
 </body>
