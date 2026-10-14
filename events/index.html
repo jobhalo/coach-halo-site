@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free live online sessions for the next five weeks, by topic. Coach-Halo.">
+  <title>Free online sessions — Coach-Halo</title>
+  <link rel="canonical" href="https://coach-halo.com/events/">
+  <script id="datafast-queue">
+    window.datafast = window.datafast || function () {
+      window.datafast.q = window.datafast.q || [];
+      window.datafast.q.push(arguments);
+    };
+  </script>
+  <script defer data-website-id="dfid_ImJXeenE5zJoIlqGSMtN5" data-domain="coach-halo.com" src="https://datafa.st/js/script.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;1,14..32,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --off-white: #fafafa;
+      --hover: #2a2a2a;
+      --text: #0a0a0a;
+      --text-muted: #6b6b6b;
+      --border: #e8e8e8;
+      --max-content: 980px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--white);
+      color: var(--text);
+      margin: 0;
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .section-inner {
+      max-width: var(--max-content);
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+    }
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .site-header .section-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 1.125rem;
+      padding-bottom: 1.125rem;
+    }
+    .logo {
+      font-weight: 600;
+      font-size: 0.8125rem;
+      color: var(--black);
+      text-decoration: none;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+    .nav-links { display: flex; align-items: center; gap: 1.25rem; }
+    .nav-links a {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .nav-links a:hover { color: var(--black); }
+    .page-hero { padding: clamp(3rem, 8vw, 4.5rem) 0 1.5rem; }
+    .eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 0 0 1rem;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 500;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      margin: 0 0 1rem;
+    }
+    .lead {
+      font-size: 1.0625rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      max-width: 36rem;
+      margin: 0;
+    }
+    .check-line { margin: 0.85rem 0 0; color: var(--text-muted); font-weight: 300; font-size: 0.9375rem; }
+    .topic-list, .event-list {
+      display: grid;
+      gap: 1rem;
+      padding-bottom: clamp(2.5rem, 6vw, 3.5rem);
+    }
+    .topic-card, .event-card {
+      display: grid;
+      gap: 0.35rem;
+      padding: 1.35rem 1.4rem;
+      border: 1px solid var(--border);
+      text-decoration: none;
+    }
+    .event-card {
+      grid-template-columns: 11.5rem 1fr auto;
+      gap: 1.25rem;
+      align-items: start;
+    }
+    .topic-card:hover, .event-card:hover { border-color: #d4d4d4; }
+    .topic-card h2, .event-card h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .topic-card p, .event-card p { margin: 0; color: var(--text-muted); font-weight: 300; }
+    .event-when {
+      margin: 0;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .event-host { margin-top: 0.45rem !important; font-size: 0.875rem; }
+    .event-empty { margin: 0 0 2rem; color: var(--text-muted); font-weight: 300; }
+    .event-cost {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.6rem;
+    }
+    .alert {
+      padding: clamp(3rem, 8vw, 4.5rem) 0;
+      background: var(--off-white);
+      border-top: 1px solid var(--border);
+    }
+    .alert h2, .coach-step h2, .done-copy h2 {
+      font-size: clamp(1.375rem, 2.8vw, 1.75rem);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      margin: 0 0 0.5rem;
+    }
+    .section-intro {
+      font-weight: 300;
+      color: var(--text-muted);
+      margin: 0 0 1.75rem;
+      max-width: 34rem;
+    }
+    .form-card {
+      max-width: 520px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      padding: 1.75rem 1.6rem;
+    }
+    label {
+      display: block;
+      font-weight: 500;
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    label .optional, .check-label {
+      font-weight: 400;
+      color: var(--text);
+      text-transform: none;
+      letter-spacing: normal;
+      font-size: 0.9375rem;
+    }
+    .field-group { margin-bottom: 1.15rem; }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      font-size: 0.9375rem;
+      font-family: inherit;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text);
+    }
+    textarea { min-height: 96px; resize: vertical; }
+    input:focus, select:focus, textarea:focus, button:focus, a:focus {
+      outline: 2px solid var(--black);
+      outline-offset: 2px;
+    }
+    .window-row {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .btn-primary, .btn-secondary {
+      display: inline-block;
+      width: 100%;
+      padding: 0.95rem 1.25rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+    }
+    .btn-primary { color: var(--white); background: var(--black); border: 1px solid var(--black); }
+    .btn-primary:hover { background: var(--hover); }
+    .btn-secondary {
+      margin-top: 0.75rem;
+      color: var(--text);
+      background: var(--white);
+      border: 1px solid var(--border);
+    }
+    .text-action {
+      display: inline-block;
+      margin-top: 0.85rem;
+      color: var(--text-muted);
+      font-size: 0.9375rem;
+    }
+    .notice { margin: 0.85rem 0 0; font-size: 0.875rem; font-weight: 300; color: var(--text-muted); }
+    .message { margin-top: 1rem; padding: 0.75rem 1rem; font-size: 0.9rem; display: none; }
+    .message.error {
+      display: block;
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+    .coach-line { margin: 0 0 1rem; }
+    .check-row { display: flex; gap: 0.65rem; align-items: flex-start; margin: 0.5rem 0 1rem; }
+    .check-row input { width: auto; margin-top: 0.2rem; }
+    .site-footer {
+      padding: 3rem 0;
+      background: var(--black);
+      color: #8c8c8c;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .site-footer .section-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+    .site-footer a { color: #e5e5e5; text-decoration: none; font-weight: 600; }
+    .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .site-footer p { margin: 0; max-width: 36rem; line-height: 1.6; text-transform: none; letter-spacing: normal; font-weight: 400; }
+    .event-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 6vh 1rem 2rem;
+      background: rgba(10, 10, 10, 0.45);
+      overflow: auto;
+    }
+    .event-gate.is-open { display: flex; }
+    .event-gate-card {
+      width: min(520px, 100%);
+      background: var(--white);
+      border: 1px solid var(--border);
+      padding: 1.75rem 1.6rem 1.5rem;
+      position: relative;
+    }
+    .event-gate-close {
+      position: absolute;
+      top: 0.85rem;
+      right: 0.85rem;
+      border: 0;
+      background: transparent;
+      font: inherit;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .event-gate h2 { font-size: 1.35rem; font-weight: 600; letter-spacing: -0.02em; margin: 0 2.5rem 0.35rem 0; }
+    [hidden] { display: none !important; }
+    @media (max-width: 720px) {
+      .event-card, .window-row { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="section-inner">
+      <a class="logo" href="/">Coach-Halo</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/events/">Event lists</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="section-inner">
+        <p class="eyebrow" id="eyebrow">Event lists</p>
+        <h1 id="page-title">Free online sessions</h1>
+        <p class="lead" id="page-lead">Pick a topic. Each page lists live online sessions for the next five weeks. Register with the host.</p>
+        <p class="check-line" id="check-line" hidden>We checked that each session was listed as free and online.</p>
+      </div>
+    </section>
+
+    <section aria-label="Topics">
+      <div class="section-inner">
+        <div class="topic-list" id="topic-list"></div>
+        <p class="event-empty" id="event-empty" hidden>No free sessions listed for this week yet.</p>
+        <div class="event-list" id="event-list" hidden></div>
+      </div>
+    </section>
+
+    <section class="alert" id="alert" hidden>
+      <div class="section-inner">
+        <h2>Alert me when a session is listed</h2>
+        <p class="section-intro">Tell us your first name and email. We’ll email you when a free session in this topic is listed. Joining this list does not request a coach introduction.</p>
+        <div class="form-card" id="alert-card">
+          <form id="alert-form">
+            <div class="field-group">
+              <label for="first_name">First name</label>
+              <input type="text" id="first_name" name="first_name" autocomplete="given-name" required>
+            </div>
+            <div class="field-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" autocomplete="email" required>
+            </div>
+            <div class="field-group">
+              <label for="session_note">What kind of session do you want? <span class="optional">(optional)</span></label>
+              <textarea id="session_note" name="session_note" maxlength="500"></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Alert me</button>
+            <p class="notice">We use your answers to send event alerts and, only if you later ask, to introduce you to a coach. See our <a href="/privacy/">Privacy</a> and <a href="/terms/">Terms</a>.</p>
+            <p class="message" id="alert-message" role="alert"></p>
+          </form>
+          <div id="alert-done" hidden>
+            <h2 id="alert-done-title">You’re on the list</h2>
+            <p class="section-intro" id="alert-done-copy"></p>
+            <div id="coach-step" hidden></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="section-inner">
+      <p>Coach-Halo · JH People Insights LLC. These listings are education and community events. They are not therapy, legal help, medical care, or financial, investment, or tax advice.</p>
+      <div class="footer-links">
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
+        <a href="/coach-terms/">Coach Terms</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="event-gate" id="event-gate" hidden>
+    <div class="event-gate-card" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+      <button type="button" class="event-gate-close" id="gate-close">Close</button>
+      <p class="event-when" id="gate-when"></p>
+      <h2 id="gate-title"></h2>
+      <p class="event-host" id="gate-host"></p>
+      <div id="gate-ask">
+        <p class="coach-line">Want an email when a later session in this topic is listed?</p>
+        <form id="gate-form">
+          <div class="field-group">
+            <label for="gate_first_name">First name</label>
+            <input type="text" id="gate_first_name" autocomplete="given-name" required>
+          </div>
+          <div class="field-group">
+            <label for="gate_email">Email</label>
+            <input type="email" id="gate_email" autocomplete="email" required>
+          </div>
+          <div class="field-group">
+            <label for="gate_session_note">What kind of session do you want? <span class="optional">(optional)</span></label>
+            <textarea id="gate_session_note" maxlength="500"></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Alert me</button>
+          <p class="notice">We use your answers to send event alerts and, only if you later ask, to introduce you to a coach. See our <a href="/privacy/">Privacy</a> and <a href="/terms/">Terms</a>.</p>
+          <p class="message" id="gate-message" role="alert"></p>
+        </form>
+        <a class="text-action" id="gate-skip" href="" target="_blank" rel="noopener noreferrer">Just take me to the event registration</a>
+      </div>
+      <div id="gate-done" hidden>
+        <h2 id="gate-done-title">You’re on the list</h2>
+        <p class="section-intro" id="gate-done-copy"></p>
+        <div id="gate-coach-step"></div>
+        <a class="btn-primary" id="gate-continue" href="" target="_blank" rel="noopener noreferrer">Continue to the event registration</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/netlify/functions/signup-guard.js"></script>
+  <script src="/events/events.js"></script>
+</body>
+</html>

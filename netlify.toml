@@ -5,3 +5,14 @@
 
 [functions]
   node_bundler = "esbuild"
+
+# One events page. The path picks the niche. Existing files win over these rewrites.
+[[redirects]]
+  from = "/events/:topic"
+  to = "/events/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/events/:topic/"
+  to = "/events/index.html"
+  status = 200
