@@ -13,6 +13,7 @@ test('topic slugs are the seven niches', () => {
     'financial-planning',
   ]);
   assert.equal(lib.TOPICS['financial-planning'].coachName, 'Jake Randall');
+  assert.equal(lib.TOPICS.career.match.coachingTypeCategory, 'Career Coaching');
   assert.equal(lib.topicSlug('divorce'), 'divorce');
   assert.equal(lib.topicSlug('coaches'), '');
 });
@@ -63,22 +64,31 @@ test('availability must be one to three future windows', () => {
   assert.equal(backwards.ok, false);
 });
 
-test('introduction fields name Jake and omit the session note', () => {
-  const fields = lib.introFields({
-    consentTime: '2026-10-13T18:00:00.000Z',
-    timeZone: 'America/Los_Angeles',
-    availabilityText: '2026-10-20 09:00–10:00 America/Los_Angeles',
-  });
-  assert.equal(fields.Coach, 'Jake Randall');
-  assert.equal(fields['Request status'], 'Requested');
-  assert.equal(Object.prototype.hasOwnProperty.call(fields, 'Session note (do not share with coach)'), false);
+test('alert fields include welcome and introductions omit the session note', () => {
   const alert = lib.alertFields({
     name: 'Ada',
-    email: 'ada@example.com',
-    topic: 'divorce',
+    email: 'ada@library.org',
+    topic: 'career',
     sessionNote: 'a workshop',
     signedUpFrom: 'Alert form',
   });
   assert.equal(alert['Session note (do not share with coach)'], 'a workshop');
+  assert.equal(alert['Send event welcome'], 'Yes');
+  assert.match(alert['Event welcome subject'], /Coach-Halo event list/);
+  assert.match(alert['Event welcome body'], /Career change and job search/);
   assert.equal(alert.Coach, undefined);
+
+  const fields = lib.introFields({
+    coachName: 'Casey Coach',
+    consentTime: '2026-10-13T18:00:00.000Z',
+    timeZone: 'America/Los_Angeles',
+    availabilityText: '2026-10-20 09:00–10:00 America/Los_Angeles',
+  });
+  assert.equal(fields.Coach, 'Casey Coach');
+  assert.equal(fields['Request status'], 'Requested');
+  assert.equal(
+    fields['Consent wording'],
+    lib.consentTextFor('Casey Coach')
+  );
+  assert.equal(Object.prototype.hasOwnProperty.call(fields, 'Session note (do not share with coach)'), false);
 });

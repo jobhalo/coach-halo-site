@@ -1,9 +1,9 @@
 /**
- * Saves a coach-halo.com/events alert, then an introduction request
- * only when the person asks on the personal financial planning page.
+ * Saves a coach-halo.com/events alert, sends the welcome email, then an
+ * introduction request only when the person asks after a coach match.
  *
  * Env: AIRTABLE_PAT or AIRTABLE_TOKEN, optional AIRTABLE_BASE_ID,
- * CH_EVENT_ALERTS_TABLE_ID — optional override. Default is Coach-Halo Event Alerts.
+ * CH_EVENT_ALERTS_TABLE_ID, SENDGRID_API_KEY, optional SENDGRID_FROM_EMAIL.
  */
 
 const guard = require('./signup-guard');
@@ -11,6 +11,7 @@ const lib = require('./events-lib');
 
 const DEFAULT_BASE = 'appYMfUftdmhlnU6q';
 const DEFAULT_ALERTS_TABLE = 'tblcD101NOUECJgV3';
+const FROM_DEFAULT = 'joaquinh@coach-halo.com';
 
 function corsHeaders() {
   return {
@@ -56,6 +57,39 @@ async function airtable(token, url, options) {
   });
   const data = await res.json().catch(() => ({}));
   return { ok: res.ok, status: res.status, data };
+}
+
+async function sendWelcomeEmail(fields) {
+  const apiKey = String(process.env.SENDGRID_API_KEY || '').trim();
+  const fromAddr = String(process.env.SENDGRID_FROM_EMAIL || FROM_DEFAULT).trim();
+  const to = String(fields.Email || '').trim();
+  const subject = String(fields['Event welcome subject'] || lib.welcomeSubject()).trim();
+  const body = String(fields['Event welcome body'] || '').trim();
+  if (!apiKey.startsWith('SG.') || !to || !subject || !body) {
+    return { sent: false, reason: 'not_configured' };
+  }
+  if (!fromAddr.toLowerCase().endsWith('@coach-halo.com')) {
+    return { sent: false, reason: 'from_address' };
+  }
+  const res = await fetch('https://api.sendgrid.com/v3/mail/send', {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + apiKey,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      personalizations: [{ to: [{ email: to }] }],
+      from: { email: fromAddr, name: 'Coach-Halo' },
+      reply_to: { email: fromAddr, name: 'Coach-Halo' },
+      subject,
+      content: [{ type: 'text/plain', value: body }],
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.text().catch(() => '');
+    return { sent: false, reason: 'send_failed', detail: err.slice(0, 200) };
+  }
+  return { sent: true };
 }
 
 exports.handler = async function (event) {
@@ -116,32 +150,65 @@ async function saveAlert(token, baseId, tableId, body) {
   const existing = await airtable(token, existingUrl, { method: 'GET' });
   if (!existing.ok) return json(502, { ok: false, error: 'save_failed' });
   const found = existing.data.records && existing.data.records[0];
-  if (found) return json(200, { ok: true, id: found.id, existing: true });
+  if (found) {
+    return json(200, {
+      ok: true,
+      id: found.id,
+      existing: true,
+      welcome_sent: String((found.fields || {})['Send event welcome'] || '') === 'Sent',
+    });
+  }
 
+  const fields = lib.alertFields({ name, email, topic, sessionNote, signedUpFrom });
   const created = await airtable(
     token,
     `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableId)}`,
     {
       method: 'POST',
       body: JSON.stringify({
-        records: [{ fields: lib.alertFields({ name, email, topic, sessionNote, signedUpFrom }) }],
+        records: [{ fields }],
         typecast: true,
       }),
     }
   );
   if (!created.ok) return json(502, { ok: false, error: 'save_failed' });
-  const id = created.data.records && created.data.records[0] && created.data.records[0].id;
-  return json(200, { ok: true, id: id || '' });
+  const record = created.data.records && created.data.records[0];
+  const id = record && record.id;
+
+  let welcomeSent = false;
+  try {
+    const welcome = await sendWelcomeEmail(fields);
+    welcomeSent = !!welcome.sent;
+    if (welcomeSent && id) {
+      await airtable(
+        token,
+        `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableId)}/${encodeURIComponent(id)}`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify({ fields: { 'Send event welcome': 'Sent' }, typecast: true }),
+        }
+      );
+    }
+  } catch (_) {
+    welcomeSent = false;
+  }
+
+  return json(200, { ok: true, id: id || '', welcome_sent: welcomeSent });
 }
 
 async function saveIntroduction(token, baseId, tableId, body) {
   const recordId = String(body.record_id || '').trim();
   const email = String(body.email || '').trim().toLowerCase();
   const timeZone = String(body.time_zone || '').trim();
+  const coachName = String(body.coach_name || body.coachName || '').trim();
   if (!/^rec[a-zA-Z0-9]{10,}$/.test(recordId)) {
     return json(400, { ok: false, error: 'record', message: 'Save the event alert first.' });
   }
-  if (body.consent !== true || body.consent_wording !== lib.CONSENT_TEXT) {
+  if (!coachName) {
+    return json(400, { ok: false, error: 'coach', message: 'Choose a coach introduction first.' });
+  }
+  const expectedConsent = lib.consentTextFor(coachName);
+  if (body.consent !== true || body.consent_wording !== expectedConsent) {
     return json(400, {
       ok: false,
       error: 'consent',
@@ -162,7 +229,7 @@ async function saveIntroduction(token, baseId, tableId, body) {
   const fields = current.data.fields;
   const topic = lib.topicSlug(fields.Topic);
   const savedEmail = String(fields.Email || '').trim().toLowerCase();
-  if (topic !== 'financial-planning' || savedEmail !== email) {
+  if (!topic || savedEmail !== email) {
     return json(400, { ok: false, error: 'record', message: 'Save the event alert first.' });
   }
 
@@ -170,6 +237,7 @@ async function saveIntroduction(token, baseId, tableId, body) {
     method: 'PATCH',
     body: JSON.stringify({
       fields: lib.introFields({
+        coachName,
         consentTime: new Date().toISOString(),
         timeZone,
         availabilityText: availability.text,

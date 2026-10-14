@@ -1,6 +1,5 @@
 /* Keep slugs aligned with netlify/functions/events-lib.js */
 (function () {
-  var CONSENT_TEXT = 'I want Coach-Halo to introduce me to Jake Randall and share my first name, email, topic, time zone, and availability.';
   var TIME_ZONES = [
     'America/Los_Angeles',
     'America/Denver',
@@ -15,41 +14,85 @@
     career: {
       label: 'Career change and job search',
       headline: 'Free sessions for a career change',
-      lead: 'Live online sessions in the next five weeks for people changing careers or looking for work. Register with the host.'
+      lead: 'Live online sessions in the next five weeks for people changing careers or looking for work. Register with the host.',
+      match: {
+        coachingType: 'Career coaching',
+        coachingTypeCategory: 'Career Coaching',
+        goals: 'Career change and job search'
+      }
     },
     leadership: {
       label: 'Leadership and the job you already have',
       headline: 'Free sessions for the job you already have',
-      lead: 'Live online sessions in the next five weeks for people growing in the role they already have. Register with the host.'
+      lead: 'Live online sessions in the next five weeks for people growing in the role they already have. Register with the host.',
+      match: {
+        coachingType: 'Career coaching',
+        coachingTypeCategory: 'Career Coaching',
+        goals: 'Leadership and growing in the job I already have'
+      }
     },
     business: {
       label: 'Starting or running a business',
       headline: 'Free sessions for starting or running a business',
-      lead: 'Live online sessions in the next five weeks for people starting or running a business. Register with the host.'
+      lead: 'Live online sessions in the next five weeks for people starting or running a business. Register with the host.',
+      match: {
+        coachingType: 'Career coaching',
+        coachingTypeCategory: 'Career Coaching',
+        goals: 'Starting or running a business'
+      }
     },
     divorce: {
       label: 'Divorce, separation, and dating again',
       headline: 'Free sessions for divorce, separation, and dating again',
-      lead: 'Live online sessions in the next five weeks. Register with the host.'
+      lead: 'Live online sessions in the next five weeks. Register with the host.',
+      match: {
+        coachingType: 'Life coaching',
+        coachingTypeCategory: 'Life Coaching',
+        goals: 'Divorce, separation, and dating again'
+      }
     },
     relationships: {
       label: 'Relationships',
       headline: 'Free sessions for relationships',
-      lead: 'Live online sessions in the next five weeks. Register with the host.'
+      lead: 'Live online sessions in the next five weeks. Register with the host.',
+      match: {
+        coachingType: 'Relationship & marriage',
+        coachingTypeCategory: 'Marriage and Relationship Counseling',
+        goals: 'Relationships and communication'
+      }
     },
     habits: {
       label: 'Habits and a life reset',
       headline: 'Free sessions for habits and a life reset',
-      lead: 'Live online sessions in the next five weeks for people changing habits or starting over. Register with the host.'
+      lead: 'Live online sessions in the next five weeks for people changing habits or starting over. Register with the host.',
+      match: {
+        coachingType: 'Life coaching',
+        coachingTypeCategory: 'Life Coaching',
+        goals: 'Habits and a life reset'
+      }
     },
     'financial-planning': {
       label: 'Personal financial planning',
       headline: 'Free sessions on personal financial planning',
       lead: 'Live online sessions in the next five weeks on budgets, money confidence, and long-term money habits. Register with the host.',
       coachName: 'Jake Randall',
-      coachLine: 'Works with people on budgets, money confidence, and long-term money habits.'
+      coachLine: 'Works with people on budgets, money confidence, and long-term money habits.',
+      match: {
+        coachingType: 'Financial wellness',
+        coachingTypeCategory: 'Personal Financial Planning',
+        goals: 'Budgets, money confidence, and long-term money habits',
+        fixedCoachName: 'Jake Randall'
+      }
     }
   };
+
+  function consentTextFor(coachName) {
+    return (
+      'I want Coach-Halo to introduce me to ' +
+      (coachName || 'a coach') +
+      ' and share my first name, email, topic, time zone, and availability.'
+    );
+  }
 
   var topic = currentTopic();
   var pageTitle = document.title;
@@ -160,12 +203,17 @@
     });
   }
 
-  function coachMarkup(prefix) {
-    var info = TOPICS[topic];
-    if (!info || !info.coachName) return '';
+  function coachMarkup(prefix, coach) {
+    if (!coach || !coach.name) return '';
+    var photo = coach.image
+      ? '<img class="coach-photo" src="' + esc(coach.image) + '" alt="" width="56" height="56">'
+      : '';
+    var line = coach.line || coach.title || '';
     return (
-      '<p class="coach-line"><strong>' + esc(info.coachName) + '</strong></p>' +
-      '<p class="coach-line">' + esc(info.coachLine) + '</p>' +
+      '<div class="coach-row">' + photo +
+      '<div><p class="coach-line"><strong>' + esc(coach.name) + '</strong></p>' +
+      (line ? '<p class="coach-line">' + esc(line) + '</p>' : '') +
+      '</div></div>' +
       '<div id="' + prefix + '-ask">' +
       '<button type="button" class="btn-primary" id="' + prefix + '-request">Request an introduction</button>' +
       '<button type="button" class="btn-secondary" id="' + prefix + '-skip">Skip</button>' +
@@ -173,12 +221,53 @@
       '<div class="field-group"><label for="' + prefix + '-tz">Time zone</label><select id="' + prefix + '-tz" required></select></div>' +
       '<div class="field-group"><label>Times that work</label><div id="' + prefix + '-windows"></div>' +
       '<button type="button" class="text-action" id="' + prefix + '-add">Add another time</button></div>' +
-      '<label class="check-row"><input type="checkbox" id="' + prefix + '-consent"><span class="check-label">' + esc(CONSENT_TEXT) + '</span></label>' +
+      '<label class="check-row"><input type="checkbox" id="' + prefix + '-consent"><span class="check-label">' +
+      esc(consentTextFor(coach.name)) +
+      '</span></label>' +
       '<button type="submit" class="btn-primary">Send introduction request</button>' +
       '<p class="message" id="' + prefix + '-intro-message" role="alert"></p>' +
       '</form></div>' +
       '<p class="section-intro" id="' + prefix + '-after" hidden></p>'
     );
+  }
+
+  function matchCoach(record) {
+    var info = TOPICS[topic];
+    if (!info || !info.match) return Promise.resolve(null);
+    if (info.match.fixedCoachName) {
+      return Promise.resolve({
+        name: info.match.fixedCoachName,
+        line: info.coachLine || '',
+        image: '',
+        title: info.coachLine || ''
+      });
+    }
+    var guessedTz = '';
+    try { guessedTz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+    return fetch('/.netlify/functions/match-coach', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        source: 'coach-halo-events',
+        topic: topic,
+        firstName: record.name || '',
+        email: record.email || '',
+        coachingType: info.match.coachingType,
+        coachingTypeCategory: info.match.coachingTypeCategory,
+        goals: info.match.goals,
+        timezone: guessedTz
+      })
+    }).then(function (res) {
+      return res.json().then(function (data) {
+        if (!res.ok || !data || !data.ok || !data.name) return null;
+        return {
+          name: data.name,
+          title: data.title || '',
+          line: data.match_reason || data.title || '',
+          image: data.image || ''
+        };
+      });
+    }).catch(function () { return null; });
   }
 
   function zoneOptions(select) {
@@ -216,15 +305,15 @@
     });
   }
 
-  function wireCoach(prefix, record) {
-    var info = TOPICS[topic];
+  function wireCoach(prefix, record, coach) {
     var root = document.getElementById(prefix === 'alert' ? 'coach-step' : 'gate-coach-step');
-    if (!info || !info.coachName || !record.id) {
+    if (!coach || !coach.name || !record.id) {
       root.hidden = true;
+      root.innerHTML = '';
       return;
     }
     root.hidden = false;
-    root.innerHTML = coachMarkup(prefix);
+    root.innerHTML = coachMarkup(prefix, coach);
     var select = document.getElementById(prefix + '-tz');
     var windows = document.getElementById(prefix + '-windows');
     zoneOptions(select);
@@ -256,10 +345,11 @@
           action: 'introduction',
           record_id: record.id,
           email: record.email,
+          coach_name: coach.name,
           time_zone: select.value,
           windows: readWindows(windows),
           consent: true,
-          consent_wording: CONSENT_TEXT
+          consent_wording: consentTextFor(coach.name)
         })
       }).then(function (res) {
         return res.json().then(function (data) { return { ok: res.ok && data && data.ok, data: data }; });
@@ -296,22 +386,33 @@
   }
 
   function showSaved(prefix, record, sessionName) {
+    var doneCopy = 'You’re on the list. Check your email for a welcome note. We’ll also email you when a free session in this topic is listed.';
     if (prefix === 'alert') {
       document.getElementById('alert-form').hidden = true;
       document.getElementById('alert-done').hidden = false;
-      document.getElementById('alert-done-copy').textContent = TOPICS[topic].coachName
-        ? 'You’re on the list for this topic.'
-        : 'You’re on the list. We’ll email you when a free session in this topic is listed.';
-      wireCoach('alert', record);
+      document.getElementById('alert-done-copy').textContent = doneCopy;
+      document.getElementById('coach-step').hidden = true;
+      document.getElementById('coach-step').innerHTML = '<p class="section-intro">Looking for a coach match…</p>';
+      document.getElementById('coach-step').hidden = false;
     } else {
       document.getElementById('gate-ask').hidden = true;
       document.getElementById('gate-done').hidden = false;
-      document.getElementById('gate-done-copy').textContent = 'You’re on the list for this topic.';
-      wireCoach('gate', record);
+      document.getElementById('gate-done-copy').textContent = doneCopy;
+      document.getElementById('gate-coach-step').hidden = false;
+      document.getElementById('gate-coach-step').innerHTML = '<p class="section-intro">Looking for a coach match…</p>';
     }
     if (typeof window.datafast === 'function') {
       window.datafast('event_alert_signup', { topic: topic, signed_up_from: sessionName || 'Alert form' });
     }
+    matchCoach(record).then(function (coach) {
+      if (!coach) {
+        var root = document.getElementById(prefix === 'alert' ? 'coach-step' : 'gate-coach-step');
+        root.hidden = true;
+        root.innerHTML = '';
+        return;
+      }
+      wireCoach(prefix, record, coach);
+    });
   }
 
   function submitAlert(form, fields, messageEl, button, record, prefix, sessionName) {
@@ -350,6 +451,7 @@
       }
       record.id = result.data.id || '';
       record.email = email;
+      record.name = name;
       showSaved(prefix, record, sessionName);
     }).catch(function () {
       button.disabled = false;

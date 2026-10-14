@@ -8,39 +8,67 @@ const WINDOW_MS = 35 * 24 * 60 * 60 * 1000;
 const EARLIEST_PT_HOUR = 6;
 const PT = 'America/Los_Angeles';
 const COACH_NAME = 'Jake Randall';
-const CONSENT_TEXT =
-  'I want Coach-Halo to introduce me to Jake Randall and share my first name, email, topic, time zone, and availability.';
 
 const TOPICS = {
   career: {
     label: 'Career change and job search',
     headline: 'Free sessions for a career change',
     lead: 'Live online sessions in the next five weeks for people changing careers or looking for work. Register with the host.',
+    match: {
+      coachingType: 'Career coaching',
+      coachingTypeCategory: 'Career Coaching',
+      goals: 'Career change and job search',
+    },
   },
   leadership: {
     label: 'Leadership and the job you already have',
     headline: 'Free sessions for the job you already have',
     lead: 'Live online sessions in the next five weeks for people growing in the role they already have. Register with the host.',
+    match: {
+      coachingType: 'Career coaching',
+      coachingTypeCategory: 'Career Coaching',
+      goals: 'Leadership and growing in the job I already have',
+    },
   },
   business: {
     label: 'Starting or running a business',
     headline: 'Free sessions for starting or running a business',
     lead: 'Live online sessions in the next five weeks for people starting or running a business. Register with the host.',
+    match: {
+      coachingType: 'Career coaching',
+      coachingTypeCategory: 'Career Coaching',
+      goals: 'Starting or running a business',
+    },
   },
   divorce: {
     label: 'Divorce, separation, and dating again',
     headline: 'Free sessions for divorce, separation, and dating again',
     lead: 'Live online sessions in the next five weeks. Register with the host.',
+    match: {
+      coachingType: 'Life coaching',
+      coachingTypeCategory: 'Life Coaching',
+      goals: 'Divorce, separation, and dating again',
+    },
   },
   relationships: {
     label: 'Relationships',
     headline: 'Free sessions for relationships',
     lead: 'Live online sessions in the next five weeks. Register with the host.',
+    match: {
+      coachingType: 'Relationship & marriage',
+      coachingTypeCategory: 'Marriage and Relationship Counseling',
+      goals: 'Relationships and communication',
+    },
   },
   habits: {
     label: 'Habits and a life reset',
     headline: 'Free sessions for habits and a life reset',
     lead: 'Live online sessions in the next five weeks for people changing habits or starting over. Register with the host.',
+    match: {
+      coachingType: 'Life coaching',
+      coachingTypeCategory: 'Life Coaching',
+      goals: 'Habits and a life reset',
+    },
   },
   'financial-planning': {
     label: 'Personal financial planning',
@@ -48,6 +76,12 @@ const TOPICS = {
     lead: 'Live online sessions in the next five weeks on budgets, money confidence, and long-term money habits. Register with the host.',
     coachName: COACH_NAME,
     coachLine: 'Works with people on budgets, money confidence, and long-term money habits.',
+    match: {
+      coachingType: 'Financial wellness',
+      coachingTypeCategory: 'Personal Financial Planning',
+      goals: 'Budgets, money confidence, and long-term money habits',
+      fixedCoachName: COACH_NAME,
+    },
   },
 };
 
@@ -61,6 +95,35 @@ const TIME_ZONES = [
   'Pacific/Honolulu',
   'America/Puerto_Rico',
 ];
+
+function consentTextFor(coachName) {
+  const name = String(coachName || '').trim() || 'a coach';
+  return (
+    'I want Coach-Halo to introduce me to ' +
+    name +
+    ' and share my first name, email, topic, time zone, and availability.'
+  );
+}
+
+const CONSENT_TEXT = consentTextFor(COACH_NAME);
+
+function welcomeSubject() {
+  return 'You’re on the Coach-Halo event list';
+}
+
+function welcomeBody(name, topicLabel) {
+  const who = String(name || 'there').trim() || 'there';
+  const topic = String(topicLabel || 'this topic').trim();
+  return [
+    'Hi ' + who + ',',
+    'You’re on the Coach-Halo event list for ' + topic + '.',
+    'I’ll email you when a free live online session is listed for that topic.',
+    'Joining the list does not introduce you to a coach. If a coach is offered on the page after you sign up, you can request that introduction separately.',
+    'Quick tip: if you use Gmail, drag this email to Primary (or mark it Not Spam) so the session notes don’t get buried.',
+    'Thanks for letting Coach-Halo be part of your journey.',
+    'Joaquin, Coach-Halo',
+  ].join('\n\n');
+}
 
 function withCoachHaloRef(raw) {
   const url = String(raw || '').trim();
@@ -214,21 +277,29 @@ function availabilityFromWindows(windows, timeZone, now) {
 }
 
 function alertFields(input) {
+  const topic = topicSlug(input.topic);
+  const info = TOPICS[topic] || {};
+  const subject = welcomeSubject();
+  const body = welcomeBody(input.name, info.label || topic);
   const fields = {
     Name: input.name,
     Email: input.email,
-    Topic: input.topic,
+    Topic: topic,
     'Heard from': 'events',
     'Signed up from': input.signedUpFrom || 'Alert form',
+    'Event welcome subject': subject,
+    'Event welcome body': body,
+    'Send event welcome': 'Yes',
   };
   if (input.sessionNote) fields['Session note (do not share with coach)'] = input.sessionNote;
   return fields;
 }
 
 function introFields(input) {
+  const coachName = String(input.coachName || COACH_NAME).trim() || COACH_NAME;
   return {
-    Coach: COACH_NAME,
-    'Consent wording': CONSENT_TEXT,
+    Coach: coachName,
+    'Consent wording': consentTextFor(coachName),
     'Consent time': input.consentTime,
     'Request status': 'Requested',
     'Time zone': input.timeZone,
@@ -245,6 +316,9 @@ module.exports = {
   CONSENT_TEXT,
   TOPICS,
   TIME_ZONES,
+  consentTextFor,
+  welcomeSubject,
+  welcomeBody,
   withCoachHaloRef,
   pacificHour,
   startsInWindow,
