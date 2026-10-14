@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const lib = require('./events-lib');
+const lib = require('./functions/events-lib');
 
 test('topic slugs are the seven niches', () => {
   assert.deepEqual(Object.keys(lib.TOPICS), [
