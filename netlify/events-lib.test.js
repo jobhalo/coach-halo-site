@@ -75,7 +75,12 @@ test('alert fields include welcome and introductions omit the session note', () 
   assert.equal(alert['Session note (do not share with coach)'], 'a workshop');
   assert.equal(alert['Send event welcome'], 'Yes');
   assert.match(alert['Event welcome subject'], /Coach-Halo event list/);
+  assert.match(alert['Event welcome body'], /creator of Coach-Halo/);
   assert.match(alert['Event welcome body'], /Career change and job search/);
+  assert.doesNotMatch(
+    alert['Event welcome body'],
+    /does not introduce you to a coach/i
+  );
   assert.equal(alert.Coach, undefined);
 
   const fields = lib.introFields({

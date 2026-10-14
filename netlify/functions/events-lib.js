@@ -112,16 +112,16 @@ function welcomeSubject() {
 }
 
 function welcomeBody(name, topicLabel) {
-  const who = String(name || 'there').trim() || 'there';
   const topic = String(topicLabel || 'this topic').trim();
   return [
-    'Hi ' + who + ',',
-    'You’re on the Coach-Halo event list for ' + topic + '.',
-    'I’ll email you when a free live online session is listed for that topic.',
-    'Joining the list does not introduce you to a coach. If a coach is offered on the page after you sign up, you can request that introduction separately.',
-    'Quick tip: if you use Gmail, drag this email to Primary (or mark it Not Spam) so the session notes don’t get buried.',
+    '👋 Hi there! I’m Joaquin, creator of Coach-Halo.',
+    'You’re on the event list. I’ll email you when a free live online session fits the topic you chose' +
+      (topic && topic !== 'this topic' ? ' (' + topic + ')' : '') +
+      '.',
+    'We want every session to be relevant to what you’re going through, so we use that topic to find events that fit you.',
+    '✅ **Quick tip.** Drag this email to your Primary inbox if you are on Gmail, or mark it as Not Spam, so the session notes don’t get buried.',
     'Thanks for letting Coach-Halo be part of your journey.',
-    'Joaquin, Coach-Halo',
+    'Joaquin, Creator of Coach-Halo.com',
   ].join('\n\n');
 }
 
