@@ -203,20 +203,34 @@
     });
   }
 
+  function setContinueStyle(asLink) {
+    var cont = document.getElementById('gate-continue');
+    if (!cont) return;
+    if (asLink) cont.classList.add('as-link');
+    else cont.classList.remove('as-link');
+  }
+
   function coachMarkup(prefix, coach) {
     if (!coach || !coach.name) return '';
     var photo = coach.image
-      ? '<img class="coach-photo" src="' + esc(coach.image) + '" alt="" width="56" height="56">'
+      ? '<img class="coach-photo" src="' + esc(coach.image) + '" alt="" width="40" height="40">'
       : '';
     var line = coach.line || coach.title || '';
+    var skip = prefix === 'gate'
+      ? ''
+      : '<button type="button" class="text-action" id="' + prefix + '-skip">Not now</button>';
+    var requestClass = prefix === 'gate' ? 'text-action' : 'btn-primary';
     return (
+      '<div class="coach-offer">' +
       '<div class="coach-row">' + photo +
-      '<div><p class="coach-line"><strong>' + esc(coach.name) + '</strong></p>' +
+      '<div><p class="coach-name">' + esc(coach.name) + '</p>' +
       (line ? '<p class="coach-line">' + esc(line) + '</p>' : '') +
       '</div></div>' +
       '<div id="' + prefix + '-ask">' +
-      '<button type="button" class="btn-primary" id="' + prefix + '-request">Request an introduction</button>' +
-      '<button type="button" class="btn-secondary" id="' + prefix + '-skip">Skip</button>' +
+      '<div class="coach-actions" id="' + prefix + '-actions">' +
+      '<button type="button" class="' + requestClass + '" id="' + prefix + '-request">Request an introduction</button>' +
+      skip +
+      '</div>' +
       '<form id="' + prefix + '-intro" hidden>' +
       '<div class="field-group"><label for="' + prefix + '-tz">Time zone</label><select id="' + prefix + '-tz" required></select></div>' +
       '<div class="field-group"><label>Times that work</label><div id="' + prefix + '-windows"></div>' +
@@ -227,7 +241,8 @@
       '<button type="submit" class="btn-primary">Send introduction request</button>' +
       '<p class="message" id="' + prefix + '-intro-message" role="alert"></p>' +
       '</form></div>' +
-      '<p class="section-intro" id="' + prefix + '-after" hidden></p>'
+      '<p class="section-intro" id="' + prefix + '-after" hidden></p>' +
+      '</div>'
     );
   }
 
@@ -323,12 +338,16 @@
     });
     document.getElementById(prefix + '-request').addEventListener('click', function () {
       document.getElementById(prefix + '-intro').hidden = false;
-      document.getElementById(prefix + '-request').hidden = true;
+      document.getElementById(prefix + '-actions').hidden = true;
+      if (prefix === 'gate') setContinueStyle(true);
       select.focus();
     });
-    document.getElementById(prefix + '-skip').addEventListener('click', function () {
-      finishCoach(prefix, 'You’re on the list. We’ll email you when a free session in this topic is listed.');
-    });
+    var skip = document.getElementById(prefix + '-skip');
+    if (skip) {
+      skip.addEventListener('click', function () {
+        finishCoach(prefix, 'You’re on the list. We’ll email you when a free session in this topic is listed.');
+      });
+    }
     document.getElementById(prefix + '-intro').addEventListener('submit', function (event) {
       event.preventDefault();
       var message = document.getElementById(prefix + '-intro-message');
@@ -362,7 +381,7 @@
         if (typeof window.datafast === 'function') {
           window.datafast('event_intro_request', { topic: topic });
         }
-        finishCoach(prefix, 'You’re on the list. Someone will email you to set a time. That time is a preference, not a booked appointment.');
+        finishCoach(prefix, 'Someone will email you to set a time. That time is a preference, not a booked appointment.');
       }).catch(function () {
         button.disabled = false;
         showError(message, 'Something went wrong. Try again.');
@@ -382,24 +401,26 @@
       root.hidden = true;
     }
     var copy = document.getElementById(prefix === 'alert' ? 'alert-done-copy' : 'gate-done-copy');
-    if (copy) copy.textContent = '';
+    if (copy && prefix === 'alert') copy.textContent = text;
+    if (prefix === 'gate') setContinueStyle(false);
   }
 
   function showSaved(prefix, record, sessionName) {
-    var doneCopy = 'You’re on the list. Check your email for a welcome note. We’ll also email you when a free session in this topic is listed.';
+    var doneCopy = 'Check your email for a welcome note. We’ll also email you when a free session in this topic is listed.';
     if (prefix === 'alert') {
       document.getElementById('alert-form').hidden = true;
       document.getElementById('alert-done').hidden = false;
       document.getElementById('alert-done-copy').textContent = doneCopy;
       document.getElementById('coach-step').hidden = true;
-      document.getElementById('coach-step').innerHTML = '<p class="section-intro">Looking for a coach match…</p>';
+      document.getElementById('coach-step').innerHTML = '';
       document.getElementById('coach-step').hidden = false;
     } else {
       document.getElementById('gate-ask').hidden = true;
       document.getElementById('gate-done').hidden = false;
       document.getElementById('gate-done-copy').textContent = doneCopy;
       document.getElementById('gate-coach-step').hidden = false;
-      document.getElementById('gate-coach-step').innerHTML = '<p class="section-intro">Looking for a coach match…</p>';
+      document.getElementById('gate-coach-step').innerHTML = '';
+      setContinueStyle(false);
     }
     if (typeof window.datafast === 'function') {
       window.datafast('event_alert_signup', { topic: topic, signed_up_from: sessionName || 'Alert form' });
@@ -469,6 +490,7 @@
     document.getElementById('gate-ask').hidden = false;
     document.getElementById('gate-done').hidden = true;
     document.getElementById('gate-coach-step').innerHTML = '';
+    setContinueStyle(false);
     gateRecord.id = '';
     gateRecord.email = '';
     gate.hidden = false;

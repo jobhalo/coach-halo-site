@@ -226,10 +226,39 @@
     }
     .text-action {
       display: inline-block;
-      margin-top: 0.85rem;
+      margin: 0 1rem 0 0;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--text-muted);
+      font: inherit;
+      font-size: 0.9375rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .text-action:hover { color: var(--black); }
+    .coach-offer { margin: 1.1rem 0 0; }
+    .coach-name { margin: 0; font-weight: 600; }
+    .coach-line { margin: 0.15rem 0 0; color: var(--text-muted); font-weight: 300; font-size: 0.9375rem; }
+    .coach-row { display: flex; gap: 0.75rem; align-items: center; margin: 0 0 0.7rem; }
+    .coach-photo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: var(--off-white); }
+    .coach-actions { margin-bottom: 0.25rem; }
+    .coach-offer form { margin-top: 1rem; }
+    #gate-done .section-intro, #alert-done .section-intro { margin-bottom: 0.85rem; }
+    .btn-primary.as-link, a.btn-primary.as-link {
+      display: inline;
+      width: auto;
+      padding: 0;
+      background: none;
+      border: 0;
       color: var(--text-muted);
       font-size: 0.9375rem;
+      font-weight: 400;
+      letter-spacing: normal;
+      text-transform: none;
     }
+    .btn-primary.as-link:hover { background: none; color: var(--black); }
+    #gate-continue { margin-top: 1.25rem; }
     .notice { margin: 0.85rem 0 0; font-size: 0.875rem; font-weight: 300; color: var(--text-muted); }
     .message { margin-top: 1rem; padding: 0.75rem 1rem; font-size: 0.9rem; display: none; }
     .message.error {
@@ -238,9 +267,6 @@
       color: #991b1b;
       border: 1px solid #fecaca;
     }
-    .coach-line { margin: 0 0 0.35rem; }
-    .coach-row { display: flex; gap: 0.85rem; align-items: center; margin: 0 0 1rem; }
-    .coach-photo { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; background: var(--off-white); }
     .check-row { display: flex; gap: 0.65rem; align-items: flex-start; margin: 0.5rem 0 1rem; }
     .check-row input { width: auto; margin-top: 0.2rem; }
     .site-footer {
@@ -399,7 +425,7 @@
         <h2 id="gate-done-title">You’re on the list</h2>
         <p class="section-intro" id="gate-done-copy"></p>
         <div id="gate-coach-step"></div>
-        <a class="btn-primary" id="gate-continue" href="" target="_blank" rel="noopener noreferrer">Continue to the event registration</a>
+        <a class="btn-primary event-gate-continue" id="gate-continue" href="" target="_blank" rel="noopener noreferrer">Continue to the event registration</a>
       </div>
     </div>
   </div>
