@@ -431,6 +431,21 @@
     });
   }
 
+  function showEventRegisterLink() {
+    var cont = document.getElementById('gate-continue');
+    if (!cont) return;
+    var name = (gate.dataset.session || '').trim();
+    cont.textContent = name
+      ? 'Click here to register for ' + name
+      : 'Click here to register for this session';
+    cont.hidden = false;
+  }
+
+  function hideEventRegisterLink() {
+    var cont = document.getElementById('gate-continue');
+    if (cont) cont.hidden = true;
+  }
+
   function finishCoach(prefix, text) {
     var root = document.getElementById(prefix === 'alert' ? 'coach-step' : 'gate-coach-step');
     var after = document.getElementById(prefix + '-after');
@@ -447,6 +462,7 @@
     fillSignupBanner(prefix, false);
     var skip = document.getElementById(prefix + '-skip');
     if (skip) skip.hidden = true;
+    if (prefix === 'gate') showEventRegisterLink();
   }
 
   function showSaved(prefix, record, sessionName) {
@@ -465,6 +481,7 @@
       document.getElementById('gate-done-copy').textContent = doneCopy;
       document.getElementById('gate-coach-step').hidden = false;
       document.getElementById('gate-coach-step').innerHTML = '';
+      hideEventRegisterLink();
     }
     fillSignupBanner(prefix, false);
     if (typeof window.datafast === 'function') {
@@ -476,6 +493,7 @@
         root.hidden = true;
         root.innerHTML = '';
         fillSignupBanner(prefix, false);
+        if (prefix === 'gate') showEventRegisterLink();
         return;
       }
       wireCoach(prefix, record, coach);
@@ -537,6 +555,7 @@
     document.getElementById('gate-done').hidden = true;
     document.getElementById('gate-coach-step').innerHTML = '';
     fillSignupBanner('gate', false);
+    hideEventRegisterLink();
     gateRecord.id = '';
     gateRecord.email = '';
     gate.hidden = false;
