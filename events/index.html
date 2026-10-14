@@ -226,7 +226,7 @@
     }
     .text-action {
       display: inline-block;
-      margin: 0 1rem 0 0;
+      margin: 0.85rem 0 0;
       padding: 0;
       border: 0;
       background: none;
@@ -237,28 +237,107 @@
       text-decoration: none;
     }
     .text-action:hover { color: var(--black); }
-    .coach-offer { margin: 1.1rem 0 0; }
-    .coach-name { margin: 0; font-weight: 600; }
-    .coach-line { margin: 0.15rem 0 0; color: var(--text-muted); font-weight: 300; font-size: 0.9375rem; }
-    .coach-row { display: flex; gap: 0.75rem; align-items: center; margin: 0 0 0.7rem; }
-    .coach-photo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: var(--off-white); }
-    .coach-actions { margin-bottom: 0.25rem; }
-    .coach-offer form { margin-top: 1rem; }
-    #gate-done .section-intro, #alert-done .section-intro { margin-bottom: 0.85rem; }
-    .btn-primary.as-link, a.btn-primary.as-link {
-      display: inline;
-      width: auto;
-      padding: 0;
-      background: none;
-      border: 0;
-      color: var(--text-muted);
-      font-size: 0.9375rem;
-      font-weight: 400;
-      letter-spacing: normal;
-      text-transform: none;
+    .alert.is-done .alert-heading { display: none; }
+    .signed-up-banner {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
     }
-    .btn-primary.as-link:hover { background: none; color: var(--black); }
-    #gate-continue { margin-top: 1.25rem; }
+    .signed-up-banner strong { font-weight: 600; }
+    .signed-up-banner .banner-tail { display: block; margin-top: 0.4rem; font-weight: 400; }
+    .keyword-chips { margin-top: 0.55rem; display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .keyword-chips span {
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.5rem;
+      border: 1px solid #a7f3d0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.6);
+      color: #065f46;
+    }
+    .coach-match-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      background: var(--off-white);
+    }
+    .coach-match-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .coach-why {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin: 0 0 1rem;
+      line-height: 1.45;
+    }
+    .coach-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .coach-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .coach-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .coach-avatar.has-photo .coach-avatar-fallback { display: none; }
+    .coach-name-display { font-weight: 600; font-size: 0.95rem; }
+    .coach-role-display { font-size: 0.8rem; color: var(--text-muted); }
+    .coach-connect-note {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .coach-availability-block {
+      margin-top: 1.25rem;
+      padding: 1rem 1.1rem;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.65);
+    }
+    .coach-availability-title { margin: 0 0 0.35rem; font-size: 0.8125rem; font-weight: 600; }
+    .coach-availability-lead { margin: 0 0 0.85rem; font-size: 0.75rem; color: var(--text-muted); line-height: 1.45; }
+    .coach-availability-duration {
+      margin: 0 0 1rem;
+      padding: 0.65rem 0.75rem;
+      font-size: 0.75rem;
+      line-height: 1.45;
+      color: var(--black);
+      background: var(--white);
+      border-radius: 6px;
+    }
+    .link-quiet-coach {
+      display: block;
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      width: 100%;
+    }
+    .link-quiet-coach:hover { color: var(--black); }
     .notice { margin: 0.85rem 0 0; font-size: 0.875rem; font-weight: 300; color: var(--text-muted); }
     .message { margin-top: 1rem; padding: 0.75rem 1rem; font-size: 0.9rem; display: none; }
     .message.error {
@@ -354,8 +433,8 @@
 
     <section class="alert" id="alert" hidden>
       <div class="section-inner">
-        <h2>Don’t see a session that fits?</h2>
-        <p class="section-intro">Sign up below. We’ll email you when one in this topic is listed.</p>
+        <h2 class="alert-heading">Don’t see a session that fits?</h2>
+        <p class="section-intro alert-heading">Sign up below. We’ll email you when one in this topic is listed.</p>
         <div class="form-card" id="alert-card">
           <form id="alert-form">
             <div class="field-group">
@@ -375,8 +454,12 @@
             <p class="message" id="alert-message" role="alert"></p>
           </form>
           <div id="alert-done" hidden>
-            <h2 id="alert-done-title">You’re on the list</h2>
-            <p class="section-intro" id="alert-done-copy"></p>
+            <div class="signed-up-banner" role="status">
+              <strong id="alert-done-title">You’re on the list.</strong>
+              <span id="alert-done-copy"></span>
+              <span class="banner-tail" id="alert-banner-tail" hidden>The coach below lines up with that topic — totally optional.</span>
+              <div class="keyword-chips" id="alert-topic-chip" hidden></div>
+            </div>
             <div id="coach-step" hidden></div>
           </div>
         </div>
@@ -422,10 +505,14 @@
         <a class="text-action" id="gate-skip" href="" target="_blank" rel="noopener noreferrer">Just take me to the event registration</a>
       </div>
       <div id="gate-done" hidden>
-        <h2 id="gate-done-title">You’re on the list</h2>
-        <p class="section-intro" id="gate-done-copy"></p>
+        <div class="signed-up-banner" role="status">
+          <strong id="gate-done-title">You’re on the list.</strong>
+          <span id="gate-done-copy"></span>
+          <span class="banner-tail" id="gate-banner-tail" hidden>The coach below lines up with that topic — totally optional.</span>
+          <div class="keyword-chips" id="gate-topic-chip" hidden></div>
+        </div>
         <div id="gate-coach-step"></div>
-        <a class="btn-primary event-gate-continue" id="gate-continue" href="" target="_blank" rel="noopener noreferrer">Continue to the event registration</a>
+        <a class="link-quiet-coach" id="gate-continue" href="" target="_blank" rel="noopener noreferrer">No thanks — take me to the event registration</a>
       </div>
     </div>
   </div>

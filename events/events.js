@@ -203,46 +203,83 @@
     });
   }
 
-  function setContinueStyle(asLink) {
-    var cont = document.getElementById('gate-continue');
-    if (!cont) return;
-    if (asLink) cont.classList.add('as-link');
-    else cont.classList.remove('as-link');
+  function coachFirst(name) {
+    return String(name || '').trim().split(/\s+/)[0] || 'your coach';
+  }
+
+  function topicChipLabel() {
+    return (TOPICS[topic] && TOPICS[topic].label) || topic || '';
+  }
+
+  function fillSignupBanner(prefix, hasCoach) {
+    var tail = document.getElementById(prefix + '-banner-tail');
+    var chips = document.getElementById(prefix + '-topic-chip');
+    var label = topicChipLabel();
+    if (tail) tail.hidden = !hasCoach;
+    if (chips) {
+      chips.hidden = !hasCoach || !label;
+      chips.innerHTML = hasCoach && label ? '<span>' + esc(label) + '</span>' : '';
+    }
   }
 
   function coachMarkup(prefix, coach) {
     if (!coach || !coach.name) return '';
+    var first = coachFirst(coach.name);
+    var initial = String(coach.name).charAt(0).toUpperCase();
     var photo = coach.image
-      ? '<img class="coach-photo" src="' + esc(coach.image) + '" alt="" width="40" height="40">'
+      ? '<img src="' + esc(coach.image) + '" alt="" width="56" height="56">'
       : '';
-    var line = coach.line || coach.title || '';
+    var why = coach.line
+      ? coach.line
+      : 'Based on the topic you chose, ' + coach.name + ' is a strong match.';
+    var role = coach.title || (TOPICS[topic] && TOPICS[topic].match && TOPICS[topic].match.coachingType) || '';
     var skip = prefix === 'gate'
       ? ''
-      : '<button type="button" class="text-action" id="' + prefix + '-skip">Not now</button>';
-    var requestClass = prefix === 'gate' ? 'text-action' : 'btn-primary';
+      : '<button type="button" class="link-quiet-coach" id="' + prefix + '-skip">No thanks — just send me event alerts</button>';
     return (
-      '<div class="coach-offer">' +
-      '<div class="coach-row">' + photo +
-      '<div><p class="coach-name">' + esc(coach.name) + '</p>' +
-      (line ? '<p class="coach-line">' + esc(line) + '</p>' : '') +
+      '<div class="coach-match-card">' +
+      '<h3>Your matched coach</h3>' +
+      '<p class="coach-why">' + esc(why) + '</p>' +
+      '<div class="coach-row">' +
+      '<div class="coach-avatar' + (coach.image ? ' has-photo' : '') + '">' +
+      photo +
+      '<span class="coach-avatar-fallback">' + esc(initial) + '</span>' +
+      '</div>' +
+      '<div class="coach-meta">' +
+      '<div class="coach-name-display">' + esc(coach.name) + '</div>' +
+      (role ? '<div class="coach-role-display">' + esc(role) + '</div>' : '') +
       '</div></div>' +
       '<div id="' + prefix + '-ask">' +
-      '<div class="coach-actions" id="' + prefix + '-actions">' +
-      '<button type="button" class="' + requestClass + '" id="' + prefix + '-request">Request an introduction</button>' +
-      skip +
+      '<div id="' + prefix + '-actions">' +
+      '<button type="button" class="btn-primary" id="' + prefix + '-request">Connect me with ' +
+      esc(first) + ' for a complimentary call</button>' +
+      '<span class="coach-connect-note">I’ll make a quick email intro between you and ' +
+      esc(first) + ' so you can connect and set up a time. It’s a free intro call.</span>' +
       '</div>' +
-      '<form id="' + prefix + '-intro" hidden>' +
-      '<div class="field-group"><label for="' + prefix + '-tz">Time zone</label><select id="' + prefix + '-tz" required></select></div>' +
-      '<div class="field-group"><label>Times that work</label><div id="' + prefix + '-windows"></div>' +
-      '<button type="button" class="text-action" id="' + prefix + '-add">Add another time</button></div>' +
+      '<form id="' + prefix + '-intro" class="coach-availability-block" hidden>' +
+      '<p class="coach-availability-title">Preferred times for your intro call</p>' +
+      '<p class="coach-availability-lead">Choose your timezone, then add up to three date and time windows so we can coordinate your intro.</p>' +
+      '<p class="coach-availability-duration">Complimentary discovery calls are usually about <strong>30–45 minutes</strong>.</p>' +
+      '<div class="field-group"><label for="' + prefix + '-tz">Your timezone</label>' +
+      '<select id="' + prefix + '-tz" required></select></div>' +
+      '<div id="' + prefix + '-windows">' +
+      '<div class="field-group"><label for="' + prefix + '-slot-1">Time window 1</label>' +
+      '<input type="datetime-local" id="' + prefix + '-slot-1" required></div>' +
+      '<div class="field-group"><label for="' + prefix + '-slot-2">Time window 2 <span class="optional">(optional)</span></label>' +
+      '<input type="datetime-local" id="' + prefix + '-slot-2"></div>' +
+      '<div class="field-group"><label for="' + prefix + '-slot-3">Time window 3 <span class="optional">(optional)</span></label>' +
+      '<input type="datetime-local" id="' + prefix + '-slot-3"></div>' +
+      '</div>' +
       '<label class="check-row"><input type="checkbox" id="' + prefix + '-consent"><span class="check-label">' +
       esc(consentTextFor(coach.name)) +
       '</span></label>' +
-      '<button type="submit" class="btn-primary">Send introduction request</button>' +
+      '<button type="submit" class="btn-primary">Confirm &amp; send intro request</button>' +
+      '<button type="button" class="link-quiet-coach" id="' + prefix + '-back">Back</button>' +
       '<p class="message" id="' + prefix + '-intro-message" role="alert"></p>' +
       '</form></div>' +
       '<p class="section-intro" id="' + prefix + '-after" hidden></p>' +
-      '</div>'
+      '</div>' +
+      skip
     );
   }
 
@@ -290,7 +327,7 @@
     try { detected = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
     var zones = TIME_ZONES.slice();
     if (detected && zones.indexOf(detected) === -1) zones.unshift(detected);
-    select.innerHTML = '<option value="">Select your time zone</option>';
+    select.innerHTML = '<option value="">Select timezone</option>';
     zones.forEach(function (zone) {
       var option = document.createElement('option');
       option.value = zone;
@@ -300,24 +337,30 @@
     });
   }
 
-  function addWindow(container) {
-    if (container.querySelectorAll('.window-row').length >= 3) return;
-    var row = document.createElement('div');
-    row.className = 'window-row';
-    row.innerHTML =
-      '<input type="date" aria-label="Date" required>' +
-      '<input type="time" aria-label="Start time" required>' +
-      '<input type="time" aria-label="End time" required>';
-    container.appendChild(row);
+  function pad2(n) {
+    return String(n).padStart(2, '0');
   }
 
-  function readWindows(container) {
-    return Array.prototype.map.call(container.querySelectorAll('.window-row'), function (row) {
-      var inputs = row.querySelectorAll('input');
-      return { date: inputs[0].value, start: inputs[1].value, end: inputs[2].value };
-    }).filter(function (item) {
-      return item.date || item.start || item.end;
-    });
+  function windowFromLocal(value) {
+    var match = /^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/.exec(String(value || '').trim());
+    if (!match) return null;
+    var hour = Number(match[2]);
+    var minute = Number(match[3]) + 45;
+    hour += Math.floor(minute / 60);
+    minute = minute % 60;
+    if (hour > 23) hour = 23;
+    return {
+      date: match[1],
+      start: match[2] + ':' + match[3],
+      end: pad2(hour) + ':' + pad2(minute)
+    };
+  }
+
+  function readWindows(prefix) {
+    return [1, 2, 3].map(function (n) {
+      var el = document.getElementById(prefix + '-slot-' + n);
+      return el ? windowFromLocal(el.value) : null;
+    }).filter(Boolean);
   }
 
   function wireCoach(prefix, record, coach) {
@@ -329,23 +372,22 @@
     }
     root.hidden = false;
     root.innerHTML = coachMarkup(prefix, coach);
+    fillSignupBanner(prefix, true);
     var select = document.getElementById(prefix + '-tz');
-    var windows = document.getElementById(prefix + '-windows');
     zoneOptions(select);
-    addWindow(windows);
-    document.getElementById(prefix + '-add').addEventListener('click', function () {
-      addWindow(windows);
-    });
     document.getElementById(prefix + '-request').addEventListener('click', function () {
       document.getElementById(prefix + '-intro').hidden = false;
       document.getElementById(prefix + '-actions').hidden = true;
-      if (prefix === 'gate') setContinueStyle(true);
       select.focus();
+    });
+    document.getElementById(prefix + '-back').addEventListener('click', function () {
+      document.getElementById(prefix + '-intro').hidden = true;
+      document.getElementById(prefix + '-actions').hidden = false;
     });
     var skip = document.getElementById(prefix + '-skip');
     if (skip) {
       skip.addEventListener('click', function () {
-        finishCoach(prefix, 'You’re on the list. We’ll email you when a free session in this topic is listed.');
+        finishCoach(prefix, 'We’ll email you when a free session in this topic is listed.');
       });
     }
     document.getElementById(prefix + '-intro').addEventListener('submit', function (event) {
@@ -366,7 +408,7 @@
           email: record.email,
           coach_name: coach.name,
           time_zone: select.value,
-          windows: readWindows(windows),
+          windows: readWindows(prefix),
           consent: true,
           consent_wording: consentTextFor(coach.name)
         })
@@ -401,13 +443,16 @@
       root.hidden = true;
     }
     var copy = document.getElementById(prefix === 'alert' ? 'alert-done-copy' : 'gate-done-copy');
-    if (copy && prefix === 'alert') copy.textContent = text;
-    if (prefix === 'gate') setContinueStyle(false);
+    if (copy && prefix === 'alert') copy.textContent = ' ' + text;
+    fillSignupBanner(prefix, false);
+    var skip = document.getElementById(prefix + '-skip');
+    if (skip) skip.hidden = true;
   }
 
   function showSaved(prefix, record, sessionName) {
-    var doneCopy = 'Check your email for a welcome note. We’ll also email you when a free session in this topic is listed.';
+    var doneCopy = ' We’ll email you when a free session in this topic is listed. Check your email for a welcome note.';
     if (prefix === 'alert') {
+      document.getElementById('alert').classList.add('is-done');
       document.getElementById('alert-form').hidden = true;
       document.getElementById('alert-done').hidden = false;
       document.getElementById('alert-done-copy').textContent = doneCopy;
@@ -420,8 +465,8 @@
       document.getElementById('gate-done-copy').textContent = doneCopy;
       document.getElementById('gate-coach-step').hidden = false;
       document.getElementById('gate-coach-step').innerHTML = '';
-      setContinueStyle(false);
     }
+    fillSignupBanner(prefix, false);
     if (typeof window.datafast === 'function') {
       window.datafast('event_alert_signup', { topic: topic, signed_up_from: sessionName || 'Alert form' });
     }
@@ -430,6 +475,7 @@
         var root = document.getElementById(prefix === 'alert' ? 'coach-step' : 'gate-coach-step');
         root.hidden = true;
         root.innerHTML = '';
+        fillSignupBanner(prefix, false);
         return;
       }
       wireCoach(prefix, record, coach);
@@ -490,7 +536,7 @@
     document.getElementById('gate-ask').hidden = false;
     document.getElementById('gate-done').hidden = true;
     document.getElementById('gate-coach-step').innerHTML = '';
-    setContinueStyle(false);
+    fillSignupBanner('gate', false);
     gateRecord.id = '';
     gateRecord.email = '';
     gate.hidden = false;
