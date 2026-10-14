@@ -16,3 +16,22 @@
   from = "/events/:topic/"
   to = "/events/index.html"
   status = 200
+
+# Stories is not a public Coach-Halo surface. Keep files for rollback; hide the URL.
+[[redirects]]
+  from = "/stories"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/stories/"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/stories/*"
+  to = "/"
+  status = 301
+  force = true
