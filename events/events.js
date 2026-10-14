@@ -460,9 +460,6 @@
   }
 
   function openGate(item) {
-    document.getElementById('gate-title').textContent = item.name || '';
-    document.getElementById('gate-when').textContent = item.when || '';
-    document.getElementById('gate-host').textContent = item.host || '';
     document.getElementById('gate-skip').href = item.url;
     document.getElementById('gate-continue').href = item.url;
     gate.dataset.session = item.name || '';
