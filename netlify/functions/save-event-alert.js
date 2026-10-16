@@ -42,6 +42,18 @@ function json(statusCode, body) {
   };
 }
 
+function httpUrl(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  try {
+    const parsed = new URL(raw);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return '';
+    return parsed.toString().slice(0, 400);
+  } catch (_) {
+    return '';
+  }
+}
+
 function formulaQuote(value) {
   return String(value || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
@@ -123,10 +135,15 @@ async function saveAlert(token, baseId, tableId, body) {
   const email = String(body.email || '').trim();
   const topic = lib.topicSlug(body.topic);
   const sessionNote = String(body.session_note || '').trim().slice(0, 500);
-  const signedUpFrom = String(body.signed_up_from || 'Alert form')
+  const signedUpFrom = String(body.signed_up_from || 'Category page')
     .trim()
     .replace(/\s+/g, ' ')
-    .slice(0, 200);
+    .slice(0, 80);
+  const eventId = String(body.event_id || '')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .slice(0, 40);
+  const eventUrl = httpUrl(body.event_url);
 
   const nameProblem = guard.jhSignupNameProblem(name);
   if (!name || nameProblem) {
@@ -159,7 +176,7 @@ async function saveAlert(token, baseId, tableId, body) {
     });
   }
 
-  const fields = lib.alertFields({ name, email, topic, sessionNote, signedUpFrom });
+  const fields = lib.alertFields({ name, email, topic, sessionNote, signedUpFrom, eventId, eventUrl });
   const created = await airtable(
     token,
     `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableId)}`,
