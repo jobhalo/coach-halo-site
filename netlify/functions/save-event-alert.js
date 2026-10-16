@@ -235,8 +235,17 @@ async function saveIntroduction(token, baseId, tableId, body) {
   if (!lib.isValidTimeZone(timeZone)) {
     return json(400, { ok: false, error: 'time_zone', message: 'Choose your time zone.' });
   }
+  const coachMessage = String(body.coach_message || '').trim().slice(0, 600);
+  if (coachMessage.length < 12) {
+    return json(400, {
+      ok: false,
+      error: 'coach_message',
+      message: 'Add 1–2 sentences about what you’d like to work on.',
+    });
+  }
   const availability = lib.availabilityFromWindows(body.windows, timeZone, new Date());
   if (!availability.ok) return json(400, { ok: false, error: 'availability', message: availability.message });
+  availability.text += '\n\nWhat they want to talk about:\n' + coachMessage;
 
   const recordUrl = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableId)}/${encodeURIComponent(recordId)}`;
   const current = await airtable(token, recordUrl, { method: 'GET' });

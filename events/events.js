@@ -116,7 +116,7 @@
     return (
       'I want Coach-Halo to introduce me to ' +
       (coachName || 'a coach') +
-      ' and share my first name, email, topic, time zone, and availability.'
+      ' and share my first name, email, topic, time zone, availability, and what I would like to talk about.'
     );
   }
 
@@ -295,7 +295,7 @@
       '<div class="coach-name-display">' + esc(coach.name) + '</div>' +
       (support ? '<div class="coach-role-display">' + esc(support) + '</div>' : '') +
       '</div></div>' +
-      '<div id="' + prefix + '-ask">' +
+      '<div id="' + prefix + '-coach-ask">' +
       '<div id="' + prefix + '-actions">' +
       request +
       '</div>' +
@@ -313,6 +313,9 @@
       '<div class="field-group"><label for="' + prefix + '-slot-3">Time window 3 <span class="optional">(optional)</span></label>' +
       '<input type="datetime-local" id="' + prefix + '-slot-3"></div>' +
       '</div>' +
+      '<div class="field-group"><label for="' + prefix + '-coach-note">In 1–2 sentences, what would you like to work on or talk with ' +
+      esc(first) + ' about?</label>' +
+      '<textarea id="' + prefix + '-coach-note" maxlength="600"></textarea></div>' +
       '<label class="check-row"><input type="checkbox" id="' + prefix + '-consent"><span class="check-label">' +
       esc(consentTextFor(coach.name)) +
       '</span></label>' +
@@ -443,6 +446,13 @@
       var consent = document.getElementById(prefix + '-consent');
       if (!select.value) { showError(message, 'Choose your time zone.'); select.focus(); return; }
       if (!consent.checked) { showError(message, 'Check the box if you want Coach-Halo to make this introduction.'); consent.focus(); return; }
+      var noteEl = document.getElementById(prefix + '-coach-note');
+      var coachMessage = noteEl ? noteEl.value.trim() : '';
+      if (coachMessage.length < 12) {
+        showError(message, 'Add 1–2 sentences about what you’d like to work on.');
+        if (noteEl) noteEl.focus();
+        return;
+      }
       var button = event.target.querySelector('button[type="submit"]');
       if (button.dataset.sending === '1') return;
       button.dataset.sending = '1';
@@ -457,6 +467,7 @@
           coach_name: coach.name,
           time_zone: select.value,
           windows: readWindows(prefix),
+          coach_message: coachMessage,
           consent: true,
           consent_wording: consentTextFor(coach.name)
         })
@@ -497,10 +508,11 @@
   function finishCoach(prefix, text) {
     var root = document.getElementById(prefix === 'alert' ? 'coach-step' : 'gate-coach-step');
     var after = document.getElementById(prefix + '-after');
-    var ask = document.getElementById(prefix + '-ask');
+    var ask = document.getElementById(prefix + '-coach-ask');
     if (ask) ask.hidden = true;
     if (after) {
       after.hidden = false;
+      after.className = 'signed-up-banner';
       after.textContent = text;
     } else if (root) {
       root.hidden = true;

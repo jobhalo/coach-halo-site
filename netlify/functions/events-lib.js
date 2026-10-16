@@ -115,7 +115,7 @@ function consentTextFor(coachName) {
   return (
     'I want Coach-Halo to introduce me to ' +
     name +
-    ' and share my first name, email, topic, time zone, and availability.'
+    ' and share my first name, email, topic, time zone, availability, and what I would like to talk about.'
   );
 }
 
