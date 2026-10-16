@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <script defer data-website-id="dfid_ImJXeenE5zJoIlqGSMtN5" data-domain="coach-halo.com" src="https://datafa.st/js/script.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Market benchmarks — Coach-Halo</title>
+  <title>Coach pricing guide — Coach-Halo</title>
   <!--
     Static path: coach-halo/benchmarks.html
     When hosted at site root: /coach-halo/benchmarks.html
@@ -102,10 +102,26 @@
       letter-spacing: -0.02em;
       margin: 0 0 12px;
     }
+    h3 {
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      margin: 0 0 10px;
+      color: var(--text);
+    }
     .section-intro {
       color: var(--muted);
-      max-width: 60ch;
-      margin: 0 0 36px;
+      max-width: 62ch;
+      margin: 0 0 28px;
+    }
+    .method-note {
+      color: var(--muted);
+      font-size: 0.9rem;
+      max-width: 70ch;
+      margin: 0 0 28px;
+      padding: 12px 14px;
+      border-left: 3px solid var(--border);
+      background: rgba(20, 26, 34, 0.45);
+      border-radius: 0 10px 10px 0;
     }
     .eyebrow {
       display: inline-block;
@@ -147,9 +163,7 @@
       margin-bottom: 24px;
       max-width: 520px;
     }
-    .benchmark-gate .eyebrow {
-      margin-bottom: 8px;
-    }
+    .benchmark-gate .eyebrow { margin-bottom: 8px; }
     .benchmark-gate p.note {
       margin: 0 0 14px;
       font-size: 0.9rem;
@@ -181,13 +195,130 @@
       font-size: 0.92rem;
       color: #f0a8a8;
     }
-    .benchmark-gate .msg[hidden] {
-      display: none;
-    }
+    .benchmark-gate .msg[hidden] { display: none; }
 
-    #benchmark-chart-panel[hidden] {
-      display: none;
+    #benchmark-insights[hidden] { display: none; }
+
+    .pricing-panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 22px 22px 20px;
+      margin-bottom: 28px;
     }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 18px;
+    }
+    @media (max-width: 720px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+    .field label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .field .hint {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--muted);
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.95rem;
+    }
+    .field input:focus,
+    .field select:focus {
+      outline: 2px solid rgba(110, 231, 255, 0.35);
+      outline-offset: 1px;
+    }
+    .scenario-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 16px;
+    }
+    .scenario-row button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .scenario-row button[aria-pressed="true"] {
+      border-color: var(--accent);
+      color: var(--text);
+      background: rgba(110, 231, 255, 0.08);
+    }
+    .scenario-row button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .result-card {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(110, 231, 255, 0.35);
+      background: rgba(110, 231, 255, 0.06);
+    }
+    .result-card .result-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin: 0 0 6px;
+    }
+    .result-card .result-value {
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--accent);
+    }
+    .result-card .result-sub {
+      margin: 8px 0 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .breakdown {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 6px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .breakdown li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(36, 48, 65, 0.7);
+      padding-bottom: 4px;
+    }
+    .breakdown strong { color: var(--text); font-weight: 600; }
+    .calc-error {
+      margin: 12px 0 0;
+      color: #f0a8a8;
+      font-size: 0.9rem;
+    }
+    .calc-error[hidden] { display: none; }
+    .chart-block { margin-top: 8px; }
+    .chart-block .section-intro { margin-bottom: 16px; }
 
     footer {
       border-top: 1px solid var(--border);
@@ -211,13 +342,17 @@
 
   <main>
     <section class="market-pricing" id="benchmarks">
-      <h2>What the market is pricing</h2>
+      <h2>Coach pricing guide</h2>
       <p class="section-intro">
-        Estimated hourly rates by category based on lead costs (assuming ~8% conversion).
+        Explore a sustainable starting price based on your time, business costs, client acquisition, and profit target.
       </p>
+      <p class="method-note">
+        These are planning estimates, not verified market prices. Your results depend on the assumptions shown and what clients are willing to pay.
+      </p>
+
       <div class="benchmark-gate" id="benchmark-access">
         <span class="eyebrow">Subscriber access</span>
-        <p class="note">Market insights are for paid Coach-Halo subscribers. Enter the email on your account to continue.</p>
+        <p class="note">This guide is for paid Coach-Halo subscribers. Enter the email on your account to continue.</p>
         <form id="benchmark-email-form" action="#" method="get" novalidate>
           <label class="visually-hidden" for="benchmark-email">Email</label>
           <input
@@ -228,18 +363,98 @@
             placeholder="you@example.com"
             required
           />
-          <button type="submit" class="btn btn-primary">View market insights</button>
+          <button type="submit" class="btn btn-primary">Open pricing guide</button>
         </form>
         <p id="benchmark-email-msg" class="msg" role="alert" hidden></p>
       </div>
-      <div class="plotly-chart-shell" id="benchmark-chart-panel" hidden>
-        <iframe
-          id="benchmark-chart-frame"
-          class="market-chart-iframe"
-          title="Distribution of estimated hourly rate estimates by category"
-          data-src="../market_pricing_hourly_histogram.html"
-          loading="lazy"
-        ></iframe>
+
+      <div id="benchmark-insights" hidden>
+        <div class="pricing-panel" id="sustainable-pricing-panel">
+          <span class="eyebrow">Suggested rate to test</span>
+          <h3>Build a sustainable session price</h3>
+          <p class="section-intro" style="margin-bottom:16px;">
+            Acquisition cost is lead cost ÷ conversion — not a market rate by itself. Add your time and overhead, then apply your profit target.
+          </p>
+
+          <div class="scenario-row" role="group" aria-label="Acquisition scenario">
+            <button type="button" id="scenario-thumbtack" aria-pressed="true">Thumbtack lead cost</button>
+            <button type="button" id="scenario-custom" aria-pressed="false">Custom lead cost</button>
+            <button type="button" id="scenario-coachhalo" aria-pressed="false" disabled title="Reliable Coach-Halo acquisition costs are not available yet">Coach-Halo (not available)</button>
+          </div>
+
+          <form id="pricing-form" class="pricing-grid" novalidate>
+            <div class="field" id="field-category">
+              <label for="price-category">Category (Thumbtack median lead cost)</label>
+              <select id="price-category"></select>
+              <span class="hint" id="category-hint">Sample sizes load from observed Thumbtack lead fees.</span>
+            </div>
+            <div class="field">
+              <label for="lead-cost">Average lead cost (USD)</label>
+              <input id="lead-cost" type="number" min="0" step="0.01" inputmode="decimal" />
+              <span class="hint">Thumbtack scenario uses the category median. Edit anytime.</span>
+            </div>
+            <div class="field">
+              <label for="conversion">Lead → paying client conversion</label>
+              <input id="conversion" type="number" min="0.1" max="100" step="0.1" value="8" />
+              <span class="hint">8% is an illustrative assumption, not observed Coach-Halo data.</span>
+            </div>
+            <div class="field">
+              <label for="sessions">Expected paid sessions per client</label>
+              <input id="sessions" type="number" min="0.1" step="0.1" value="8" />
+              <span class="hint">Illustrative retention assumption — replace with your average.</span>
+            </div>
+            <div class="field">
+              <label for="pay-hour">Desired pay per working hour (USD)</label>
+              <input id="pay-hour" type="number" min="0" step="1" placeholder="Enter your figure" />
+              <span class="hint">Required for a complete estimate. Not invented for you.</span>
+            </div>
+            <div class="field">
+              <label for="hours-allocated">Hours allocated to one session</label>
+              <input id="hours-allocated" type="number" min="0.1" step="0.05" value="1.25" />
+              <span class="hint">Delivery + preparation + admin for that session.</span>
+            </div>
+            <div class="field">
+              <label for="session-hours">Client-facing session length (hours)</label>
+              <input id="session-hours" type="number" min="0.1" step="0.05" value="1" />
+              <span class="hint">Used only for the equivalent hourly selling rate.</span>
+            </div>
+            <div class="field">
+              <label for="overhead">Allocated overhead per session (USD)</label>
+              <input id="overhead" type="number" min="0" step="1" value="0" placeholder="0 if none" />
+              <span class="hint">Software, insurance, etc. already not in your hourly pay. Do not double-count.</span>
+            </div>
+            <div class="field">
+              <label for="margin">Target profit margin after coach compensation</label>
+              <input id="margin" type="number" min="0" max="99" step="1" value="25" />
+              <span class="hint">Default 25% — adjustable. Price = total cost ÷ (1 − margin).</span>
+            </div>
+          </form>
+
+          <p id="calc-error" class="calc-error" role="alert" hidden></p>
+
+          <div class="result-card" id="result-card" hidden>
+            <p class="result-label">Suggested rate to test</p>
+            <p class="result-value" id="result-price">—</p>
+            <p class="result-sub" id="result-hourly"></p>
+            <ul class="breakdown" id="result-breakdown"></ul>
+          </div>
+        </div>
+
+        <div class="chart-block">
+          <h3>Thumbtack lead costs (context)</h3>
+          <p class="section-intro">
+            Observed fees paid for Thumbtack leads by category — acquisition inputs, not verified session prices clients pay coaches.
+          </p>
+          <div class="plotly-chart-shell" id="benchmark-chart-panel">
+            <iframe
+              id="benchmark-chart-frame"
+              class="market-chart-iframe"
+              title="Thumbtack lead costs by category"
+              data-src="../market_pricing_hourly_histogram.html"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -253,18 +468,198 @@
       var form = document.getElementById("benchmark-email-form");
       var msg = document.getElementById("benchmark-email-msg");
       var gate = document.getElementById("benchmark-access");
-      var panel = document.getElementById("benchmark-chart-panel");
+      var insights = document.getElementById("benchmark-insights");
       var iframe = document.getElementById("benchmark-chart-frame");
       /* TODO: replace with server / billing API check (e.g. Outseta, Stripe customer list) */
       var allowed = "joaquinh@job-halo.com";
 
+      var categoryData = [];
+      var scenario = "thumbtack";
+
+      function money(n) {
+        if (n == null || !isFinite(n)) return "—";
+        return "$" + (Math.round(n * 100) / 100).toLocaleString(undefined, {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2
+        });
+      }
+
+      function num(id) {
+        var el = document.getElementById(id);
+        if (!el) return NaN;
+        return parseFloat(String(el.value || "").trim());
+      }
+
+      function calculateSustainable(inputs) {
+        var leadCost = inputs.leadCost;
+        var conversion = inputs.conversion;
+        var sessions = inputs.sessions;
+        var payHour = inputs.payHour;
+        var hoursAllocated = inputs.hoursAllocated;
+        var overhead = inputs.overhead;
+        var margin = inputs.margin;
+        var sessionHours = inputs.sessionHours;
+
+        if (!(leadCost >= 0)) return { ok: false, error: "Enter a lead cost (0 or more)." };
+        if (!(conversion > 0 && conversion <= 1)) {
+          return { ok: false, error: "Conversion must be greater than 0% and at most 100%." };
+        }
+        if (!(sessions > 0)) return { ok: false, error: "Paid sessions per client must be greater than zero." };
+        if (!(payHour >= 0)) return { ok: false, error: "Enter desired pay per working hour (0 or more)." };
+        if (!(hoursAllocated > 0)) return { ok: false, error: "Hours allocated to a session must be greater than zero." };
+        if (!(overhead >= 0)) return { ok: false, error: "Overhead cannot be negative." };
+        if (!(margin >= 0 && margin < 1)) {
+          return { ok: false, error: "Profit margin must be between 0% and 99%." };
+        }
+        if (!(sessionHours > 0)) {
+          return { ok: false, error: "Client-facing session length must be greater than zero." };
+        }
+
+        var acqClient = leadCost / conversion;
+        var acqSession = acqClient / sessions;
+        var coachComp = payHour * hoursAllocated;
+        var totalCost = coachComp + acqSession + overhead;
+        var suggested = totalCost / (1 - margin);
+        var equivHourly = suggested / sessionHours;
+
+        return {
+          ok: true,
+          acquisitionCostPerClient: acqClient,
+          acquisitionCostPerSession: acqSession,
+          coachCompensationPerSession: coachComp,
+          totalCostPerSession: totalCost,
+          suggestedSessionPrice: suggested,
+          equivalentHourlySellingRate: equivHourly
+        };
+      }
+
+      function readInputs() {
+        return {
+          leadCost: num("lead-cost"),
+          conversion: num("conversion") / 100,
+          sessions: num("sessions"),
+          payHour: num("pay-hour"),
+          hoursAllocated: num("hours-allocated"),
+          overhead: num("overhead"),
+          margin: num("margin") / 100,
+          sessionHours: num("session-hours")
+        };
+      }
+
+      function renderResult() {
+        var errEl = document.getElementById("calc-error");
+        var card = document.getElementById("result-card");
+        var inputs = readInputs();
+        var payEl = document.getElementById("pay-hour");
+        if (payEl && String(payEl.value || "").trim() === "") {
+          errEl.hidden = false;
+          errEl.textContent = "Enter your desired pay per working hour to see a suggested rate.";
+          card.hidden = true;
+          return;
+        }
+        var r = calculateSustainable(inputs);
+        if (!r.ok) {
+          errEl.hidden = false;
+          errEl.textContent = r.error;
+          card.hidden = true;
+          return;
+        }
+        errEl.hidden = true;
+        card.hidden = false;
+        document.getElementById("result-price").textContent =
+          money(r.suggestedSessionPrice) + " / session";
+        document.getElementById("result-hourly").textContent =
+          "Equivalent selling rate: " + money(r.equivalentHourlySellingRate) +
+          " / client-facing hour";
+        document.getElementById("result-breakdown").innerHTML =
+          "<li><span>Acquisition cost / client</span><strong>" + money(r.acquisitionCostPerClient) + "</strong></li>" +
+          "<li><span>Acquisition cost / session</span><strong>" + money(r.acquisitionCostPerSession) + "</strong></li>" +
+          "<li><span>Coach compensation / session</span><strong>" + money(r.coachCompensationPerSession) + "</strong></li>" +
+          "<li><span>Total cost / session</span><strong>" + money(r.totalCostPerSession) + "</strong></li>";
+      }
+
+      function selectedCategory() {
+        var sel = document.getElementById("price-category");
+        if (!sel) return null;
+        var idx = sel.selectedIndex;
+        if (idx < 0 || !categoryData[idx]) return null;
+        return categoryData[idx];
+      }
+
+      function applyCategoryLeadCost() {
+        if (scenario !== "thumbtack") return;
+        var cat = selectedCategory();
+        var lead = document.getElementById("lead-cost");
+        var hint = document.getElementById("category-hint");
+        if (!cat || !lead) return;
+        lead.value = String(cat.median_lead_cost);
+        if (hint) {
+          hint.textContent =
+            "n=" + cat.n + " Thumbtack leads · median $" + cat.median_lead_cost +
+            "/lead · avg $" + cat.avg_lead_cost + "/lead";
+        }
+        renderResult();
+      }
+
+      function setScenario(next) {
+        scenario = next;
+        document.getElementById("scenario-thumbtack").setAttribute("aria-pressed", next === "thumbtack" ? "true" : "false");
+        document.getElementById("scenario-custom").setAttribute("aria-pressed", next === "custom" ? "true" : "false");
+        var catField = document.getElementById("field-category");
+        if (catField) catField.style.opacity = next === "thumbtack" ? "1" : "0.55";
+        if (next === "thumbtack") applyCategoryLeadCost();
+        else renderResult();
+      }
+
+      function populateCategories(payload) {
+        categoryData = (payload && payload.categories) || [];
+        var sel = document.getElementById("price-category");
+        if (!sel) return;
+        sel.innerHTML = "";
+        categoryData.forEach(function (c, i) {
+          var opt = document.createElement("option");
+          opt.value = String(i);
+          opt.textContent = c.category + " (n=" + c.n + ")";
+          sel.appendChild(opt);
+        });
+        if (categoryData.length) {
+          sel.selectedIndex = 0;
+          applyCategoryLeadCost();
+        }
+      }
+
+      function wireCalculator() {
+        ["lead-cost", "conversion", "sessions", "pay-hour", "hours-allocated", "overhead", "margin", "session-hours"]
+          .forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.addEventListener("input", renderResult);
+          });
+        var sel = document.getElementById("price-category");
+        if (sel) sel.addEventListener("change", applyCategoryLeadCost);
+        document.getElementById("scenario-thumbtack").addEventListener("click", function () {
+          setScenario("thumbtack");
+        });
+        document.getElementById("scenario-custom").addEventListener("click", function () {
+          setScenario("custom");
+        });
+        fetch("../market_pricing_thumbtack_lead_costs.json", { cache: "no-store" })
+          .then(function (res) { return res.ok ? res.json() : Promise.reject(); })
+          .then(populateCategories)
+          .catch(function () {
+            var hint = document.getElementById("category-hint");
+            if (hint) hint.textContent = "Could not load Thumbtack category medians — enter lead cost manually.";
+            setScenario("custom");
+          });
+      }
+
       function showInsights() {
         if (gate) gate.hidden = true;
-        if (panel) panel.hidden = false;
+        if (insights) insights.hidden = false;
         if (iframe) {
           var url = iframe.getAttribute("data-src");
           if (url && !iframe.getAttribute("src")) iframe.setAttribute("src", url);
         }
+        wireCalculator();
       }
 
       if (new URLSearchParams(window.location.search).get("bypass") === "1") {
