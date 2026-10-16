@@ -5,10 +5,6 @@
   <script defer data-website-id="dfid_ImJXeenE5zJoIlqGSMtN5" data-domain="coach-halo.com" src="https://datafa.st/js/script.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Coach pricing guide — Coach-Halo</title>
-  <!--
-    Static path: coach-halo/benchmarks.html
-    When hosted at site root: /coach-halo/benchmarks.html
-  -->
   <style>
     :root {
       --bg: #0c0f14;
@@ -23,15 +19,8 @@
     }
     * { box-sizing: border-box; }
     .visually-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
     }
     body {
       margin: 0;
@@ -44,46 +33,23 @@
     a:hover { text-decoration: underline; }
 
     header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      position: sticky; top: 0; z-index: 10;
       backdrop-filter: blur(12px);
       background: rgba(12, 15, 20, 0.85);
       border-bottom: 1px solid var(--border);
     }
     .nav {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
+      max-width: var(--max); margin: 0 auto; padding: 14px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
     }
-    .logo {
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--text);
-    }
-    .nav-links {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+    .logo { font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
+    .nav-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
     .nav-links a:not(.btn) { color: var(--muted); font-size: 0.95rem; }
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      border: 1px solid transparent;
-      cursor: pointer;
-      font: inherit;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 0.9rem;
+      border: 1px solid transparent; cursor: pointer; font: inherit;
     }
     .btn-primary {
       background: linear-gradient(135deg, #6ee7ff, #a78bfa);
@@ -91,241 +57,141 @@
     }
 
     main { overflow-x: hidden; }
-
     section {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 56px 20px 72px;
+      max-width: var(--max); margin: 0 auto; padding: 56px 20px 40px;
     }
     h2 {
       font-size: clamp(1.5rem, 3vw, 2rem);
-      letter-spacing: -0.02em;
-      margin: 0 0 12px;
+      letter-spacing: -0.02em; margin: 0 0 12px;
     }
     h3 {
-      font-size: 1.05rem;
-      letter-spacing: -0.01em;
-      margin: 0 0 10px;
-      color: var(--text);
+      font-size: 1.1rem; letter-spacing: -0.01em; margin: 0 0 8px;
     }
     .section-intro {
-      color: var(--muted);
-      max-width: 62ch;
-      margin: 0 0 28px;
+      color: var(--muted); max-width: 62ch; margin: 0 0 24px;
     }
     .method-note {
-      color: var(--muted);
-      font-size: 0.9rem;
-      max-width: 70ch;
-      margin: 0 0 28px;
-      padding: 12px 14px;
-      border-left: 3px solid var(--border);
-      background: rgba(20, 26, 34, 0.45);
+      color: var(--muted); font-size: 0.92rem; max-width: 68ch;
+      margin: 0 0 28px; padding: 12px 14px;
+      border-left: 3px solid var(--accent);
+      background: rgba(110, 231, 255, 0.06);
       border-radius: 0 10px 10px 0;
     }
     .eyebrow {
-      display: inline-block;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      margin-bottom: 12px;
+      display: inline-block; font-size: 0.8rem; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--muted); margin-bottom: 10px;
     }
 
     .market-pricing {
       border-top: 1px solid var(--border);
       background: linear-gradient(180deg, transparent, rgba(20, 26, 34, 0.35));
     }
+
+    .benchmark-gate {
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--surface); padding: 20px 22px; margin-bottom: 24px; max-width: 520px;
+    }
+    .benchmark-gate p.note { margin: 0 0 14px; font-size: 0.9rem; color: var(--muted); }
+    .benchmark-gate form { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .benchmark-gate input[type="email"] {
+      flex: 1 1 200px; min-width: 0; padding: 10px 14px; border-radius: 10px;
+      border: 1px solid var(--border); background: rgba(0, 0, 0, 0.25);
+      color: var(--text); font: inherit; font-size: 0.95rem;
+    }
+    .benchmark-gate .msg { margin: 12px 0 0; font-size: 0.92rem; color: #f0a8a8; }
+    .benchmark-gate .msg[hidden] { display: none; }
+
+    #benchmark-insights[hidden] { display: none; }
+
+    .specialty-row {
+      display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px;
+    }
+    .specialty-row button {
+      padding: 8px 14px; border-radius: 999px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--muted); font: inherit; font-size: 0.88rem; cursor: pointer;
+    }
+    .specialty-row button[aria-pressed="true"] {
+      border-color: var(--accent); color: var(--text);
+      background: rgba(110, 231, 255, 0.1);
+    }
+
+    .guidance-card {
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--surface); padding: 22px 22px 20px; margin-bottom: 28px;
+    }
+    .guidance-card .badge {
+      display: inline-block; font-size: 0.75rem; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--accent);
+      border: 1px solid rgba(110, 231, 255, 0.35);
+      border-radius: 999px; padding: 4px 10px; margin-bottom: 12px;
+    }
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px 20px; margin: 18px 0 8px;
+    }
+    @media (max-width: 640px) {
+      .stat-grid { grid-template-columns: 1fr; }
+    }
+    .stat .label { font-size: 0.8rem; color: var(--muted); margin: 0 0 4px; }
+    .stat .value {
+      font-size: clamp(1.25rem, 2.5vw, 1.7rem); font-weight: 700;
+      letter-spacing: -0.02em; margin: 0; color: var(--text);
+    }
+    .stat .value.accent { color: var(--accent); }
+    .meta-list {
+      margin: 18px 0 0; padding: 0; list-style: none;
+      display: grid; gap: 8px; font-size: 0.9rem; color: var(--muted);
+    }
+    .meta-list li {
+      display: flex; justify-content: space-between; gap: 16px;
+      border-bottom: 1px solid rgba(36, 48, 65, 0.75); padding-bottom: 6px;
+    }
+    .meta-list strong { color: var(--text); font-weight: 600; text-align: right; }
+
+    .range-viz {
+      margin: 8px 0 4px; height: 10px; border-radius: 999px;
+      background: #1c2430; position: relative; overflow: hidden;
+    }
+    .range-viz .band {
+      position: absolute; top: 0; bottom: 0;
+      background: rgba(110, 231, 255, 0.35); border-radius: 999px;
+    }
+    .range-viz .median-mark {
+      position: absolute; top: -3px; bottom: -3px; width: 3px;
+      background: var(--accent); border-radius: 2px;
+    }
+    .range-labels {
+      display: flex; justify-content: space-between;
+      font-size: 0.8rem; color: var(--muted); margin-top: 6px;
+    }
+
+    .insufficient {
+      padding: 16px 18px; border-radius: 12px;
+      border: 1px solid var(--border); background: rgba(0, 0, 0, 0.2);
+      color: var(--muted); font-size: 0.95rem;
+    }
+    .insufficient strong { color: var(--text); display: block; margin-bottom: 6px; }
+
+    .secondary-section {
+      max-width: var(--max); margin: 0 auto; padding: 8px 20px 72px;
+    }
+    .secondary-section h3 { margin-top: 8px; }
     .plotly-chart-shell {
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      line-height: 0;
-      max-width: 100%;
+      border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--border); background: var(--surface);
+      line-height: 0; max-width: 100%; margin-top: 14px;
     }
     .market-chart-iframe {
-      width: 100%;
-      height: 820px;
-      border: 0;
-      display: block;
-      overflow: hidden;
+      width: 100%; height: 820px; border: 0; display: block; overflow: hidden;
     }
     @media (max-width: 640px) {
       .market-chart-iframe { height: 1040px; }
     }
 
-    .benchmark-gate {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--surface);
-      padding: 20px 22px;
-      margin-bottom: 24px;
-      max-width: 520px;
-    }
-    .benchmark-gate .eyebrow { margin-bottom: 8px; }
-    .benchmark-gate p.note {
-      margin: 0 0 14px;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-    .benchmark-gate form {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .benchmark-gate input[type="email"] {
-      flex: 1 1 200px;
-      min-width: 0;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: rgba(0, 0, 0, 0.25);
-      color: var(--text);
-      font: inherit;
-      font-size: 0.95rem;
-    }
-    .benchmark-gate input[type="email"]::placeholder {
-      color: var(--muted);
-      opacity: 0.85;
-    }
-    .benchmark-gate .msg {
-      margin: 12px 0 0;
-      font-size: 0.92rem;
-      color: #f0a8a8;
-    }
-    .benchmark-gate .msg[hidden] { display: none; }
-
-    #benchmark-insights[hidden] { display: none; }
-
-    .pricing-panel {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--surface);
-      padding: 22px 22px 20px;
-      margin-bottom: 28px;
-    }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px 18px;
-    }
-    @media (max-width: 720px) {
-      .pricing-grid { grid-template-columns: 1fr; }
-    }
-    .field label {
-      display: block;
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-    .field .hint {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--muted);
-      opacity: 0.9;
-      margin-top: 4px;
-    }
-    .field input,
-    .field select {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: rgba(0, 0, 0, 0.25);
-      color: var(--text);
-      font: inherit;
-      font-size: 0.95rem;
-    }
-    .field input:focus,
-    .field select:focus {
-      outline: 2px solid rgba(110, 231, 255, 0.35);
-      outline-offset: 1px;
-    }
-    .scenario-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 0 0 16px;
-    }
-    .scenario-row button {
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      font: inherit;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-    .scenario-row button[aria-pressed="true"] {
-      border-color: var(--accent);
-      color: var(--text);
-      background: rgba(110, 231, 255, 0.08);
-    }
-    .scenario-row button:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-    .result-card {
-      margin-top: 18px;
-      padding: 16px 18px;
-      border-radius: 12px;
-      border: 1px solid rgba(110, 231, 255, 0.35);
-      background: rgba(110, 231, 255, 0.06);
-    }
-    .result-card .result-label {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      margin: 0 0 6px;
-    }
-    .result-card .result-value {
-      font-size: clamp(1.6rem, 3vw, 2.1rem);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      margin: 0;
-      color: var(--accent);
-    }
-    .result-card .result-sub {
-      margin: 8px 0 0;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-    .breakdown {
-      margin: 14px 0 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 6px;
-      font-size: 0.88rem;
-      color: var(--muted);
-    }
-    .breakdown li {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      border-bottom: 1px solid rgba(36, 48, 65, 0.7);
-      padding-bottom: 4px;
-    }
-    .breakdown strong { color: var(--text); font-weight: 600; }
-    .calc-error {
-      margin: 12px 0 0;
-      color: #f0a8a8;
-      font-size: 0.9rem;
-    }
-    .calc-error[hidden] { display: none; }
-    .chart-block { margin-top: 8px; }
-    .chart-block .section-intro { margin-bottom: 16px; }
-
     footer {
-      border-top: 1px solid var(--border);
-      padding: 28px 20px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.85rem;
+      border-top: 1px solid var(--border); padding: 28px 20px;
+      text-align: center; color: var(--muted); font-size: 0.85rem;
     }
   </style>
 </head>
@@ -344,10 +210,10 @@
     <section class="market-pricing" id="benchmarks">
       <h2>Coach pricing guide</h2>
       <p class="section-intro">
-        Explore a sustainable starting price based on your time, business costs, client acquisition, and profit target.
+        How much should you charge? Pick a specialty to see advertised coaching rates from coaches in the Coach-Halo network.
       </p>
       <p class="method-note">
-        These are planning estimates, not verified market prices. Your results depend on the assumptions shown and what clients are willing to pay.
+        Use these advertised rates as a starting point. Your experience, service scope, and clientele may justify a different price.
       </p>
 
       <div class="benchmark-gate" id="benchmark-access">
@@ -355,108 +221,34 @@
         <p class="note">This guide is for paid Coach-Halo subscribers. Enter the email on your account to continue.</p>
         <form id="benchmark-email-form" action="#" method="get" novalidate>
           <label class="visually-hidden" for="benchmark-email">Email</label>
-          <input
-            id="benchmark-email"
-            name="email"
-            type="email"
-            autocomplete="email"
-            placeholder="you@example.com"
-            required
-          />
+          <input id="benchmark-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
           <button type="submit" class="btn btn-primary">Open pricing guide</button>
         </form>
         <p id="benchmark-email-msg" class="msg" role="alert" hidden></p>
       </div>
 
       <div id="benchmark-insights" hidden>
-        <div class="pricing-panel" id="sustainable-pricing-panel">
-          <span class="eyebrow">Suggested rate to test</span>
-          <h3>Build a sustainable session price</h3>
-          <p class="section-intro" style="margin-bottom:16px;">
-            Acquisition cost is lead cost ÷ conversion — not a market rate by itself. Add your time and overhead, then apply your profit target.
-          </p>
-
-          <div class="scenario-row" role="group" aria-label="Acquisition scenario">
-            <button type="button" id="scenario-thumbtack" aria-pressed="true">Thumbtack lead cost</button>
-            <button type="button" id="scenario-custom" aria-pressed="false">Custom lead cost</button>
-            <button type="button" id="scenario-coachhalo" aria-pressed="false" disabled title="Reliable Coach-Halo acquisition costs are not available yet">Coach-Halo (not available)</button>
-          </div>
-
-          <form id="pricing-form" class="pricing-grid" novalidate>
-            <div class="field" id="field-category">
-              <label for="price-category">Category (Thumbtack median lead cost)</label>
-              <select id="price-category"></select>
-              <span class="hint" id="category-hint">Sample sizes load from observed Thumbtack lead fees.</span>
-            </div>
-            <div class="field">
-              <label for="lead-cost">Average lead cost (USD)</label>
-              <input id="lead-cost" type="number" min="0" step="0.01" inputmode="decimal" />
-              <span class="hint">Thumbtack scenario uses the category median. Edit anytime.</span>
-            </div>
-            <div class="field">
-              <label for="conversion">Lead → paying client conversion</label>
-              <input id="conversion" type="number" min="0.1" max="100" step="0.1" value="8" />
-              <span class="hint">8% is an illustrative assumption, not observed Coach-Halo data.</span>
-            </div>
-            <div class="field">
-              <label for="sessions">Expected paid sessions per client</label>
-              <input id="sessions" type="number" min="0.1" step="0.1" value="8" />
-              <span class="hint">Illustrative retention assumption — replace with your average.</span>
-            </div>
-            <div class="field">
-              <label for="pay-hour">Desired pay per working hour (USD)</label>
-              <input id="pay-hour" type="number" min="0" step="1" placeholder="Enter your figure" />
-              <span class="hint">Required for a complete estimate. Not invented for you.</span>
-            </div>
-            <div class="field">
-              <label for="hours-allocated">Hours allocated to one session</label>
-              <input id="hours-allocated" type="number" min="0.1" step="0.05" value="1.25" />
-              <span class="hint">Delivery + preparation + admin for that session.</span>
-            </div>
-            <div class="field">
-              <label for="session-hours">Client-facing session length (hours)</label>
-              <input id="session-hours" type="number" min="0.1" step="0.05" value="1" />
-              <span class="hint">Used only for the equivalent hourly selling rate.</span>
-            </div>
-            <div class="field">
-              <label for="overhead">Allocated overhead per session (USD)</label>
-              <input id="overhead" type="number" min="0" step="1" value="0" placeholder="0 if none" />
-              <span class="hint">Software, insurance, etc. already not in your hourly pay. Do not double-count.</span>
-            </div>
-            <div class="field">
-              <label for="margin">Target profit margin after coach compensation</label>
-              <input id="margin" type="number" min="0" max="99" step="1" value="25" />
-              <span class="hint">Default 25% — adjustable. Price = total cost ÷ (1 − margin).</span>
-            </div>
-          </form>
-
-          <p id="calc-error" class="calc-error" role="alert" hidden></p>
-
-          <div class="result-card" id="result-card" hidden>
-            <p class="result-label">Suggested rate to test</p>
-            <p class="result-value" id="result-price">—</p>
-            <p class="result-sub" id="result-hourly"></p>
-            <ul class="breakdown" id="result-breakdown"></ul>
-          </div>
-        </div>
-
-        <div class="chart-block">
-          <h3>Thumbtack lead costs (context)</h3>
-          <p class="section-intro">
-            Observed fees paid for Thumbtack leads by category — acquisition inputs, not verified session prices clients pay coaches.
-          </p>
-          <div class="plotly-chart-shell" id="benchmark-chart-panel">
-            <iframe
-              id="benchmark-chart-frame"
-              class="market-chart-iframe"
-              title="Thumbtack lead costs by category"
-              data-src="../market_pricing_hourly_histogram.html"
-              loading="lazy"
-            ></iframe>
-          </div>
-        </div>
+        <div class="specialty-row" id="specialty-row" role="group" aria-label="Coaching specialty"></div>
+        <div class="guidance-card" id="guidance-card" aria-live="polite"></div>
       </div>
     </section>
+
+    <div class="secondary-section" id="lead-costs-section" hidden>
+      <span class="eyebrow">Secondary</span>
+      <h3>Lead acquisition costs</h3>
+      <p class="section-intro">
+        Observed Thumbtack lead fees by category. These are what coaches pay for leads — not session prices and not included in the advertised-rate guidance above.
+      </p>
+      <div class="plotly-chart-shell">
+        <iframe
+          id="benchmark-chart-frame"
+          class="market-chart-iframe"
+          title="Thumbtack lead costs by category"
+          data-src="../market_pricing_hourly_histogram.html"
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
   </main>
 
   <footer>
@@ -469,197 +261,136 @@
       var msg = document.getElementById("benchmark-email-msg");
       var gate = document.getElementById("benchmark-access");
       var insights = document.getElementById("benchmark-insights");
+      var leadSection = document.getElementById("lead-costs-section");
       var iframe = document.getElementById("benchmark-chart-frame");
-      /* TODO: replace with server / billing API check (e.g. Outseta, Stripe customer list) */
+      var specialtyRow = document.getElementById("specialty-row");
+      var card = document.getElementById("guidance-card");
       var allowed = "joaquinh@job-halo.com";
-
-      var categoryData = [];
-      var scenario = "thumbtack";
+      var data = null;
+      var selected = null;
 
       function money(n) {
         if (n == null || !isFinite(n)) return "—";
-        return "$" + (Math.round(n * 100) / 100).toLocaleString(undefined, {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 2
-        });
+        return "$" + Math.round(n).toLocaleString();
       }
 
-      function num(id) {
-        var el = document.getElementById(id);
-        if (!el) return NaN;
-        return parseFloat(String(el.value || "").trim());
-      }
-
-      function calculateSustainable(inputs) {
-        var leadCost = inputs.leadCost;
-        var conversion = inputs.conversion;
-        var sessions = inputs.sessions;
-        var payHour = inputs.payHour;
-        var hoursAllocated = inputs.hoursAllocated;
-        var overhead = inputs.overhead;
-        var margin = inputs.margin;
-        var sessionHours = inputs.sessionHours;
-
-        if (!(leadCost >= 0)) return { ok: false, error: "Enter a lead cost (0 or more)." };
-        if (!(conversion > 0 && conversion <= 1)) {
-          return { ok: false, error: "Conversion must be greater than 0% and at most 100%." };
+      function findSpecialty(name) {
+        if (!data || !data.specialties) return null;
+        for (var i = 0; i < data.specialties.length; i++) {
+          if (data.specialties[i].specialty === name) return data.specialties[i];
         }
-        if (!(sessions > 0)) return { ok: false, error: "Paid sessions per client must be greater than zero." };
-        if (!(payHour >= 0)) return { ok: false, error: "Enter desired pay per working hour (0 or more)." };
-        if (!(hoursAllocated > 0)) return { ok: false, error: "Hours allocated to a session must be greater than zero." };
-        if (!(overhead >= 0)) return { ok: false, error: "Overhead cannot be negative." };
-        if (!(margin >= 0 && margin < 1)) {
-          return { ok: false, error: "Profit margin must be between 0% and 99%." };
-        }
-        if (!(sessionHours > 0)) {
-          return { ok: false, error: "Client-facing session length must be greater than zero." };
-        }
-
-        var acqClient = leadCost / conversion;
-        var acqSession = acqClient / sessions;
-        var coachComp = payHour * hoursAllocated;
-        var totalCost = coachComp + acqSession + overhead;
-        var suggested = totalCost / (1 - margin);
-        var equivHourly = suggested / sessionHours;
-
-        return {
-          ok: true,
-          acquisitionCostPerClient: acqClient,
-          acquisitionCostPerSession: acqSession,
-          coachCompensationPerSession: coachComp,
-          totalCostPerSession: totalCost,
-          suggestedSessionPrice: suggested,
-          equivalentHourlySellingRate: equivHourly
-        };
+        return null;
       }
 
-      function readInputs() {
-        return {
-          leadCost: num("lead-cost"),
-          conversion: num("conversion") / 100,
-          sessions: num("sessions"),
-          payHour: num("pay-hour"),
-          hoursAllocated: num("hours-allocated"),
-          overhead: num("overhead"),
-          margin: num("margin") / 100,
-          sessionHours: num("session-hours")
-        };
-      }
-
-      function renderResult() {
-        var errEl = document.getElementById("calc-error");
-        var card = document.getElementById("result-card");
-        var inputs = readInputs();
-        var payEl = document.getElementById("pay-hour");
-        if (payEl && String(payEl.value || "").trim() === "") {
-          errEl.hidden = false;
-          errEl.textContent = "Enter your desired pay per working hour to see a suggested rate.";
-          card.hidden = true;
+      function renderCard(spec) {
+        if (!spec) {
+          card.innerHTML = "<p class='insufficient'><strong>Unable to load pricing data.</strong> Try again shortly.</p>";
           return;
         }
-        var r = calculateSustainable(inputs);
-        if (!r.ok) {
-          errEl.hidden = false;
-          errEl.textContent = r.error;
-          card.hidden = true;
+        var html = "";
+        html += "<span class='badge'>" + (spec.label || "Advertised coaching rates") + "</span>";
+        html += "<h3>" + spec.specialty + "</h3>";
+
+        if (spec.status !== "ok") {
+          html += "<div class='insufficient'>";
+          html += "<strong>" + (spec.message || "Insufficient pricing data") + "</strong>";
+          html += (spec.data_needed || "We need more comparable advertised rates for this specialty.");
+          html += "</div>";
+          html += "<ul class='meta-list'>";
+          html += "<li><span>Unique coaches sampled</span><strong>" + spec.unique_coaches + "</strong></li>";
+          html += "<li><span>Minimum needed</span><strong>" + spec.min_coaches_required + "</strong></li>";
+          html += "<li><span>Currency</span><strong>" + (spec.currency || "USD") + "</strong></li>";
+          html += "<li><span>Last updated</span><strong>" + (spec.last_updated || "—") + "</strong></li>";
+          html += "</ul>";
+          card.innerHTML = html;
           return;
         }
-        errEl.hidden = true;
-        card.hidden = false;
-        document.getElementById("result-price").textContent =
-          money(r.suggestedSessionPrice) + " / session";
-        document.getElementById("result-hourly").textContent =
-          "Equivalent selling rate: " + money(r.equivalentHourlySellingRate) +
-          " / client-facing hour";
-        document.getElementById("result-breakdown").innerHTML =
-          "<li><span>Acquisition cost / client</span><strong>" + money(r.acquisitionCostPerClient) + "</strong></li>" +
-          "<li><span>Acquisition cost / session</span><strong>" + money(r.acquisitionCostPerSession) + "</strong></li>" +
-          "<li><span>Coach compensation / session</span><strong>" + money(r.coachCompensationPerSession) + "</strong></li>" +
-          "<li><span>Total cost / session</span><strong>" + money(r.totalCostPerSession) + "</strong></li>";
-      }
 
-      function selectedCategory() {
-        var sel = document.getElementById("price-category");
-        if (!sel) return null;
-        var idx = sel.selectedIndex;
-        if (idx < 0 || !categoryData[idx]) return null;
-        return categoryData[idx];
-      }
+        var lo = spec.p25;
+        var mid = spec.median;
+        var hi = spec.p75;
+        var span = Math.max(hi - lo, 1);
+        var pad = span * 0.25;
+        var axisMin = Math.max(0, lo - pad);
+        var axisMax = hi + pad;
+        var axisSpan = axisMax - axisMin;
+        var leftPct = ((lo - axisMin) / axisSpan) * 100;
+        var widthPct = ((hi - lo) / axisSpan) * 100;
+        var midPct = ((mid - axisMin) / axisSpan) * 100;
 
-      function applyCategoryLeadCost() {
-        if (scenario !== "thumbtack") return;
-        var cat = selectedCategory();
-        var lead = document.getElementById("lead-cost");
-        var hint = document.getElementById("category-hint");
-        if (!cat || !lead) return;
-        lead.value = String(cat.median_lead_cost);
-        if (hint) {
-          hint.textContent =
-            "n=" + cat.n + " Thumbtack leads · median $" + cat.median_lead_cost +
-            "/lead · avg $" + cat.avg_lead_cost + "/lead";
+        html += "<div class='stat-grid'>";
+        html += "<div class='stat'><p class='label'>Typical advertised range (25th–75th)</p>";
+        html += "<p class='value accent'>" + money(lo) + " – " + money(hi) + "</p></div>";
+        html += "<div class='stat'><p class='label'>Median advertised price</p>";
+        html += "<p class='value'>" + money(mid) + " / session</p></div>";
+        html += "</div>";
+
+        html += "<div class='range-viz' aria-hidden='true'>";
+        html += "<div class='band' style='left:" + leftPct + "%;width:" + widthPct + "%'></div>";
+        html += "<div class='median-mark' style='left:" + midPct + "%'></div>";
+        html += "</div>";
+        html += "<div class='range-labels'><span>" + money(lo) + "</span><span>median " + money(mid) + "</span><span>" + money(hi) + "</span></div>";
+
+        html += "<ul class='meta-list'>";
+        html += "<li><span>Unique coaches sampled</span><strong>" + spec.unique_coaches + "</strong></li>";
+        html += "<li><span>Session length</span><strong>" + (spec.session_length || "Not recorded") + "</strong></li>";
+        html += "<li><span>Currency</span><strong>" + (spec.currency || "USD") + "</strong></li>";
+        html += "<li><span>Last updated</span><strong>" + (spec.last_updated || "—") + "</strong></li>";
+        html += "</ul>";
+        if (spec.session_length_note) {
+          html += "<p class='section-intro' style='margin:16px 0 0;font-size:0.88rem;'>" + spec.session_length_note + "</p>";
         }
-        renderResult();
+        card.innerHTML = html;
       }
 
-      function setScenario(next) {
-        scenario = next;
-        document.getElementById("scenario-thumbtack").setAttribute("aria-pressed", next === "thumbtack" ? "true" : "false");
-        document.getElementById("scenario-custom").setAttribute("aria-pressed", next === "custom" ? "true" : "false");
-        var catField = document.getElementById("field-category");
-        if (catField) catField.style.opacity = next === "thumbtack" ? "1" : "0.55";
-        if (next === "thumbtack") applyCategoryLeadCost();
-        else renderResult();
-      }
-
-      function populateCategories(payload) {
-        categoryData = (payload && payload.categories) || [];
-        var sel = document.getElementById("price-category");
-        if (!sel) return;
-        sel.innerHTML = "";
-        categoryData.forEach(function (c, i) {
-          var opt = document.createElement("option");
-          opt.value = String(i);
-          opt.textContent = c.category + " (n=" + c.n + ")";
-          sel.appendChild(opt);
-        });
-        if (categoryData.length) {
-          sel.selectedIndex = 0;
-          applyCategoryLeadCost();
+      function selectSpecialty(name) {
+        selected = name;
+        var buttons = specialtyRow.querySelectorAll("button");
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].setAttribute("aria-pressed", buttons[i].getAttribute("data-specialty") === name ? "true" : "false");
         }
+        renderCard(findSpecialty(name));
       }
 
-      function wireCalculator() {
-        ["lead-cost", "conversion", "sessions", "pay-hour", "hours-allocated", "overhead", "margin", "session-hours"]
-          .forEach(function (id) {
-            var el = document.getElementById(id);
-            if (el) el.addEventListener("input", renderResult);
-          });
-        var sel = document.getElementById("price-category");
-        if (sel) sel.addEventListener("change", applyCategoryLeadCost);
-        document.getElementById("scenario-thumbtack").addEventListener("click", function () {
-          setScenario("thumbtack");
+      function populateSpecialties() {
+        specialtyRow.innerHTML = "";
+        if (!data || !data.specialties || !data.specialties.length) {
+          card.innerHTML = "<p class='insufficient'><strong>Insufficient pricing data</strong>No specialty file loaded yet.</p>";
+          return;
+        }
+        data.specialties.forEach(function (spec, idx) {
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.textContent = spec.specialty;
+          btn.setAttribute("data-specialty", spec.specialty);
+          btn.setAttribute("aria-pressed", idx === 0 ? "true" : "false");
+          btn.addEventListener("click", function () { selectSpecialty(spec.specialty); });
+          specialtyRow.appendChild(btn);
         });
-        document.getElementById("scenario-custom").addEventListener("click", function () {
-          setScenario("custom");
-        });
-        fetch("../market_pricing_thumbtack_lead_costs.json", { cache: "no-store" })
+        selectSpecialty(data.specialties[0].specialty);
+      }
+
+      function loadRates() {
+        fetch("../advertised_coaching_rates.json", { cache: "no-store" })
           .then(function (res) { return res.ok ? res.json() : Promise.reject(); })
-          .then(populateCategories)
+          .then(function (payload) {
+            data = payload;
+            populateSpecialties();
+          })
           .catch(function () {
-            var hint = document.getElementById("category-hint");
-            if (hint) hint.textContent = "Could not load Thumbtack category medians — enter lead cost manually.";
-            setScenario("custom");
+            card.innerHTML = "<p class='insufficient'><strong>Insufficient pricing data</strong>Could not load advertised coaching rates.</p>";
           });
       }
 
       function showInsights() {
         if (gate) gate.hidden = true;
         if (insights) insights.hidden = false;
+        if (leadSection) leadSection.hidden = false;
         if (iframe) {
           var url = iframe.getAttribute("data-src");
           if (url && !iframe.getAttribute("src")) iframe.setAttribute("src", url);
         }
-        wireCalculator();
+        loadRates();
       }
 
       if (new URLSearchParams(window.location.search).get("bypass") === "1") {
@@ -668,7 +399,6 @@
       }
 
       if (!form || !msg) return;
-
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         var input = document.getElementById("benchmark-email");
@@ -676,7 +406,6 @@
         var email = (input.value || "").trim().toLowerCase();
         msg.hidden = true;
         msg.textContent = "";
-
         if (email === allowed) {
           showInsights();
           return;
