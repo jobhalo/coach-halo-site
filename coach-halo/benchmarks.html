@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <script defer data-website-id="dfid_ImJXeenE5zJoIlqGSMtN5" data-domain="coach-halo.com" src="https://datafa.st/js/script.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Coach pricing guide — Coach-Halo</title>
+  <title>Price your coaching with confidence — Coach-Halo</title>
   <style>
     :root {
       --bg: #0c0f14;
@@ -14,7 +14,7 @@
       --muted: #8b9cb3;
       --accent: #6ee7ff;
       --radius: 14px;
-      --max: 1080px;
+      --max: 760px;
       --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     }
     * { box-sizing: border-box; }
@@ -27,7 +27,7 @@
       font-family: var(--font);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.55;
     }
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
@@ -58,28 +58,25 @@
 
     main { overflow-x: hidden; }
     section {
-      max-width: var(--max); margin: 0 auto; padding: 56px 20px 40px;
+      max-width: var(--max); margin: 0 auto; padding: 48px 20px 72px;
+    }
+    h1 {
+      font-size: clamp(1.7rem, 4vw, 2.25rem);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin: 0 0 10px;
     }
     h2 {
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      letter-spacing: -0.02em; margin: 0 0 12px;
-    }
-    h3 {
-      font-size: 1.1rem; letter-spacing: -0.01em; margin: 0 0 8px;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      margin: 0 0 10px;
     }
     .section-intro {
-      color: var(--muted); max-width: 62ch; margin: 0 0 24px;
-    }
-    .method-note {
-      color: var(--muted); font-size: 0.92rem; max-width: 68ch;
-      margin: 0 0 28px; padding: 12px 14px;
-      border-left: 3px solid var(--accent);
-      background: rgba(110, 231, 255, 0.06);
-      border-radius: 0 10px 10px 0;
+      color: var(--muted); max-width: 46ch; margin: 0 0 28px; font-size: 1.02rem;
     }
     .eyebrow {
-      display: inline-block; font-size: 0.8rem; text-transform: uppercase;
-      letter-spacing: 0.12em; color: var(--muted); margin-bottom: 10px;
+      display: inline-block; font-size: 0.75rem; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--muted); margin-bottom: 8px;
     }
 
     .market-pricing {
@@ -109,85 +106,96 @@
     .specialty-row button {
       padding: 8px 14px; border-radius: 999px;
       border: 1px solid var(--border); background: transparent;
-      color: var(--muted); font: inherit; font-size: 0.88rem; cursor: pointer;
+      color: var(--muted); font: inherit; font-size: 0.86rem; cursor: pointer;
     }
-    .specialty-row button[aria-pressed="true"] {
+    .specialty-row button[aria-checked="true"] {
       border-color: var(--accent); color: var(--text);
-      background: rgba(110, 231, 255, 0.1);
+      background: rgba(110, 231, 255, 0.12);
+    }
+    .specialty-row button:focus-visible {
+      outline: 2px solid var(--accent); outline-offset: 2px;
     }
 
     .guidance-card {
-      border: 1px solid var(--border); border-radius: var(--radius);
-      background: var(--surface); padding: 22px 22px 20px; margin-bottom: 28px;
+      border: 1px solid var(--border); border-radius: 18px;
+      background: var(--surface); padding: 26px 24px 22px;
     }
-    .guidance-card .badge {
-      display: inline-block; font-size: 0.75rem; letter-spacing: 0.06em;
-      text-transform: uppercase; color: var(--accent);
-      border: 1px solid rgba(110, 231, 255, 0.35);
-      border-radius: 999px; padding: 4px 10px; margin-bottom: 12px;
+    .guidance-card .specialty-name {
+      font-size: 0.92rem; color: var(--muted); margin: 0 0 14px;
     }
-    .stat-grid {
-      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px 20px; margin: 18px 0 8px;
+    .start-label {
+      font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--muted); margin: 0 0 6px;
     }
-    @media (max-width: 640px) {
-      .stat-grid { grid-template-columns: 1fr; }
+    .start-price {
+      font-size: clamp(2.4rem, 8vw, 3.4rem);
+      font-weight: 750; letter-spacing: -0.04em;
+      line-height: 1; margin: 0 0 6px; color: var(--accent);
     }
-    .stat .label { font-size: 0.8rem; color: var(--muted); margin: 0 0 4px; }
-    .stat .value {
-      font-size: clamp(1.25rem, 2.5vw, 1.7rem); font-weight: 700;
-      letter-spacing: -0.02em; margin: 0; color: var(--text);
+    .start-why {
+      color: var(--muted); font-size: 0.98rem; margin: 10px 0 22px; max-width: 42ch;
     }
-    .stat .value.accent { color: var(--accent); }
-    .meta-list {
-      margin: 18px 0 0; padding: 0; list-style: none;
-      display: grid; gap: 8px; font-size: 0.9rem; color: var(--muted);
+    .quiet-meta {
+      color: var(--muted); font-size: 0.82rem; margin: 14px 0 0;
     }
-    .meta-list li {
-      display: flex; justify-content: space-between; gap: 16px;
-      border-bottom: 1px solid rgba(36, 48, 65, 0.75); padding-bottom: 6px;
-    }
-    .meta-list strong { color: var(--text); font-weight: 600; text-align: right; }
 
+    .range-block { margin: 4px 0 8px; }
+    .range-block .label {
+      font-size: 0.9rem; color: var(--text); font-weight: 600; margin: 0 0 4px;
+    }
+    .range-block .explain {
+      font-size: 0.86rem; color: var(--muted); margin: 0 0 10px;
+    }
     .range-viz {
-      margin: 8px 0 4px; height: 10px; border-radius: 999px;
-      background: #1c2430; position: relative; overflow: hidden;
+      height: 8px; border-radius: 999px; background: #1c2430; position: relative;
     }
     .range-viz .band {
       position: absolute; top: 0; bottom: 0;
-      background: rgba(110, 231, 255, 0.35); border-radius: 999px;
+      background: rgba(110, 231, 255, 0.32); border-radius: 999px;
     }
-    .range-viz .median-mark {
+    .range-viz .mark {
       position: absolute; top: -3px; bottom: -3px; width: 3px;
       background: var(--accent); border-radius: 2px;
     }
     .range-labels {
       display: flex; justify-content: space-between;
-      font-size: 0.8rem; color: var(--muted); margin-top: 6px;
+      font-size: 0.82rem; color: var(--muted); margin-top: 8px;
     }
+
+    .fit {
+      margin: 28px 0 0;
+    }
+    .fit ol {
+      margin: 0; padding-left: 1.15rem; color: var(--muted); font-size: 0.95rem;
+    }
+    .fit li { margin: 0 0 8px; }
+    .tip, .caveat {
+      color: var(--muted); font-size: 0.92rem; margin: 18px 0 0; max-width: 52ch;
+    }
+
+    details.about {
+      margin-top: 22px;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+    details.about summary {
+      cursor: pointer; color: var(--muted); font-size: 0.88rem;
+      list-style: none;
+    }
+    details.about summary::-webkit-details-marker { display: none; }
+    details.about summary::after { content: " ▾"; color: var(--accent); }
+    details.about[open] summary::after { content: " ▴"; }
+    details.about .about-body {
+      margin-top: 10px; font-size: 0.86rem; color: var(--muted);
+    }
+    details.about ul { padding-left: 1.1rem; margin: 8px 0; }
+    details.about li { margin: 0 0 6px; }
+    details.about a { word-break: break-word; }
 
     .insufficient {
-      padding: 16px 18px; border-radius: 12px;
-      border: 1px solid var(--border); background: rgba(0, 0, 0, 0.2);
-      color: var(--muted); font-size: 0.95rem;
+      padding: 16px 0 4px; color: var(--muted); font-size: 0.98rem;
     }
-    .insufficient strong { color: var(--text); display: block; margin-bottom: 6px; }
-
-    .secondary-section {
-      max-width: var(--max); margin: 0 auto; padding: 8px 20px 72px;
-    }
-    .secondary-section h3 { margin-top: 8px; }
-    .plotly-chart-shell {
-      border-radius: var(--radius); overflow: hidden;
-      border: 1px solid var(--border); background: var(--surface);
-      line-height: 0; max-width: 100%; margin-top: 14px;
-    }
-    .market-chart-iframe {
-      width: 100%; height: 820px; border: 0; display: block; overflow: hidden;
-    }
-    @media (max-width: 640px) {
-      .market-chart-iframe { height: 1040px; }
-    }
+    .insufficient strong { color: var(--text); display: block; margin-bottom: 6px; font-size: 1.15rem; }
 
     footer {
       border-top: 1px solid var(--border); padding: 28px 20px;
@@ -208,12 +216,9 @@
 
   <main>
     <section class="market-pricing" id="benchmarks">
-      <h2>Coach pricing guide</h2>
+      <h1>Price your coaching with confidence</h1>
       <p class="section-intro">
-        How much should you charge? Pick a specialty to see advertised coaching rates published on provider pages.
-      </p>
-      <p class="method-note">
-        Use these advertised rates as a starting point. Your experience, service scope, and clientele may justify a different price.
+        Explore published rates in your specialty and find a practical starting point for your pricing.
       </p>
 
       <div class="benchmark-gate" id="benchmark-access">
@@ -228,27 +233,20 @@
       </div>
 
       <div id="benchmark-insights" hidden>
-        <div class="specialty-row" id="specialty-row" role="group" aria-label="Coaching specialty"></div>
+        <div class="specialty-row" id="specialty-row" role="radiogroup" aria-label="Coaching specialty"></div>
         <div class="guidance-card" id="guidance-card" aria-live="polite"></div>
+        <div class="fit" id="fit-block">
+          <h2>Choose where you fit</h2>
+          <ol>
+            <li>Consider the lower end while building experience and client results.</li>
+            <li>Start near the suggested rate when your experience and service are comparable to the providers sampled.</li>
+            <li>Consider the higher end when you offer specialized expertise, strong demonstrated results, or substantial additional support.</li>
+          </ol>
+          <p class="tip">Review your pricing as you learn. Consistent bookings and limited availability may support a higher rate. If prospects hesitate, consider your audience, offer, and how clearly you explain the value.</p>
+          <p class="caveat">Use this as a starting point. Your experience, location, clientele, and what’s included may justify a different price.</p>
+        </div>
       </div>
     </section>
-
-    <div class="secondary-section" id="lead-costs-section" hidden>
-      <span class="eyebrow">Secondary</span>
-      <h3>Lead acquisition costs</h3>
-      <p class="section-intro">
-        Observed Thumbtack lead fees by category. These are what coaches pay for leads — not session prices and not included in the advertised-rate guidance above.
-      </p>
-      <div class="plotly-chart-shell">
-        <iframe
-          id="benchmark-chart-frame"
-          class="market-chart-iframe"
-          title="Thumbtack lead costs by category"
-          data-src="../market_pricing_hourly_histogram.html"
-          loading="lazy"
-        ></iframe>
-      </div>
-    </div>
   </main>
 
   <footer>
@@ -261,17 +259,31 @@
       var msg = document.getElementById("benchmark-email-msg");
       var gate = document.getElementById("benchmark-access");
       var insights = document.getElementById("benchmark-insights");
-      var leadSection = document.getElementById("lead-costs-section");
-      var iframe = document.getElementById("benchmark-chart-frame");
       var specialtyRow = document.getElementById("specialty-row");
       var card = document.getElementById("guidance-card");
+      var fitBlock = document.getElementById("fit-block");
       var allowed = "joaquinh@job-halo.com";
       var data = null;
       var selected = null;
 
+      function escapeHtml(s) {
+        return String(s == null ? "" : s)
+          .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      }
+
       function money(n) {
         if (n == null || !isFinite(n)) return "—";
         return "$" + Math.round(n).toLocaleString();
+      }
+
+      function formatDate(iso) {
+        if (!iso) return "—";
+        var p = String(iso).split("-");
+        if (p.length < 3) return escapeHtml(iso);
+        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        var m = months[parseInt(p[1], 10) - 1] || p[1];
+        return m + " " + parseInt(p[2], 10) + ", " + p[0];
       }
 
       function findSpecialty(name) {
@@ -284,33 +296,29 @@
 
       function renderCard(spec) {
         if (!spec) {
-          card.innerHTML = "<p class='insufficient'><strong>Unable to load pricing data.</strong> Try again shortly.</p>";
+          card.innerHTML = "<p class='insufficient'><strong>Unable to load pricing data.</strong>Try again shortly.</p>";
+          if (fitBlock) fitBlock.hidden = true;
           return;
         }
-        var html = "";
-        html += "<span class='badge'>" + (spec.label || "Advertised coaching rates") + "</span>";
-        html += "<h3>" + spec.specialty + "</h3>";
-
-        if (spec.status !== "ok") {
-          html += "<div class='insufficient'>";
-          html += "<strong>" + (spec.message || "Insufficient pricing data") + "</strong>";
-          html += (spec.data_needed || "We need more comparable advertised rates for this specialty.");
-          html += "</div>";
-          html += "<ul class='meta-list'>";
-          html += "<li><span>Unique coaches sampled</span><strong>" + spec.unique_coaches + "</strong></li>";
-          html += "<li><span>Minimum needed</span><strong>" + spec.min_coaches_required + "</strong></li>";
-          html += "<li><span>Currency</span><strong>" + (spec.currency || "USD") + "</strong></li>";
-          html += "<li><span>Last updated</span><strong>" + (spec.last_updated || "—") + "</strong></li>";
-          html += "</ul>";
-          card.innerHTML = html;
+        if (spec.status !== "ok" || spec.suggested_starting_rate == null) {
+          if (fitBlock) fitBlock.hidden = true;
+          var limited = "<p class='specialty-name'>" + escapeHtml(spec.specialty) + "</p>";
+          limited += "<div class='insufficient'><strong>Limited published pricing data</strong>";
+          limited += escapeHtml(spec.data_needed || "We need more comparable published rates for this specialty before suggesting a starting rate.");
+          limited += "</div>";
+          limited += "<p class='quiet-meta'>Based on " + spec.unique_coaches + " providers · Updated " + formatDate(spec.last_updated) + "</p>";
+          card.innerHTML = limited;
           return;
         }
+        if (fitBlock) fitBlock.hidden = false;
 
+        var unit = spec.billing_unit || "per hour";
+        var rate = spec.suggested_starting_rate;
         var lo = spec.p25;
-        var mid = spec.median;
         var hi = spec.p75;
+        var mid = spec.median;
         var span = Math.max(hi - lo, 1);
-        var pad = span * 0.25;
+        var pad = span * 0.28;
         var axisMin = Math.max(0, lo - pad);
         var axisMax = hi + pad;
         var axisSpan = axisMax - axisMin;
@@ -318,28 +326,50 @@
         var widthPct = ((hi - lo) / axisSpan) * 100;
         var midPct = ((mid - axisMin) / axisSpan) * 100;
 
-        html += "<div class='stat-grid'>";
-        html += "<div class='stat'><p class='label'>Typical advertised range (25th–75th)</p>";
-        html += "<p class='value accent'>" + money(lo) + " – " + money(hi) + "</p></div>";
-        html += "<div class='stat'><p class='label'>Median advertised price</p>";
-        html += "<p class='value'>" + money(mid) + " / session</p></div>";
-        html += "</div>";
+        var html = "";
+        html += "<p class='specialty-name'>" + escapeHtml(spec.specialty) + "</p>";
+        html += "<p class='start-label'>Suggested starting rate</p>";
+        html += "<p class='start-price'>" + money(rate) + " <span style='font-size:0.38em;letter-spacing:0;font-weight:650;color:var(--text)'>" + escapeHtml(unit) + "</span></p>";
+        html += "<p class='start-why'>" + escapeHtml(spec.why || "A practical starting point based on the published prices in our sample.") + "</p>";
 
+        html += "<div class='range-block'>";
+        html += "<p class='label'>Published price range</p>";
+        html += "<p class='explain'>This shows the middle range of prices in our sample.</p>";
         html += "<div class='range-viz' aria-hidden='true'>";
-        html += "<div class='band' style='left:" + leftPct + "%;width:" + widthPct + "%'></div>";
-        html += "<div class='median-mark' style='left:" + midPct + "%'></div>";
+        html += "<div class='band' style='left:" + leftPct + "%;width:" + Math.max(widthPct, 3) + "%'></div>";
+        html += "<div class='mark' style='left:" + midPct + "%'></div>";
         html += "</div>";
-        html += "<div class='range-labels'><span>" + money(lo) + "</span><span>median " + money(mid) + "</span><span>" + money(hi) + "</span></div>";
+        html += "<div class='range-labels'><span>" + money(lo) + "</span><span>" + money(hi) + "</span></div>";
+        html += "</div>";
 
-        html += "<ul class='meta-list'>";
-        html += "<li><span>Unique coaches sampled</span><strong>" + spec.unique_coaches + "</strong></li>";
-        html += "<li><span>Session length</span><strong>" + (spec.session_length || "Not recorded") + "</strong></li>";
-        html += "<li><span>Currency</span><strong>" + (spec.currency || "USD") + "</strong></li>";
-        html += "<li><span>Last updated</span><strong>" + (spec.last_updated || "—") + "</strong></li>";
-        html += "</ul>";
-        if (spec.session_length_note) {
-          html += "<p class='section-intro' style='margin:16px 0 0;font-size:0.88rem;'>" + spec.session_length_note + "</p>";
+        html += "<p class='quiet-meta'>Based on " + spec.unique_coaches + " providers · Updated " + formatDate(spec.last_updated) + "</p>";
+
+        html += "<details class='about'><summary>About this guidance</summary><div class='about-body'>";
+        html += "<p>These are published asking prices from a limited sample of provider pages — not verified amounts clients paid, and not a statistically representative market survey. The suggested rate is the middle published price in this specialty, rounded to the nearest $10. It is a starting point, not the price shown to produce the most bookings.</p>";
+        if (spec.comparability_note) {
+          html += "<p>" + escapeHtml(spec.comparability_note) + "</p>";
         }
+        if (spec.currency_note) {
+          html += "<p>" + escapeHtml(spec.currency_note) + "</p>";
+        }
+        var sources = spec.sources || [];
+        if (sources.length) {
+          html += "<p>Sources</p><ul>";
+          sources.forEach(function (s) {
+            var label = escapeHtml(s.provider || "Provider");
+            var extra = [];
+            if (s.verification) extra.push(s.verification);
+            if (s.currency_basis) extra.push(s.currency_basis);
+            var note = extra.length ? " — " + escapeHtml(extra.join(" · ")) : "";
+            if (s.url) {
+              html += "<li><a href=\"" + escapeHtml(s.url) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + label + "</a>" + note + "</li>";
+            } else {
+              html += "<li>" + label + note + "</li>";
+            }
+          });
+          html += "</ul>";
+        }
+        html += "</div></details>";
         card.innerHTML = html;
       }
 
@@ -347,7 +377,9 @@
         selected = name;
         var buttons = specialtyRow.querySelectorAll("button");
         for (var i = 0; i < buttons.length; i++) {
-          buttons[i].setAttribute("aria-pressed", buttons[i].getAttribute("data-specialty") === name ? "true" : "false");
+          var on = buttons[i].getAttribute("data-specialty") === name;
+          buttons[i].setAttribute("aria-checked", on ? "true" : "false");
+          buttons[i].tabIndex = on ? 0 : -1;
         }
         renderCard(findSpecialty(name));
       }
@@ -355,17 +387,32 @@
       function populateSpecialties() {
         specialtyRow.innerHTML = "";
         if (!data || !data.specialties || !data.specialties.length) {
-          card.innerHTML = "<p class='insufficient'><strong>Insufficient pricing data</strong>No specialty file loaded yet.</p>";
+          card.innerHTML = "<p class='insufficient'><strong>Limited published pricing data</strong>No specialty file loaded yet.</p>";
+          if (fitBlock) fitBlock.hidden = true;
           return;
         }
         data.specialties.forEach(function (spec, idx) {
           var btn = document.createElement("button");
           btn.type = "button";
+          btn.setAttribute("role", "radio");
           btn.textContent = spec.specialty;
           btn.setAttribute("data-specialty", spec.specialty);
-          btn.setAttribute("aria-pressed", idx === 0 ? "true" : "false");
+          btn.setAttribute("aria-checked", idx === 0 ? "true" : "false");
+          btn.tabIndex = idx === 0 ? 0 : -1;
           btn.addEventListener("click", function () { selectSpecialty(spec.specialty); });
           specialtyRow.appendChild(btn);
+        });
+        specialtyRow.addEventListener("keydown", function (e) {
+          var keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+          if (!keys[e.key]) return;
+          e.preventDefault();
+          var names = data.specialties.map(function (s) { return s.specialty; });
+          var i = names.indexOf(selected);
+          if (i < 0) i = 0;
+          var next = (i + keys[e.key] + names.length) % names.length;
+          selectSpecialty(names[next]);
+          var focusBtn = specialtyRow.querySelector('[data-specialty="' + names[next] + '"]');
+          if (focusBtn) focusBtn.focus();
         });
         selectSpecialty(data.specialties[0].specialty);
       }
@@ -378,18 +425,14 @@
             populateSpecialties();
           })
           .catch(function () {
-            card.innerHTML = "<p class='insufficient'><strong>Insufficient pricing data</strong>Could not load advertised coaching rates.</p>";
+            if (fitBlock) fitBlock.hidden = true;
+            card.innerHTML = "<p class='insufficient'><strong>Limited published pricing data</strong>Could not load published rates.</p>";
           });
       }
 
       function showInsights() {
         if (gate) gate.hidden = true;
         if (insights) insights.hidden = false;
-        if (leadSection) leadSection.hidden = false;
-        if (iframe) {
-          var url = iframe.getAttribute("data-src");
-          if (url && !iframe.getAttribute("src")) iframe.setAttribute("src", url);
-        }
         loadRates();
       }
 
