@@ -115,8 +115,10 @@
     /* Plans */
     .plans { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
     @media (max-width: 560px) { .plans { grid-template-columns: 1fr; } }
-    .plan { position: relative; text-align: left; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.3rem 1.2rem; background: #fff; cursor: pointer; transition: all .18s var(--ease); }
-    .plan:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+    .plan { position: relative; text-align: left; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.3rem 1.2rem; background: #fff; cursor: pointer; transition: all .18s var(--ease); touch-action: manipulation; }
+    @media (hover: hover) and (pointer: fine) {
+      .plan:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+    }
     .plan[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent), var(--shadow); }
     .plan .badge { position: absolute; top: -.65rem; right: 1rem; background: var(--accent); color: #fff; font-size: .7rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: .22rem .6rem; border-radius: 999px; }
     .plan .amt { font-size: 2.1rem; font-weight: 760; letter-spacing: -.03em; margin: .3rem 0 .1rem; }
@@ -128,7 +130,7 @@
     button.plan { font: inherit; width: 100%; }
     .plan.featured { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
     .plan .ticks { flex: 1; }
-    .plan-cta { margin-top: 1rem; justify-content: center; }
+    .plan-cta { margin-top: 1rem; justify-content: center; pointer-events: none; }
     .plan.wide { grid-column: 1 / -1; flex-direction: row; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.2rem; }
     .note a { color: inherit; font-weight: 600; }
     .link { border: 0; background: none; padding: 0; text-decoration: underline; cursor: pointer; font: inherit; font-weight: 600; color: inherit; }
@@ -642,7 +644,12 @@
           if (pn) { pn.textContent = NOTES[plan] || ""; pn.hidden = !NOTES[plan]; }
           if (nb) nb.firstChild.nodeValue = "Continue ";
         }
-        qEl.querySelectorAll("[data-plan]").forEach(function (a) { a.addEventListener("click", function () { choose(a.dataset.plan); }); });
+        qEl.querySelectorAll("[data-plan]").forEach(function (a) {
+          a.addEventListener("click", function () {
+            choose(a.dataset.plan);
+            if (a.dataset.plan === "monthly" || a.dataset.plan === "annual") next();
+          });
+        });
         var bc = document.getElementById("book-call");
         if (bc) bc.addEventListener("click", function () { choose("chat"); });
         var sw = qEl.querySelector("[data-switch-career]");
