@@ -53,18 +53,23 @@ async function fetchAirtableRecords(token, baseId, tableId, formula) {
   return records;
 }
 
-function eventFromFields(fields) {
+function eventFromFields(record) {
+  const fields = record.fields || {};
   const name = String(fields.Name || '').trim();
   const url = lib.withCoachHaloRef(fields.URL || '');
   const start = String(fields.Start || '').trim();
   if (!name || !url || !start) return null;
+  const cost = String(fields.Cost || fields.Price || '').trim().toLowerCase();
   return {
+    id: String(record.id || '').trim(),
     name,
     host: String(fields.Host || '').trim(),
     summary: String(fields.Summary || '').trim(),
     when: lib.formatWhen(start),
     start,
     url,
+    free: !cost || cost === 'free' || cost === '0' || cost === '$0',
+    online: true,
   };
 }
 
@@ -110,7 +115,7 @@ exports.handler = async function (event) {
       formula
     );
     const events = rows
-      .map((row) => eventFromFields(row.fields || {}))
+      .map((row) => eventFromFields(row))
       .filter((item) => item && lib.startsInWindow(item.start, now))
       .sort((a, b) => Date.parse(a.start) - Date.parse(b.start));
     return {

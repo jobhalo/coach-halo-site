@@ -1,0 +1,44 @@
+{
+  "categories": [
+    {
+      "category": "Relationship and Marriage Coaching",
+      "n": 556,
+      "median_lead_cost": 23.19,
+      "avg_lead_cost": 24.79,
+      "source": "Thumbtack",
+      "unit": "USD per lead"
+    },
+    {
+      "category": "Life Coaching",
+      "n": 103,
+      "median_lead_cost": 35.43,
+      "avg_lead_cost": 48.52,
+      "source": "Thumbtack",
+      "unit": "USD per lead"
+    },
+    {
+      "category": "Career Coaching",
+      "n": 246,
+      "median_lead_cost": 39.45,
+      "avg_lead_cost": 45.74,
+      "source": "Thumbtack",
+      "unit": "USD per lead"
+    },
+    {
+      "category": "Resume Writing",
+      "n": 4387,
+      "median_lead_cost": 19.54,
+      "avg_lead_cost": 19.5,
+      "source": "Thumbtack",
+      "unit": "USD per lead"
+    },
+    {
+      "category": "Personal Financial Planning",
+      "n": 193,
+      "median_lead_cost": 34.63,
+      "avg_lead_cost": 31.16,
+      "source": "Thumbtack",
+      "unit": "USD per lead"
+    }
+  ]
+}

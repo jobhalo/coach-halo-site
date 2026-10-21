@@ -42,6 +42,18 @@ function json(statusCode, body) {
   };
 }
 
+function httpUrl(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  try {
+    const parsed = new URL(raw);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return '';
+    return parsed.toString().slice(0, 400);
+  } catch (_) {
+    return '';
+  }
+}
+
 function formulaQuote(value) {
   return String(value || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
@@ -123,10 +135,15 @@ async function saveAlert(token, baseId, tableId, body) {
   const email = String(body.email || '').trim();
   const topic = lib.topicSlug(body.topic);
   const sessionNote = String(body.session_note || '').trim().slice(0, 500);
-  const signedUpFrom = String(body.signed_up_from || 'Alert form')
+  const signedUpFrom = String(body.signed_up_from || 'Category page')
     .trim()
     .replace(/\s+/g, ' ')
-    .slice(0, 200);
+    .slice(0, 80);
+  const eventId = String(body.event_id || '')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .slice(0, 40);
+  const eventUrl = httpUrl(body.event_url);
 
   const nameProblem = guard.jhSignupNameProblem(name);
   if (!name || nameProblem) {
@@ -159,7 +176,7 @@ async function saveAlert(token, baseId, tableId, body) {
     });
   }
 
-  const fields = lib.alertFields({ name, email, topic, sessionNote, signedUpFrom });
+  const fields = lib.alertFields({ name, email, topic, sessionNote, signedUpFrom, eventId, eventUrl });
   const created = await airtable(
     token,
     `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableId)}`,
@@ -218,8 +235,17 @@ async function saveIntroduction(token, baseId, tableId, body) {
   if (!lib.isValidTimeZone(timeZone)) {
     return json(400, { ok: false, error: 'time_zone', message: 'Choose your time zone.' });
   }
+  const coachMessage = String(body.coach_message || '').trim().slice(0, 600);
+  if (coachMessage.length < 12) {
+    return json(400, {
+      ok: false,
+      error: 'coach_message',
+      message: 'Add 1–2 sentences about what you’d like to work on.',
+    });
+  }
   const availability = lib.availabilityFromWindows(body.windows, timeZone, new Date());
   if (!availability.ok) return json(400, { ok: false, error: 'availability', message: availability.message });
+  availability.text += '\n\nWhat they want to talk about:\n' + coachMessage;
 
   const recordUrl = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableId)}/${encodeURIComponent(recordId)}`;
   const current = await airtable(token, recordUrl, { method: 'GET' });

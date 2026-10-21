@@ -11,9 +11,11 @@ const COACH_NAME = 'Jake Randall';
 
 const TOPICS = {
   career: {
-    label: 'Career change and job search',
-    headline: 'Free sessions for a career change',
-    lead: 'Live online sessions in the next five weeks for people changing careers or looking for work. Register with the host.',
+    label: 'careers',
+    blurb: 'Changing careers, interviews, and figuring out your next step.',
+    headline: 'Free online events about careers and your next step.',
+    lead: 'Explore changing careers, preparing for interviews, and figuring out what comes next.',
+    example: 'For example, changing careers, preparing for interviews, or figuring out your next step.',
     match: {
       coachingType: 'Career coaching',
       coachingTypeCategory: 'Career Coaching',
@@ -21,9 +23,11 @@ const TOPICS = {
     },
   },
   leadership: {
-    label: 'Leadership and the job you already have',
-    headline: 'Free sessions for the job you already have',
-    lead: 'Live online sessions in the next five weeks for people growing in the role they already have. Register with the host.',
+    label: 'leadership',
+    blurb: 'Leading a team, giving feedback, and growing in your role.',
+    headline: 'Free online events about leadership.',
+    lead: 'Explore leading a team, giving feedback, and growing into a bigger role.',
+    example: 'For example, leading a team, giving feedback, or stepping into a bigger role.',
     match: {
       coachingType: 'Career coaching',
       coachingTypeCategory: 'Career Coaching',
@@ -31,9 +35,11 @@ const TOPICS = {
     },
   },
   business: {
-    label: 'Starting or running a business',
-    headline: 'Free sessions for starting or running a business',
-    lead: 'Live online sessions in the next five weeks for people starting or running a business. Register with the host.',
+    label: 'business',
+    blurb: 'Starting something, finding customers, and decisions as an owner.',
+    headline: 'Free online events about running a business.',
+    lead: 'Explore starting something, finding customers, and making decisions as an owner.',
+    example: 'For example, starting a business, finding customers, or making your next decision.',
     match: {
       coachingType: 'Career coaching',
       coachingTypeCategory: 'Career Coaching',
@@ -41,9 +47,11 @@ const TOPICS = {
     },
   },
   divorce: {
-    label: 'Divorce, separation, and dating again',
-    headline: 'Free sessions for divorce, separation, and dating again',
-    lead: 'Live online sessions in the next five weeks. Register with the host.',
+    label: 'divorce',
+    blurb: 'Separation, co-parenting, and what comes next.',
+    headline: 'Free online events about divorce and separation.',
+    lead: 'Explore separation, co-parenting, and what comes next.',
+    example: 'For example, navigating a separation, co-parenting, or figuring out what comes next.',
     match: {
       coachingType: 'Life coaching',
       coachingTypeCategory: 'Life Coaching',
@@ -51,9 +59,11 @@ const TOPICS = {
     },
   },
   relationships: {
-    label: 'Relationships',
-    headline: 'Free sessions for relationships',
-    lead: 'Live online sessions in the next five weeks. Register with the host.',
+    label: 'relationships',
+    blurb: 'Communicating, trust, and hard seasons with someone you care about.',
+    headline: 'Free online events about relationships.',
+    lead: 'Explore communicating better, rebuilding trust, and navigating a hard season.',
+    example: 'For example, communicating better, rebuilding trust, or navigating a breakup.',
     match: {
       coachingType: 'Relationship & marriage',
       coachingTypeCategory: 'Marriage and Relationship Counseling',
@@ -61,9 +71,11 @@ const TOPICS = {
     },
   },
   habits: {
-    label: 'Habits and a life reset',
-    headline: 'Free sessions for habits and a life reset',
-    lead: 'Live online sessions in the next five weeks for people changing habits or starting over. Register with the host.',
+    label: 'wellbeing',
+    blurb: 'Everyday stress, routines, and making time for yourself.',
+    headline: 'Free online events about wellbeing.',
+    lead: 'Explore managing everyday stress, building routines, and making time for yourself.',
+    example: 'For example, managing everyday stress, building routines, or making time for yourself.',
     match: {
       coachingType: 'Life coaching',
       coachingTypeCategory: 'Life Coaching',
@@ -71,11 +83,13 @@ const TOPICS = {
     },
   },
   'financial-planning': {
-    label: 'Personal financial planning',
-    headline: 'Free sessions on personal financial planning',
-    lead: 'Live online sessions in the next five weeks on budgets, money confidence, and long-term money habits. Register with the host.',
+    label: 'money',
+    blurb: 'Budgeting, money confidence, and your next financial step.',
+    headline: 'Free online events about money and financial wellbeing.',
+    lead: 'Explore budgeting, building money confidence, and taking your next financial step.',
+    example: 'For example, managing debt, building money confidence, or knowing where to start.',
     coachName: COACH_NAME,
-    coachLine: 'Works with people on budgets, money confidence, and long-term money habits.',
+    coachLine: 'Helps young professionals pay off their debt in half the time.',
     match: {
       coachingType: 'Financial wellness',
       coachingTypeCategory: 'Personal Financial Planning',
@@ -101,7 +115,7 @@ function consentTextFor(coachName) {
   return (
     'I want Coach-Halo to introduce me to ' +
     name +
-    ' and share my first name, email, topic, time zone, and availability.'
+    ' and share my first name, email, topic, time zone, availability, and what I would like to talk about.'
   );
 }
 
@@ -115,11 +129,11 @@ function welcomeBody(name, topicLabel) {
   const topic = String(topicLabel || 'this topic').trim();
   return [
     '👋 Hi there! I’m Joaquin, creator of Coach-Halo.',
-    'You’re on the event list. I’ll email you when a free live online session fits the topic you chose' +
+    'You’re on the event list. I’ll email you when a free online event fits the topic you chose' +
       (topic && topic !== 'this topic' ? ' (' + topic + ')' : '') +
       '.',
-    'We want every session to be relevant to what you’re going through, so we use that topic to find events that fit you.',
-    '✅ **Quick tip.** Drag this email to your Primary inbox if you are on Gmail, or mark it as Not Spam, so the session notes don’t get buried.',
+    'We use that topic to find events that fit what you’re looking for.',
+    '✅ **Quick tip.** Drag this email to your Primary inbox if you are on Gmail, or mark it as Not Spam, so the event notes don’t get buried.',
     'Thanks for letting Coach-Halo be part of your journey.',
     'Joaquin, Creator of Coach-Halo.com',
   ].join('\n\n');
@@ -281,12 +295,15 @@ function alertFields(input) {
   const info = TOPICS[topic] || {};
   const subject = welcomeSubject();
   const body = welcomeBody(input.name, info.label || topic);
+  const sourceParts = [input.signedUpFrom || 'Category page'];
+  if (input.eventId) sourceParts.push(String(input.eventId).trim());
+  if (input.eventUrl) sourceParts.push(String(input.eventUrl).trim());
   const fields = {
     Name: input.name,
     Email: input.email,
     Topic: topic,
     'Heard from': 'events',
-    'Signed up from': input.signedUpFrom || 'Alert form',
+    'Signed up from': sourceParts.filter(Boolean).join(' | ').slice(0, 500),
     'Event welcome subject': subject,
     'Event welcome body': body,
     'Send event welcome': 'Yes',

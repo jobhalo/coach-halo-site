@@ -1,0 +1,907 @@
+{
+  "generated_at": "2026-10-16T20:18:14.336590+00:00",
+  "methodology": {
+    "what_this_is": "Published asking prices from provider pages",
+    "what_this_is_not": "Verified transaction prices, a statistically representative market survey, or evidence of the price that produces the most bookings",
+    "suggested_starting_rate": "Median of comparable published rates in the specialty, rounded to the nearest $10. Editorial starting-point rule only.",
+    "dedupe": "One published rate per provider per specialty",
+    "normalization": "Shown as a 60-minute / hourly equivalent when duration is known",
+    "min_unique_coaches": 5,
+    "packages": "Package and discounted multi-session prices were excluded at collection."
+  },
+  "specialties": [
+    {
+      "specialty": "Career Coaching",
+      "service_type": "individual_session",
+      "label": "Advertised coaching rates",
+      "currency": "USD",
+      "billing_unit": "per hour",
+      "currency_note": "2 of 11 pages stated USD. 9 used a dollar sign only (USD assumed, not confirmed).",
+      "session_length": "60-minute equivalent",
+      "session_length_note": "Individual career-coaching hours from published provider pages.",
+      "comparability_note": "Individual career-coaching hours from published provider pages.",
+      "why": "A practical starting point for career coaching, based on the published prices in our sample.",
+      "last_updated": "2026-10-16",
+      "unique_coaches": 11,
+      "min_coaches_required": 5,
+      "source": "Published provider pages",
+      "sources": [
+        {
+          "provider": "Brighter Horizons",
+          "service": "Career coaching",
+          "url": "https://mybrighterpathway.com/plans/coaching-60",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "ClearPointHCO",
+          "service": "Quick Career Boost",
+          "url": "https://www.clearpointhco.com/career-coaching/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Darrell DiZoglio / Righteous Resumes",
+          "service": "Career counseling and coaching",
+          "url": "https://www.righteousresumes.com/services.html",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Jennifer Shryock",
+          "service": "Single strategy session",
+          "url": "https://jennifershryock.com/services/coaching/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD explicitly stated",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "JRH Career Consulting",
+          "service": "Career strategy session",
+          "url": "https://www.jrhcareerconsulting.com/careerstrategy",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "LBJ Pros Consulting",
+          "service": "Hourly career coaching",
+          "url": "https://lbjpros.com/wp-content/uploads/2024/11/LBJPros-Pricing-List-3.pdf",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "PayCar Consulting",
+          "service": "Individual career coaching",
+          "url": "https://www.paycarconsulting.com/career-coaching",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Professional Narrative",
+          "service": "Personalized career coaching",
+          "url": "https://professionalnarrative.com/services",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Purple Ink",
+          "service": "Virtual career coaching",
+          "url": "https://purpleinkllc.com/individual-career-coaching/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Purposeful Hire / Shira Lotzar",
+          "service": "Professional career coaching",
+          "url": "https://purposefulhire.com/job-seekers-in-career-transition/career-consulting-coaching-services/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Quantum Career Coach / German Rochez",
+          "service": "Now What career strategy session",
+          "url": "https://www.quantumcareercoach.com/service-page/power-hour-career-coaching-strategy",
+          "verification": "Provider page opened",
+          "currency_basis": "USD explicitly stated",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        }
+      ],
+      "usd_explicit_count": 2,
+      "usd_assumed_count": 9,
+      "status": "ok",
+      "message": null,
+      "data_needed": null,
+      "suggested_starting_rate": 150,
+      "p25": 100.0,
+      "median": 150.0,
+      "p75": 225.0
+    },
+    {
+      "specialty": "Life Coaching",
+      "service_type": "individual_session",
+      "label": "Advertised coaching rates",
+      "currency": "USD",
+      "billing_unit": "per hour",
+      "currency_note": "1 of 9 pages stated USD. 8 used a dollar sign only (USD assumed, not confirmed).",
+      "session_length": "60-minute equivalent",
+      "session_length_note": "Individual life-coaching hours from published provider pages.",
+      "comparability_note": "Individual life-coaching hours from published provider pages.",
+      "why": "A practical starting point for life coaching, based on the published prices in our sample.",
+      "last_updated": "2026-10-16",
+      "unique_coaches": 9,
+      "min_coaches_required": 5,
+      "source": "Published provider pages",
+      "sources": [
+        {
+          "provider": "321 Life Coach",
+          "service": "Life coaching session",
+          "url": "https://321lifecoach.com/services",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Chris Chance, PhD",
+          "service": "Life coaching follow-up",
+          "url": "https://www.drchrischance.com/psychotherapy--life-coaching.html",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "FindYou / Nancy Geronian",
+          "service": "One-on-one life coaching",
+          "url": "https://www.findyoulifecoach.com/services",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Kathy L. Jacobson",
+          "service": "Life coaching",
+          "url": "https://www.kathyljacobson.com/start-here",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Life Coaching with Lisa",
+          "service": "Life coaching / EFT session",
+          "url": "https://www.lifecoachingwithlisab.org/faqs.html",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Life Coaching with Lora",
+          "service": "Standard life coaching",
+          "url": "https://www.lifecoachingwithlora.com/services",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "The Practiced Word",
+          "service": "Individual Christian life coaching",
+          "url": "https://www.thepracticedword.com/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD explicitly stated",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Transformations",
+          "service": "Individual life coaching",
+          "url": "https://www.accountable-life-coaching.com/pricing-services",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Unum Reiki & Wellness",
+          "service": "Single life coaching session",
+          "url": "https://www.unumreikiandwellness.com/explore-healing-services/life-coaching",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        }
+      ],
+      "usd_explicit_count": 1,
+      "usd_assumed_count": 8,
+      "status": "ok",
+      "message": null,
+      "data_needed": null,
+      "suggested_starting_rate": 130,
+      "p25": 100.0,
+      "median": 125.0,
+      "p75": 150.0
+    },
+    {
+      "specialty": "Resume Writing",
+      "service_type": "hourly_writing",
+      "label": "Advertised coaching rates",
+      "currency": "USD",
+      "billing_unit": "per hour",
+      "currency_note": "0 of 6 pages stated USD. 6 used a dollar sign only (USD assumed, not confirmed).",
+      "session_length": "60-minute equivalent",
+      "session_length_note": "Hourly resume writing/editing rates only. Complete resume packages are not included.",
+      "comparability_note": "Hourly resume writing/editing rates only. Complete resume packages are not included.",
+      "why": "A practical starting point for hourly resume writing and editing \u2014 not the price of a complete resume package.",
+      "last_updated": "2026-10-16",
+      "unique_coaches": 6,
+      "min_coaches_required": 5,
+      "source": "Published provider pages",
+      "sources": [
+        {
+          "provider": "A-Script Career, Resume and Writing Services",
+          "service": "Resume writing",
+          "url": "https://www.resumesbyascript.com/what-we-do",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Darrell DiZoglio / HighPerformanceResumes",
+          "service": "Resume writing, rewriting and editing",
+          "url": "https://www.highperformanceresumes.com/services.html",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "LBJ Pros Consulting",
+          "service": "Resume hourly customization",
+          "url": "https://lbjpros.com/wp-content/uploads/2024/11/LBJPros-Pricing-List-3.pdf",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Mary Berg",
+          "service": "Resume writing and editing",
+          "url": "https://www.amysticinthemystery.com/resume-writing",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "NYCEDA",
+          "service": "Job seeker resume writing and revision",
+          "url": "https://nycedamobilestore.company.site/NYCEDA-Products-c1603117",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "RyoGroup",
+          "service": "Resume writing",
+          "url": "https://thejourney.ryosports.com/services/editorialservices.html",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        }
+      ],
+      "usd_explicit_count": 0,
+      "usd_assumed_count": 6,
+      "status": "ok",
+      "message": null,
+      "data_needed": null,
+      "suggested_starting_rate": 80,
+      "p25": 64.0,
+      "median": 78.0,
+      "p75": 95.0
+    },
+    {
+      "specialty": "Relationship and Marriage Coaching",
+      "service_type": "individual_session",
+      "label": "Advertised coaching rates",
+      "currency": "USD",
+      "billing_unit": "per hour",
+      "currency_note": "0 of 9 pages stated USD. 9 used a dollar sign only (USD assumed, not confirmed).",
+      "session_length": "60-minute equivalent",
+      "session_length_note": "Published relationship-session rates. The sample mixes individual and couples offers; it is not a couples-only or individual-only benchmark.",
+      "comparability_note": "Published relationship-session rates. The sample mixes individual and couples offers; it is not a couples-only or individual-only benchmark.",
+      "why": "A practical starting point for relationship coaching, based on the published prices in our sample.",
+      "last_updated": "2026-10-16",
+      "unique_coaches": 9,
+      "min_coaches_required": 5,
+      "source": "Published provider pages",
+      "sources": [
+        {
+          "provider": "Aspen Relationship Institute / Lori",
+          "service": "Couples counseling and coaching",
+          "url": "https://aspenrelationship.com/service-fees",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Center for Thriving Relationships",
+          "service": "Private-pay relationship session",
+          "url": "https://centerforthrivingrelationships.com/rates/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Expansive Connection",
+          "service": "Online relationship coaching",
+          "url": "https://www.expansiveconnection.com/coaching/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Find a Keeper",
+          "service": "Clarity Conversation couples coaching",
+          "url": "https://www.findakeeper.life/premarital-and-newlywed-relationship-coaching-what-we-offer/clarity-conversation-coaching",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "GL Coaching",
+          "service": "Video relationship coaching",
+          "url": "https://glcoachingsc.com/coaching/relationship-coaching",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 55.0
+        },
+        {
+          "provider": "Kathy L. Jacobson",
+          "service": "Relationship coaching",
+          "url": "https://www.kathyljacobson.com/services",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Ken Canion",
+          "service": "Private couples session",
+          "url": "https://www.coachkencanion.com/book-a-consultation/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Sheila Kreifels, LMFT",
+          "service": "Marriage and relationship coaching",
+          "url": "https://www.sheilakreifels.com/schedule-a-session",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Transformations",
+          "service": "Couples coaching",
+          "url": "https://www.accountable-life-coaching.com/pricing-services",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        }
+      ],
+      "usd_explicit_count": 0,
+      "usd_assumed_count": 9,
+      "status": "ok",
+      "message": null,
+      "data_needed": null,
+      "suggested_starting_rate": 170,
+      "p25": 147.0,
+      "median": 165.0,
+      "p75": 225.0
+    },
+    {
+      "specialty": "Personal Financial Planning",
+      "service_type": "hourly_planning",
+      "label": "Advertised coaching rates",
+      "currency": "USD",
+      "billing_unit": "per hour",
+      "currency_note": "0 of 10 pages stated USD. 10 used a dollar sign only (USD assumed, not confirmed).",
+      "session_length": "60-minute equivalent",
+      "session_length_note": "Hourly financial-planning advice. These are planners, not financial coaches.",
+      "comparability_note": "Hourly financial-planning advice. These are planners, not financial coaches.",
+      "why": "A practical starting point for hourly financial planning \u2014 not financial coaching, and not a full-plan package price.",
+      "last_updated": "2026-10-16",
+      "unique_coaches": 10,
+      "min_coaches_required": 5,
+      "source": "Published provider pages",
+      "sources": [
+        {
+          "provider": "Bell Financial Planning",
+          "service": "Hourly financial planning",
+          "url": "https://www.bellfinancialplan.com/fees-compensation",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "ColeFP and Wealth Management",
+          "service": "Time-based financial planning",
+          "url": "https://www.colefp.com/fees",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Covey & Covey",
+          "service": "Separate financial planning consultation",
+          "url": "https://coveyandcovey.com/services-and-fees/our-fees",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "F5 Financial Planning",
+          "service": "Hourly financial planning support",
+          "url": "https://f5fp.com/fees",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Fangorn Financial",
+          "service": "Financial planning",
+          "url": "https://www.fangornfinancial.com/fees/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "SeaClear Financial Planning",
+          "service": "Limited-scope financial planning",
+          "url": "https://www.seaclearfinancial.com/our-fees",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Spectrum Financial Partners",
+          "service": "Hourly financial planning",
+          "url": "https://www.spectrumfp.net/our-fees",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "STKeros Financial Planning",
+          "service": "Advice-only financial planning",
+          "url": "https://stkplanning.com/fees",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "The Hourly Advisor",
+          "service": "Hourly financial planning",
+          "url": "https://thehourlyadvisor.com/services/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "TruePath Financial Planning",
+          "service": "Project-based financial planning",
+          "url": "https://www.truepathfp.com/faqs",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        }
+      ],
+      "usd_explicit_count": 0,
+      "usd_assumed_count": 10,
+      "status": "ok",
+      "message": null,
+      "data_needed": null,
+      "suggested_starting_rate": 260,
+      "p25": 250.0,
+      "median": 260.0,
+      "p75": 294.0
+    },
+    {
+      "specialty": "Business Coaching",
+      "service_type": "individual_session",
+      "label": "Advertised coaching rates",
+      "currency": "USD",
+      "billing_unit": "per hour",
+      "currency_note": "1 of 10 pages stated USD. 9 used a dollar sign only (USD assumed, not confirmed).",
+      "session_length": "60-minute equivalent",
+      "session_length_note": "Individual business-coaching hours from published provider pages.",
+      "comparability_note": "Individual business-coaching hours from published provider pages.",
+      "why": "A practical starting point for business coaching, based on the published prices in our sample.",
+      "last_updated": "2026-10-16",
+      "unique_coaches": 10,
+      "min_coaches_required": 5,
+      "source": "Published provider pages",
+      "sources": [
+        {
+          "provider": "Adamo Advisors",
+          "service": "The Sounding Board",
+          "url": "https://adamoadvisors.com/services/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Just a Hairdresser / Angie Mamone",
+          "service": "The Strategy Call",
+          "url": "https://justahairdresser.com/coaching",
+          "verification": "Provider page opened",
+          "currency_basis": "USD explicitly stated",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Kristina McCaleb",
+          "service": "Brainstorm Breakthrough Hour",
+          "url": "https://kristinamccalebphotography.com/business-coaching/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Littleton Advisory Group",
+          "service": "Clarity Call",
+          "url": "https://www.littletonadvisorygroup.com/Business-Coaching.php",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Live Life / Denise Maple",
+          "service": "Business coaching",
+          "url": "https://livelifespiritual.com/product/business-coaching/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Seller Workshop",
+          "service": "One-on-one business coaching",
+          "url": "https://sellerwork.fourdesign.com/services/business-coaching",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "hour",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Seriously Happy Coaching",
+          "service": "Private business coaching",
+          "url": "https://seriouslyhappy.com/interior-design-business-coaching-faq/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Simple Business Ventures",
+          "service": "Starter strategy session",
+          "url": "https://simplebusinessventures.com/business-coaching/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Therapy for Cycle Breakers / Jennifer Vincent",
+          "service": "Private-practice business coaching",
+          "url": "https://www.therapyforcyclebreakers.com/consulting-for-therapists",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "With Purpose / Nia Lewis",
+          "service": "Business strategy session",
+          "url": "https://www.niawithpurpose.com/coaching",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        }
+      ],
+      "usd_explicit_count": 1,
+      "usd_assumed_count": 9,
+      "status": "ok",
+      "message": null,
+      "data_needed": null,
+      "suggested_starting_rate": 250,
+      "p25": 156.0,
+      "median": 250.0,
+      "p75": 300.0
+    },
+    {
+      "specialty": "Family Counseling",
+      "service_type": "licensed_counseling",
+      "label": "Advertised coaching rates",
+      "currency": "USD",
+      "billing_unit": "per hour",
+      "currency_note": "0 of 10 pages stated USD. 10 used a dollar sign only (USD assumed, not confirmed).",
+      "session_length": "60-minute equivalent",
+      "session_length_note": "Licensed family therapy/counseling rates, shown as a 60-minute equivalent. Not family coaching.",
+      "comparability_note": "Licensed family therapy/counseling rates, shown as a 60-minute equivalent. Not family coaching.",
+      "why": "A practical starting point for licensed family counseling. This is not a family-coaching benchmark.",
+      "last_updated": "2026-10-16",
+      "unique_coaches": 10,
+      "min_coaches_required": 5,
+      "source": "Published provider pages",
+      "sources": [
+        {
+          "provider": "Aspen Relationship Institute / Lori",
+          "service": "Adult family counseling/coaching",
+          "url": "https://aspenrelationship.com/service-fees",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Chris Chance, PhD",
+          "service": "Family therapy",
+          "url": "https://www.drchrischance.com/psychotherapy--life-coaching.html",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 55.0
+        },
+        {
+          "provider": "Jennifer Roy, LMFT",
+          "service": "Family therapy",
+          "url": "https://jenniferroytherapy.com/services",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Kimberly Sawyer, PhD, LMFT",
+          "service": "Family therapy",
+          "url": "https://www.sawyertherapyservices.com/services",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "North Star Counseling",
+          "service": "Couples/family therapy",
+          "url": "https://www.nscholistic.com/insurancefees",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Nourishment Mental Health",
+          "service": "Family therapy",
+          "url": "https://www.nourishmentmh.com/therapy-services-fees",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Positive Minds Therapy",
+          "service": "Family therapy",
+          "url": "https://www.positivemindstherapy.com/insurance",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Table Family Therapy",
+          "service": "Licensed clinician family therapy",
+          "url": "https://www.tablefamilytherapy.com/fees",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 50.0
+        },
+        {
+          "provider": "The Center for Play Therapy",
+          "service": "Family therapy",
+          "url": "https://playtherapymadison.com/fees.html",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Therapy for Every Body",
+          "service": "Associate-led family therapy",
+          "url": "https://therapy4everybody.com/fee-insurance/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 50.0
+        }
+      ],
+      "usd_explicit_count": 0,
+      "usd_assumed_count": 10,
+      "status": "ok",
+      "message": null,
+      "data_needed": null,
+      "suggested_starting_rate": 200,
+      "p25": 197.0,
+      "median": 200.0,
+      "p75": 221.0
+    },
+    {
+      "specialty": "Health and Wellness Coaching",
+      "service_type": "individual_session",
+      "label": "Advertised coaching rates",
+      "currency": "USD",
+      "billing_unit": "per hour",
+      "currency_note": "0 of 10 pages stated USD. 10 used a dollar sign only (USD assumed, not confirmed).",
+      "session_length": "60-minute equivalent",
+      "session_length_note": "Individual health and wellness coaching hours from published provider pages.",
+      "comparability_note": "Individual health and wellness coaching hours from published provider pages.",
+      "why": "A practical starting point for health and wellness coaching, based on the published prices in our sample.",
+      "last_updated": "2026-10-16",
+      "unique_coaches": 10,
+      "min_coaches_required": 5,
+      "source": "Published provider pages",
+      "sources": [
+        {
+          "provider": "Cali Wellness",
+          "service": "Lifestyle coaching",
+          "url": "https://www.caliwellnessdpc.com/coaching",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Circle of Life Wellness / Jenna",
+          "service": "Foundations of Wellness",
+          "url": "https://www.circleoflifewellness.com/health-coaching",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Destination Vitality",
+          "service": "Health coaching",
+          "url": "https://destinationvitality.com/services",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Discover Wellness",
+          "service": "Virtual wellness coaching",
+          "url": "https://www.discoverwellness.co/wellness-coaching",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Empower Wellness",
+          "service": "Health and wellness coaching",
+          "url": "https://www.empowerwellnessllc.com/health-wellness-coaching",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Farmacy Revolution / Sara Speckels",
+          "service": "Virtual health and wellness coaching",
+          "url": "https://www.farmacyrevolution.com/coaching-packages",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Hope for Healing",
+          "service": "Non-member health coaching",
+          "url": "https://get2theroot.com/fee-schedule/",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Marin Healthy Living",
+          "service": "Health coaching",
+          "url": "https://www.marinhealthyliving.com/programs",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Nourish FDL",
+          "service": "Wellness coaching",
+          "url": "https://nourishfdl.com/wellness-coaching",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        },
+        {
+          "provider": "Nourish Holistic Health & Wellness / Sara",
+          "service": "Individual health and wellness coaching",
+          "url": "https://www.nourishhhw.com/schedule",
+          "verification": "Provider page opened",
+          "currency_basis": "USD assumed; dollar sign on provider page",
+          "billing_basis": "session",
+          "session_minutes": 60.0
+        }
+      ],
+      "usd_explicit_count": 0,
+      "usd_assumed_count": 10,
+      "status": "ok",
+      "message": null,
+      "data_needed": null,
+      "suggested_starting_rate": 130,
+      "p25": 101.0,
+      "median": 125.0,
+      "p75": 150.0
+    }
+  ],
+  "fixed_price_services": [],
+  "disclaimer": "Use this as a starting point. Your experience, location, clientele, and what\u2019s included may justify a different price."
+}

@@ -10,11 +10,19 @@
     'Pacific/Honolulu',
     'America/Puerto_Rico'
   ];
+  var ORGANIZER_NOTE = 'Events are hosted by independent organizers. Register on the organizer’s website.';
+  var HUB = {
+    headline: 'Find an event for your next step.',
+    lead: 'Explore free online events on careers, relationships, money, wellbeing, and more. Choose a topic that matters to you.'
+  };
   var TOPICS = {
     career: {
-      label: 'Career change and job search',
-      headline: 'Free sessions for a career change',
-      lead: 'Live online sessions in the next five weeks for people changing careers or looking for work. Register with the host.',
+      label: 'careers',
+      card: 'Career',
+      blurb: 'Changing careers, interviews, and figuring out your next step.',
+      headline: 'Free online events about careers and your next step.',
+      lead: 'Explore changing careers, preparing for interviews, and figuring out what comes next.',
+      example: 'For example, changing careers, preparing for interviews, or figuring out your next step.',
       match: {
         coachingType: 'Career coaching',
         coachingTypeCategory: 'Career Coaching',
@@ -22,9 +30,12 @@
       }
     },
     leadership: {
-      label: 'Leadership and the job you already have',
-      headline: 'Free sessions for the job you already have',
-      lead: 'Live online sessions in the next five weeks for people growing in the role they already have. Register with the host.',
+      label: 'leadership',
+      card: 'Leadership',
+      blurb: 'Leading a team, giving feedback, and growing in your role.',
+      headline: 'Free online events about leadership.',
+      lead: 'Explore leading a team, giving feedback, and growing into a bigger role.',
+      example: 'For example, leading a team, giving feedback, or stepping into a bigger role.',
       match: {
         coachingType: 'Career coaching',
         coachingTypeCategory: 'Career Coaching',
@@ -32,9 +43,12 @@
       }
     },
     business: {
-      label: 'Starting or running a business',
-      headline: 'Free sessions for starting or running a business',
-      lead: 'Live online sessions in the next five weeks for people starting or running a business. Register with the host.',
+      label: 'business',
+      card: 'Business',
+      blurb: 'Starting something, finding customers, and decisions as an owner.',
+      headline: 'Free online events about running a business.',
+      lead: 'Explore starting something, finding customers, and making decisions as an owner.',
+      example: 'For example, starting a business, finding customers, or making your next decision.',
       match: {
         coachingType: 'Career coaching',
         coachingTypeCategory: 'Career Coaching',
@@ -42,9 +56,12 @@
       }
     },
     divorce: {
-      label: 'Divorce, separation, and dating again',
-      headline: 'Free sessions for divorce, separation, and dating again',
-      lead: 'Live online sessions in the next five weeks. Register with the host.',
+      label: 'divorce',
+      card: 'Divorce',
+      blurb: 'Separation, co-parenting, and what comes next.',
+      headline: 'Free online events about divorce and separation.',
+      lead: 'Explore separation, co-parenting, and what comes next.',
+      example: 'For example, navigating a separation, co-parenting, or figuring out what comes next.',
       match: {
         coachingType: 'Life coaching',
         coachingTypeCategory: 'Life Coaching',
@@ -52,9 +69,12 @@
       }
     },
     relationships: {
-      label: 'Relationships',
-      headline: 'Free sessions for relationships',
-      lead: 'Live online sessions in the next five weeks. Register with the host.',
+      label: 'relationships',
+      card: 'Relationships',
+      blurb: 'Communicating, trust, and hard seasons with someone you care about.',
+      headline: 'Free online events about relationships.',
+      lead: 'Explore communicating better, rebuilding trust, and navigating a hard season.',
+      example: 'For example, communicating better, rebuilding trust, or navigating a breakup.',
       match: {
         coachingType: 'Relationship & marriage',
         coachingTypeCategory: 'Marriage and Relationship Counseling',
@@ -62,9 +82,12 @@
       }
     },
     habits: {
-      label: 'Habits and a life reset',
-      headline: 'Free sessions for habits and a life reset',
-      lead: 'Live online sessions in the next five weeks for people changing habits or starting over. Register with the host.',
+      label: 'wellbeing',
+      card: 'Wellbeing',
+      blurb: 'Everyday stress, routines, and making time for yourself.',
+      headline: 'Free online events about wellbeing.',
+      lead: 'Explore managing everyday stress, building routines, and making time for yourself.',
+      example: 'For example, managing everyday stress, building routines, or making time for yourself.',
       match: {
         coachingType: 'Life coaching',
         coachingTypeCategory: 'Life Coaching',
@@ -72,11 +95,14 @@
       }
     },
     'financial-planning': {
-      label: 'Personal financial planning',
-      headline: 'Free sessions on personal financial planning',
-      lead: 'Live online sessions in the next five weeks on budgets, money confidence, and long-term money habits. Register with the host.',
+      label: 'money',
+      card: 'Money',
+      blurb: 'Budgeting, money confidence, and your next financial step.',
+      headline: 'Free online events about money and financial wellbeing.',
+      lead: 'Explore budgeting, building money confidence, and taking your next financial step.',
+      example: 'For example, managing debt, building money confidence, or knowing where to start.',
       coachName: 'Jake Randall',
-      coachLine: 'Works with people on budgets, money confidence, and long-term money habits.',
+      coachLine: 'Helps young professionals pay off their debt in half the time.',
       match: {
         coachingType: 'Financial wellness',
         coachingTypeCategory: 'Personal Financial Planning',
@@ -90,7 +116,7 @@
     return (
       'I want Coach-Halo to introduce me to ' +
       (coachName || 'a coach') +
-      ' and share my first name, email, topic, time zone, and availability.'
+      ' and share my first name, email, topic, time zone, availability, and what I would like to talk about.'
     );
   }
 
@@ -132,13 +158,16 @@
   }
 
   function renderHub() {
+    document.getElementById('page-title').textContent = HUB.headline;
+    document.getElementById('page-lead').textContent = HUB.lead;
+    document.getElementById('check-line').hidden = true;
     var list = document.getElementById('topic-list');
     Object.keys(TOPICS).forEach(function (slug) {
       var item = TOPICS[slug];
       var card = document.createElement('a');
       card.className = 'topic-card';
       card.href = '/events/' + slug + '/';
-      card.innerHTML = '<h2>' + esc(item.label) + '</h2><p>' + esc(item.lead) + '</p>';
+      card.innerHTML = '<h2>' + esc(item.card) + '</h2><p>' + esc(item.blurb) + '</p>';
       list.appendChild(card);
     });
   }
@@ -151,11 +180,16 @@
   function renderNiche() {
     var info = TOPICS[topic];
     document.getElementById('topic-list').hidden = true;
-    document.getElementById('eyebrow').textContent = 'Next five weeks · Pacific time';
+    document.getElementById('eyebrow').textContent = 'Events';
     document.getElementById('page-title').textContent = info.headline;
     document.getElementById('page-lead').textContent = info.lead;
+    document.getElementById('check-line').textContent = ORGANIZER_NOTE;
     document.getElementById('check-line').hidden = false;
     document.getElementById('alert').hidden = false;
+    ['note-example', 'gate-note-example'].forEach(function (id) {
+      var hint = document.getElementById(id);
+      if (hint) hint.textContent = info.example;
+    });
     document.title = info.headline + ' — Coach-Halo';
     pageTitle = document.title;
     setCanonical('/events/' + topic + '/');
@@ -177,7 +211,7 @@
     }
     var events = payload.events || [];
     if (!events.length) {
-      emptyEl.textContent = 'No free sessions listed for this week yet.';
+      emptyEl.textContent = 'No events listed right now.';
       return;
     }
     emptyEl.hidden = true;
@@ -193,7 +227,7 @@
         '<div><h2>' + esc(item.name) + '</h2>' +
         (item.summary ? '<p>' + esc(item.summary) + '</p>' : '') +
         (item.host ? '<p class="event-host">' + esc(item.host) + '</p>' : '') +
-        '</div><span class="event-cost">Free</span>';
+        '</div>' + (item.free === false ? '' : '<span class="event-cost">Free</span>');
       card.addEventListener('click', function (event) {
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
         event.preventDefault();
@@ -211,50 +245,59 @@
     return (TOPICS[topic] && TOPICS[topic].label) || topic || '';
   }
 
-  function fillSignupBanner(prefix, hasCoach) {
-    var tail = document.getElementById(prefix + '-banner-tail');
-    var chips = document.getElementById(prefix + '-topic-chip');
-    var label = topicChipLabel();
-    if (tail) tail.hidden = !hasCoach;
-    if (chips) {
-      chips.hidden = !hasCoach || !label;
-      chips.innerHTML = hasCoach && label ? '<span>' + esc(label) + '</span>' : '';
-    }
+  function fillSignupBanner() {}
+
+  function usablePhoto(url) {
+    var value = String(url || '').trim();
+    if (!/^https:\/\//i.test(value)) return '';
+    if (/ui-avatars\.com|dicebear|placeholder|gravatar\.com\/avatar/i.test(value)) return '';
+    return value;
+  }
+
+  function bindPhotoFallback(root) {
+    root.querySelectorAll('.coach-avatar img').forEach(function (img) {
+      img.addEventListener('error', function () {
+        var avatar = img.parentElement;
+        img.remove();
+        if (avatar) avatar.classList.remove('has-photo');
+      });
+    });
   }
 
   function coachMarkup(prefix, coach) {
     if (!coach || !coach.name) return '';
     var first = coachFirst(coach.name);
     var initial = String(coach.name).charAt(0).toUpperCase();
-    var photo = coach.image
-      ? '<img src="' + esc(coach.image) + '" alt="" width="56" height="56">'
+    var photoUrl = usablePhoto(coach.image);
+    var photo = photoUrl
+      ? '<img src="' + esc(photoUrl) + '" alt="" width="72" height="72">'
       : '';
-    var why = coach.line
-      ? coach.line
-      : 'Based on the topic you chose, ' + coach.name + ' is a strong match.';
-    var role = coach.title || (TOPICS[topic] && TOPICS[topic].match && TOPICS[topic].match.coachingType) || '';
+    var line = String(coach.line || '').trim();
+    var title = String(coach.title || '').trim();
+    if (line && title && line.toLowerCase() === title.toLowerCase()) title = '';
+    var support = line || title;
     var skip = prefix === 'gate'
       ? ''
-      : '<button type="button" class="link-quiet-coach" id="' + prefix + '-skip">No thanks — just send me event alerts</button>';
+      : '<button type="button" class="link-quiet-coach" id="' + prefix + '-skip">Just send me event updates</button>';
+    var request = coach.freeIntro === false
+      ? ''
+      : '<button type="button" class="btn-primary" id="' + prefix + '-request">Request a free intro with ' +
+        esc(first) + '</button>' +
+        '<span class="coach-connect-note">We’ll introduce you by email so you can arrange a free introductory call.</span>';
     return (
       '<div class="coach-match-card">' +
-      '<h3>Your matched coach</h3>' +
-      '<p class="coach-why">' + esc(why) + '</p>' +
       '<div class="coach-row">' +
-      '<div class="coach-avatar' + (coach.image ? ' has-photo' : '') + '">' +
+      '<div class="coach-avatar' + (photoUrl ? ' has-photo' : '') + '">' +
       photo +
       '<span class="coach-avatar-fallback">' + esc(initial) + '</span>' +
       '</div>' +
       '<div class="coach-meta">' +
       '<div class="coach-name-display">' + esc(coach.name) + '</div>' +
-      (role ? '<div class="coach-role-display">' + esc(role) + '</div>' : '') +
+      (support ? '<div class="coach-role-display">' + esc(support) + '</div>' : '') +
       '</div></div>' +
-      '<div id="' + prefix + '-ask">' +
+      '<div id="' + prefix + '-coach-ask">' +
       '<div id="' + prefix + '-actions">' +
-      '<button type="button" class="btn-primary" id="' + prefix + '-request">Connect me with ' +
-      esc(first) + ' for a complimentary call</button>' +
-      '<span class="coach-connect-note">I’ll make a quick email intro between you and ' +
-      esc(first) + ' so you can connect and set up a time. It’s a free intro call.</span>' +
+      request +
       '</div>' +
       '<form id="' + prefix + '-intro" class="coach-availability-block" hidden>' +
       '<p class="coach-availability-title">Preferred times for your intro call</p>' +
@@ -270,10 +313,13 @@
       '<div class="field-group"><label for="' + prefix + '-slot-3">Time window 3 <span class="optional">(optional)</span></label>' +
       '<input type="datetime-local" id="' + prefix + '-slot-3"></div>' +
       '</div>' +
+      '<div class="field-group"><label for="' + prefix + '-coach-note">In 1–2 sentences, what would you like to work on or talk with ' +
+      esc(first) + ' about?</label>' +
+      '<textarea id="' + prefix + '-coach-note" maxlength="600"></textarea></div>' +
       '<label class="check-row"><input type="checkbox" id="' + prefix + '-consent"><span class="check-label">' +
       esc(consentTextFor(coach.name)) +
       '</span></label>' +
-      '<button type="submit" class="btn-primary">Confirm &amp; send intro request</button>' +
+      '<button type="submit" class="btn-primary">Send my introduction request</button>' +
       '<button type="button" class="link-quiet-coach" id="' + prefix + '-back">Back</button>' +
       '<p class="message" id="' + prefix + '-intro-message" role="alert"></p>' +
       '</form></div>' +
@@ -286,16 +332,10 @@
   function matchCoach(record) {
     var info = TOPICS[topic];
     if (!info || !info.match) return Promise.resolve(null);
-    if (info.match.fixedCoachName) {
-      return Promise.resolve({
-        name: info.match.fixedCoachName,
-        line: info.coachLine || '',
-        image: '',
-        title: info.coachLine || ''
-      });
-    }
     var guessedTz = '';
     try { guessedTz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+    var goals = info.match.goals || '';
+    if (record.note) goals = goals ? goals + '. ' + record.note : record.note;
     return fetch('/.netlify/functions/match-coach', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -306,17 +346,22 @@
         email: record.email || '',
         coachingType: info.match.coachingType,
         coachingTypeCategory: info.match.coachingTypeCategory,
-        goals: info.match.goals,
+        goals: goals,
+        notes: record.note || '',
         timezone: guessedTz
       })
     }).then(function (res) {
       return res.json().then(function (data) {
         if (!res.ok || !data || !data.ok || !data.name) return null;
+        var reason = String(data.match_reason || '').trim();
+        var title = String(data.title || '').trim();
+        if (/^based on the topic/i.test(reason)) reason = '';
         return {
           name: data.name,
-          title: data.title || '',
-          line: data.match_reason || data.title || '',
-          image: data.image || ''
+          title: reason ? '' : title,
+          line: reason || title,
+          image: data.image || data.outseta_image_url || data.photo || '',
+          freeIntro: data.free_intro !== false
         };
       });
     }).catch(function () { return null; });
@@ -370,12 +415,15 @@
       root.innerHTML = '';
       return;
     }
+    var offer = document.getElementById(prefix === 'alert' ? 'alert-coach-offer' : 'gate-coach-offer');
+    if (offer) offer.hidden = false;
     root.hidden = false;
     root.innerHTML = coachMarkup(prefix, coach);
-    fillSignupBanner(prefix, true);
+    bindPhotoFallback(root);
     var select = document.getElementById(prefix + '-tz');
     zoneOptions(select);
-    document.getElementById(prefix + '-request').addEventListener('click', function () {
+    var request = document.getElementById(prefix + '-request');
+    if (request) request.addEventListener('click', function () {
       document.getElementById(prefix + '-intro').hidden = false;
       document.getElementById(prefix + '-actions').hidden = true;
       select.focus();
@@ -387,7 +435,8 @@
     var skip = document.getElementById(prefix + '-skip');
     if (skip) {
       skip.addEventListener('click', function () {
-        finishCoach(prefix, 'We’ll email you when a free session in this topic is listed.');
+        var offer = document.getElementById(prefix === 'alert' ? 'alert-coach-offer' : 'gate-coach-offer');
+        if (offer) offer.hidden = true;
       });
     }
     document.getElementById(prefix + '-intro').addEventListener('submit', function (event) {
@@ -397,7 +446,16 @@
       var consent = document.getElementById(prefix + '-consent');
       if (!select.value) { showError(message, 'Choose your time zone.'); select.focus(); return; }
       if (!consent.checked) { showError(message, 'Check the box if you want Coach-Halo to make this introduction.'); consent.focus(); return; }
+      var noteEl = document.getElementById(prefix + '-coach-note');
+      var coachMessage = noteEl ? noteEl.value.trim() : '';
+      if (coachMessage.length < 12) {
+        showError(message, 'Add 1–2 sentences about what you’d like to work on.');
+        if (noteEl) noteEl.focus();
+        return;
+      }
       var button = event.target.querySelector('button[type="submit"]');
+      if (button.dataset.sending === '1') return;
+      button.dataset.sending = '1';
       button.disabled = true;
       fetch('/.netlify/functions/save-event-alert', {
         method: 'POST',
@@ -409,6 +467,7 @@
           coach_name: coach.name,
           time_zone: select.value,
           windows: readWindows(prefix),
+          coach_message: coachMessage,
           consent: true,
           consent_wording: consentTextFor(coach.name)
         })
@@ -416,6 +475,7 @@
         return res.json().then(function (data) { return { ok: res.ok && data && data.ok, data: data }; });
       }).then(function (result) {
         if (!result.ok) {
+          button.dataset.sending = '';
           button.disabled = false;
           showError(message, (result.data && result.data.message) || 'Something went wrong. Try again.');
           return;
@@ -425,6 +485,7 @@
         }
         finishCoach(prefix, 'Someone will email you to set a time. That time is a preference, not a booked appointment.');
       }).catch(function () {
+        button.dataset.sending = '';
         button.disabled = false;
         showError(message, 'Something went wrong. Try again.');
       });
@@ -435,9 +496,7 @@
     var cont = document.getElementById('gate-continue');
     if (!cont) return;
     var name = (gate.dataset.session || '').trim();
-    cont.textContent = name
-      ? 'Click here to register for ' + name
-      : 'Click here to register for this session';
+    cont.textContent = 'Continue to event registration';
     cont.hidden = false;
   }
 
@@ -449,41 +508,46 @@
   function finishCoach(prefix, text) {
     var root = document.getElementById(prefix === 'alert' ? 'coach-step' : 'gate-coach-step');
     var after = document.getElementById(prefix + '-after');
-    var ask = document.getElementById(prefix + '-ask');
+    var ask = document.getElementById(prefix + '-coach-ask');
     if (ask) ask.hidden = true;
     if (after) {
       after.hidden = false;
+      after.className = 'signed-up-banner';
       after.textContent = text;
     } else if (root) {
       root.hidden = true;
     }
-    var copy = document.getElementById(prefix === 'alert' ? 'alert-done-copy' : 'gate-done-copy');
-    if (copy && prefix === 'alert') copy.textContent = ' ' + text;
     fillSignupBanner(prefix, false);
     var skip = document.getElementById(prefix + '-skip');
     if (skip) skip.hidden = true;
     if (prefix === 'gate') showEventRegisterLink();
   }
 
-  function showSaved(prefix, record, sessionName) {
-    var doneCopy = ' We’ll email you when a free session in this topic is listed. Check your email for a welcome note.';
+  function confirmCopy(welcomeSent) {
+    var label = (TOPICS[topic] && TOPICS[topic].label) || 'this topic';
+    var text = 'We’ll email you when new events on ' + label + ' are available.';
+    if (welcomeSent) text += ' We sent a welcome email.';
+    return text;
+  }
+
+  function showSaved(prefix, record, sessionName, welcomeSent) {
+    var doneCopy = confirmCopy(welcomeSent);
     if (prefix === 'alert') {
       document.getElementById('alert').classList.add('is-done');
       document.getElementById('alert-form').hidden = true;
       document.getElementById('alert-done').hidden = false;
       document.getElementById('alert-done-copy').textContent = doneCopy;
-      document.getElementById('coach-step').hidden = true;
+      document.getElementById('alert-coach-offer').hidden = true;
       document.getElementById('coach-step').innerHTML = '';
-      document.getElementById('coach-step').hidden = false;
     } else {
       document.getElementById('gate-ask').hidden = true;
       document.getElementById('gate-done').hidden = false;
       document.getElementById('gate-done-copy').textContent = doneCopy;
-      document.getElementById('gate-coach-step').hidden = false;
+      document.getElementById('gate-event-kept').textContent = sessionName || '';
+      document.getElementById('gate-coach-offer').hidden = true;
       document.getElementById('gate-coach-step').innerHTML = '';
-      hideEventRegisterLink();
+      showEventRegisterLink();
     }
-    fillSignupBanner(prefix, false);
     if (typeof window.datafast === 'function') {
       window.datafast('event_alert_signup', { topic: topic, signed_up_from: sessionName || 'Alert form' });
     }
@@ -492,7 +556,8 @@
         var root = document.getElementById(prefix === 'alert' ? 'coach-step' : 'gate-coach-step');
         root.hidden = true;
         root.innerHTML = '';
-        fillSignupBanner(prefix, false);
+        var offer = document.getElementById(prefix === 'alert' ? 'alert-coach-offer' : 'gate-coach-offer');
+        if (offer) offer.hidden = true;
         if (prefix === 'gate') showEventRegisterLink();
         return;
       }
@@ -514,6 +579,8 @@
       var emailProblem = window.jhSignupEmailProblem(email);
       if (emailProblem) { showError(messageEl, emailProblem); fields.email.focus(); return; }
     }
+    if (button.dataset.sending === '1') return;
+    button.dataset.sending = '1';
     button.disabled = true;
     fetch('/.netlify/functions/save-event-alert', {
       method: 'POST',
@@ -524,12 +591,15 @@
         name: name,
         email: email,
         session_note: fields.note.value.trim(),
-        signed_up_from: sessionName || 'Alert form'
+        signed_up_from: prefix === 'gate' ? 'Event click' : 'Category page',
+        event_id: prefix === 'gate' ? (gate.dataset.eventId || '') : '',
+        event_url: prefix === 'gate' ? (gate.dataset.eventUrl || '') : ''
       })
     }).then(function (res) {
       return res.json().then(function (data) { return { ok: res.ok && data && data.ok, data: data }; });
     }).then(function (result) {
       if (!result.ok) {
+        button.dataset.sending = '';
         button.disabled = false;
         showError(messageEl, (result.data && result.data.message) || 'Something went wrong. Try again.');
         return;
@@ -537,8 +607,10 @@
       record.id = result.data.id || '';
       record.email = email;
       record.name = name;
-      showSaved(prefix, record, sessionName);
+      record.note = fields.note.value.trim();
+      showSaved(prefix, record, sessionName, !!(result.data && result.data.welcome_sent));
     }).catch(function () {
+      button.dataset.sending = '';
       button.disabled = false;
       showError(messageEl, 'Something went wrong. Try again.');
     });
@@ -548,8 +620,17 @@
     document.getElementById('gate-skip').href = item.url;
     document.getElementById('gate-continue').href = item.url;
     gate.dataset.session = item.name || '';
-    document.getElementById('gate-form').reset();
-    document.getElementById('gate-form').hidden = false;
+    gate.dataset.eventId = item.id || '';
+    gate.dataset.eventUrl = item.url || '';
+    document.getElementById('gate-event-title').textContent = item.name || '';
+    var gateForm = document.getElementById('gate-form');
+    gateForm.reset();
+    gateForm.hidden = false;
+    var gateSubmit = gateForm.querySelector('button[type="submit"]');
+    if (gateSubmit) {
+      gateSubmit.disabled = false;
+      gateSubmit.dataset.sending = '';
+    }
     clearError(document.getElementById('gate-message'));
     document.getElementById('gate-ask').hidden = false;
     document.getElementById('gate-done').hidden = true;
@@ -560,8 +641,9 @@
     gateRecord.email = '';
     gate.hidden = false;
     gate.classList.add('is-open');
-    document.title = (item.name || 'Session') + ' — Coach-Halo';
-    document.getElementById('gate_first_name').focus();
+    document.title = (item.name || 'Event') + ' — Coach-Halo';
+    var card = gate.querySelector('.event-gate-card');
+    if (card) card.focus();
   }
 
   function closeGate() {
