@@ -50,7 +50,7 @@ exports.handler = async function (event) {
   if (payload.holdForPayment === true) {
     let held;
     try {
-      held = await lib.holdProfile(lib.productionStore(event), signup);
+      held = await lib.holdForCheckout(signup);
     } catch (err) {
       console.log("coach-join hold failed");
       return json(503, { ok: false, error: "not_configured" });

@@ -42,16 +42,9 @@ exports.handler = async function (event) {
     return json(400, { received: false });
   }
   if (!FULFILL[evt.type]) return json(200, { received: true });
-  let store;
-  try {
-    store = lib.productionStore(event);
-  } catch (err) {
-    console.log("stripe-coach-paid store unavailable");
-    return json(500, { received: false });
-  }
   let result;
   try {
-    result = await lib.fulfillPaidCheckout(store, evt.data && evt.data.object);
+    result = await lib.fulfillPaidCheckout(null, evt.data && evt.data.object);
   } catch (err) {
     console.log("stripe-coach-paid fulfill failed");
     return json(500, { received: false });

@@ -252,6 +252,101 @@ async function outseta(auth, path, body) {
   return { ok: res.ok, status: res.status, data: data };
 }
 
+async function outsetaGet(path) {
+  const auth = authHeader();
+  if (!auth) return { ok: false, status: 503, data: {} };
+  const res = await fetch("https://" + DOMAIN + path, { headers: { Authorization: auth } });
+  const data = await res.json().catch(function () { return {}; });
+  return { ok: res.ok, status: res.status, data: data };
+}
+
+async function findPerson(email) {
+  const found = await outsetaGet("/api/v1/crm/people?q=" + encodeURIComponent(email) + "&limit=10");
+  const items = (found.data && found.data.items) || [];
+  return items.find(function (person) {
+    return String(person.Email || "").toLowerCase() === email;
+  }) || null;
+}
+
+async function findOrCreatePerson(signup) {
+  const existing = await findPerson(signup.email);
+  if (existing && existing.Uid) return existing.Uid;
+  const auth = authHeader();
+  if (!auth) return "";
+  const parts = signup.name.split(/\s+/);
+  const person = { Email: signup.email, FirstName: parts[0] };
+  if (parts.length > 1) person.LastName = parts.slice(1).join(" ");
+  const created = await outseta(auth, "/api/v1/crm/people", person);
+  if (created.ok && created.data && created.data.Uid) return created.data.Uid;
+  const again = await findPerson(signup.email);
+  return again && again.Uid ? again.Uid : "";
+}
+
+async function personActivities(uid) {
+  const found = await outsetaGet("/api/v1/activities?EntityType=2&EntityUid=" + encodeURIComponent(uid) + "&limit=20");
+  return (found.data && found.data.items) || [];
+}
+
+async function holdForCheckout(payload) {
+  const signup = cleanSignup(payload);
+  if (!validEmail(signup.email) || signup.name.length < 2 || !signup.agree) {
+    return { ok: false, status: 400, error: "invalid_signup" };
+  }
+  if (signup.plan !== "monthly" && signup.plan !== "annual") {
+    return { ok: false, status: 400, error: "invalid_signup" };
+  }
+  if (!signup.paidTerms) return { ok: false, status: 400, error: "invalid_signup" };
+  const uid = await findOrCreatePerson(signup);
+  if (!uid) return { ok: false, status: 503, error: "not_configured" };
+  const auth = authHeader();
+  const noted = await outseta(auth, "/api/v1/activities/customactivity", {
+    Title: "coach-paid-hold",
+    Description: JSON.stringify({ signup: signup, createdAt: Date.now() }).slice(0, 7000),
+    ActivityType: 50,
+    EntityType: 2,
+    EntityUid: uid,
+  });
+  if (!noted.ok) {
+    console.log("coach-join hold note", noted.status);
+    return { ok: false, status: 502, error: "save_failed" };
+  }
+  return { ok: true, checkoutRef: "oh_" + uid };
+}
+
+async function loadOutsetaHold(ref) {
+  const uid = ref.slice(3);
+  const items = await personActivities(uid);
+  const holds = items.filter(function (item) { return item.Title === "coach-paid-hold" && item.Description; });
+  holds.sort(function (a, b) { return String(b.Created || "").localeCompare(String(a.Created || "")); });
+  const latest = holds[0];
+  if (!latest) return null;
+  try {
+    const parsed = JSON.parse(latest.Description);
+    return parsed && parsed.signup ? parsed : null;
+  } catch (err) {
+    return null;
+  }
+}
+
+async function outsetaDone(ref, sessionId) {
+  const items = await personActivities(ref.slice(3));
+  return items.some(function (item) {
+    return item.Title === "coach-paid-done" && item.Description === sessionId;
+  });
+}
+
+async function markOutsetaDone(ref, sessionId) {
+  const auth = authHeader();
+  if (!auth) return;
+  await outseta(auth, "/api/v1/activities/customactivity", {
+    Title: "coach-paid-done",
+    Description: clip(sessionId, 80),
+    ActivityType: 50,
+    EntityType: 2,
+    EntityUid: ref.slice(3),
+  });
+}
+
 async function sendListWelcome(listUid, payload, name, email) {
   const auth = authHeader();
   if (!auth) return { welcomeSent: false };
@@ -332,10 +427,16 @@ async function fulfillPaidCheckout(store, session) {
   if (!session || session.livemode !== true) return { ok: true, ignored: "not_live" };
   if (session.payment_status !== "paid") return { ok: true, ignored: "unpaid" };
   const ref = clip(session.client_reference_id, 80);
-  if (!/^ch_[a-f0-9]{32}$/.test(ref)) return { ok: true, ignored: "no_signup_ref" };
-  const doneKey = "done:" + clip(session.id, 80);
-  if (await store.get(doneKey)) return { ok: true, ignored: "already_saved" };
-  const held = await store.get(ref);
+  const blobRef = /^ch_[a-f0-9]{32}$/.test(ref);
+  const outsetaRef = /^oh_[A-Za-z0-9]{6,20}$/.test(ref);
+  if (!blobRef && !outsetaRef) return { ok: true, ignored: "no_signup_ref" };
+  const sessionId = clip(session.id, 80);
+  if (outsetaRef) {
+    if (await outsetaDone(ref, sessionId)) return { ok: true, ignored: "already_saved" };
+  } else if (store && await store.get("done:" + sessionId)) {
+    return { ok: true, ignored: "already_saved" };
+  }
+  const held = outsetaRef ? await loadOutsetaHold(ref) : store ? await store.get(ref) : null;
   if (!held || !held.signup || Date.now() - held.createdAt > HOLD_TTL_MS) {
     console.log("coach-paid hold missing");
     return { ok: true, ignored: "hold_missing" };
@@ -356,11 +457,14 @@ async function fulfillPaidCheckout(store, session) {
   const saved = await saveCoach(payload, signup.name, signup.email);
   if (!saved.ok) return saved;
   let welcome = { welcomeSent: false };
+  if (outsetaRef) await markOutsetaDone(ref, sessionId);
+  else if (store) {
+    await store.set("done:" + sessionId, { at: Date.now() });
+    await store.delete(ref);
+  }
   if (!saved.existingMember) {
     welcome = await sendListWelcome(PAID_LIST_UID, payload, signup.name, signup.email);
   }
-  await store.set(doneKey, { at: Date.now() });
-  await store.delete(ref);
   return { ok: true, saved: true, table: "paid", welcomeSent: welcome.welcomeSent === true };
 }
 
@@ -404,6 +508,7 @@ module.exports = {
   memoryStore: memoryStore,
   productionStore: productionStore,
   holdProfile: holdProfile,
+  holdForCheckout: holdForCheckout,
   fulfillPaidCheckout: fulfillPaidCheckout,
   verifyStripeSignature: verifyStripeSignature,
   rawBody: rawBody,
