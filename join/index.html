@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Join Coach-Halo</title>
+  <script defer data-website-id="dfid_ImJXeenE5zJoIlqGSMtN5" data-domain="coach-halo.com" src="https://datafa.st/js/script.js"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f6f6f4;
+      --border: #e6e6e3;
+      --text: #0a0a0a;
+      --muted: #6b6b6b;
+      --accent: #0a0a0a;
+      --accent-soft: rgba(10, 10, 10, 0.05);
+      --ok: #15803d;
+      --ok-bg: #effaf3;
+      --warn: #92400e;
+      --warn-bg: #fff8e6;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      --ease: cubic-bezier(.22,.8,.26,1);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin: 0; font-family: var(--font); color: var(--text); background: var(--bg); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    button { font: inherit; color: inherit; }
+
+    .draft-bar { background: var(--warn-bg); color: var(--warn); font-size: .78rem; padding: .5rem 1rem; text-align: center; }
+    header.site { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.9); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--border); }
+    header.site .in { max-width: 1100px; margin: 0 auto; padding: .8rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    .logo { font-weight: 750; letter-spacing: -.02em; text-decoration: none; font-size: 1.05rem; }
+    .logo span { display: inline-block; width: .55rem; height: .55rem; border-radius: 50%; background: var(--accent); margin-right: .4rem; vertical-align: middle; box-shadow: 0 0 0 3px #e9e9e6; }
+    .tabs { display: inline-flex; background: var(--surface); border-radius: 999px; padding: .25rem; gap: .15rem; flex-wrap: wrap; }
+    .tabs button { border: 0; background: transparent; padding: .42rem .85rem; border-radius: 999px; font-size: .8rem; cursor: pointer; color: var(--muted); transition: all .2s var(--ease); }
+    .tabs button[aria-selected="true"] { background: #fff; color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.08); font-weight: 600; }
+
+    .bar { height: 3px; background: var(--border); position: relative; overflow: hidden; }
+    .bar i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--accent); transition: width .5s var(--ease); }
+
+    /* ---------- Form shell ---------- */
+    .stage { min-height: calc(100vh - 140px); display: flex; align-items: center; justify-content: center; padding: 2.5rem 1.25rem 5rem; }
+    .q { width: 100%; max-width: 640px; }
+    .q.enter { animation: in .45s var(--ease) both; }
+    .q.enter.rev { animation-name: inBack; }
+    @keyframes in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    @keyframes inBack { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: none; } }
+    .eyebrow { font-size: .78rem; color: var(--muted); margin: 0 0 .6rem; display: flex; align-items: center; gap: .5rem; }
+    .eyebrow b { color: var(--text); font-weight: 600; }
+    h1.title { font-size: clamp(1.55rem, 3.6vw, 2.1rem); line-height: 1.18; letter-spacing: -.025em; margin: 0 0 .5rem; font-weight: 720; }
+    .sub { color: var(--muted); margin: 0 0 1.6rem; font-size: 1rem; }
+
+    .field { width: 100%; font: inherit; font-size: 1.35rem; padding: .7rem 0; border: 0; border-bottom: 2px solid var(--border); background: transparent; outline: none; transition: border-color .2s; }
+    .field:focus { border-color: var(--accent); }
+    .field::placeholder { color: #b9b9b5; }
+    textarea.field { font-size: 1.05rem; line-height: 1.55; min-height: 150px; resize: vertical; border: 2px solid var(--border); border-radius: var(--radius-sm); padding: .9rem 1rem; }
+    textarea.field:focus { border-color: var(--accent); }
+    .counter { font-size: .78rem; color: var(--muted); text-align: right; margin-top: .35rem; }
+    select.field { font-size: 1.1rem; appearance: none; background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%230a0a0a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right .2rem center; cursor: pointer; }
+
+    .opts { display: grid; gap: .6rem; }
+    .opts.grid { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 560px) { .opts.grid { grid-template-columns: 1fr; } }
+    .opt { display: flex; align-items: center; gap: .85rem; width: 100%; text-align: left; border: 1.5px solid var(--border); background: #fff; border-radius: var(--radius-sm); padding: .85rem 1rem; cursor: pointer; transition: transform .15s var(--ease), border-color .15s, background .15s, box-shadow .15s; }
+    .opt:hover { border-color: #bdbdb8; transform: translateY(-1px); box-shadow: var(--shadow); }
+    .opt:active { transform: scale(.99); }
+    .opt .key { flex: none; width: 1.6rem; height: 1.6rem; border: 1.5px solid var(--border); border-radius: 7px; display: grid; place-items: center; font-size: .72rem; font-weight: 700; color: var(--muted); background: var(--surface); }
+    .opt .ico { font-size: 1.45rem; line-height: 1; flex: none; }
+    .opt .txt strong { display: block; font-weight: 620; }
+    .opt .txt small { color: var(--muted); font-size: .84rem; }
+    .opt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+    .opt[aria-pressed="true"] .key { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .opt.flash { animation: flash .35s var(--ease); }
+    @keyframes flash { 50% { transform: scale(1.015); } }
+
+    .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .chip { border: 1.5px solid var(--border); background: #fff; border-radius: 999px; padding: .55rem 1rem; cursor: pointer; font-size: .95rem; transition: all .15s var(--ease); display: inline-flex; align-items: center; gap: .4rem; }
+    .chip:hover { border-color: #bdbdb8; }
+    .chip[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .chip[aria-pressed="true"]::before { content: "✓"; font-size: .8rem; }
+    .chip.add { border-style: dashed; color: var(--muted); }
+    .other-input { margin-top: .9rem; font-size: 1rem; }
+
+    .price-wrap { display: flex; align-items: baseline; gap: .35rem; border-bottom: 2px solid var(--border); max-width: 260px; }
+    .price-wrap:focus-within { border-color: var(--accent); }
+    .price-wrap span { font-size: 2rem; font-weight: 700; color: var(--muted); }
+    .price-wrap input { border: 0; outline: none; font: inherit; font-size: 2.6rem; font-weight: 750; letter-spacing: -.03em; width: 100%; padding: .2rem 0; background: transparent; }
+    .price-wrap small { color: var(--muted); white-space: nowrap; }
+    .presets { margin-top: 1.1rem; }
+
+    .nav { display: flex; align-items: center; gap: 1rem; margin-top: 1.8rem; flex-wrap: wrap; }
+    .btn { border: 0; background: var(--accent); color: #fff; padding: .85rem 1.5rem; border-radius: 999px; font-weight: 650; cursor: pointer; display: inline-flex; align-items: center; gap: .5rem; transition: transform .15s var(--ease), opacity .2s, box-shadow .2s; box-shadow: 0 6px 18px rgba(0,0,0,.14); text-decoration: none; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled { opacity: .35; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn.ghost { background: #fff; color: var(--text); border: 1.5px solid var(--border); box-shadow: none; }
+    .btn.lg { padding: 1rem 1.9rem; font-size: 1.05rem; }
+    .kbd { font-size: .78rem; color: var(--muted); }
+    .kbd b { border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px; padding: 0 .35rem; font-weight: 600; background: var(--surface); }
+    .err { color: #b42318; font-size: .88rem; margin-top: .8rem; min-height: 1.2em; }
+
+    .note { background: var(--surface); border-radius: var(--radius-sm); padding: .85rem 1rem; color: #3f3f3c; font-size: .9rem; margin-top: 1.2rem; display: flex; gap: .6rem; }
+    .note.ok { background: var(--ok-bg); color: #14532d; }
+
+    /* Welcome */
+    .welcome h1.title { font-size: clamp(2rem, 5vw, 2.9rem); }
+    .perks { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin: 1.8rem 0 2rem; }
+    @media (max-width: 560px) { .perks { grid-template-columns: 1fr; } }
+    .perk { background: var(--surface); border-radius: var(--radius-sm); padding: 1rem; font-size: .9rem; }
+    .perk b { display: block; font-size: 1.25rem; margin-bottom: .2rem; }
+
+    /* Plans */
+    .plans { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .plans { grid-template-columns: 1fr; } }
+    .plan { position: relative; text-align: left; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.3rem 1.2rem; background: #fff; cursor: pointer; transition: all .18s var(--ease); }
+    .plan:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+    .plan[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent), var(--shadow); }
+    .plan .badge { position: absolute; top: -.65rem; right: 1rem; background: var(--accent); color: #fff; font-size: .7rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: .22rem .6rem; border-radius: 999px; }
+    .plan .amt { font-size: 2.1rem; font-weight: 760; letter-spacing: -.03em; margin: .3rem 0 .1rem; }
+    .plan .amt small { font-size: .9rem; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+    .ticks { list-style: none; padding: 0; margin: .7rem 0 0; font-size: .92rem; }
+    .ticks li { padding-left: 1.5rem; position: relative; margin: .4rem 0; }
+    .ticks li::before { content: ""; position: absolute; left: 0; top: .32rem; width: .95rem; height: .95rem; border-radius: 50%; background: var(--ok-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2315803d' stroke-width='3.2'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") no-repeat center / 70%; }
+    .plans .plan { display: flex; flex-direction: column; justify-content: flex-start; text-decoration: none; color: inherit; }
+    .plan.featured { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+    .plan .ticks { flex: 1; }
+    .plan-cta { margin-top: 1rem; justify-content: center; }
+    .plan.wide { grid-column: 1 / -1; flex-direction: row; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.2rem; }
+    .note a { color: inherit; font-weight: 600; }
+    .link { border: 0; background: none; padding: 0; text-decoration: underline; cursor: pointer; font: inherit; font-weight: 600; color: inherit; }
+    .plan.solo-row { cursor: default; }
+    .plan.solo-row:hover { transform: none; box-shadow: none; }
+    .plan.solo-row .btn { flex: none; white-space: nowrap; }
+    .nav .btn.ghost { padding: .8rem 1.2rem; }
+    .plan.solo { cursor: default; max-width: 420px; }
+    .plan.solo:hover { transform: none; box-shadow: none; }
+    .opt-tag { display: inline-block; background: var(--surface); border-radius: 999px; padding: .05rem .55rem; font-size: .72rem; }
+
+    /* Review */
+    .review { border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .review .r { display: grid; grid-template-columns: 150px 1fr auto; gap: .75rem; padding: .75rem 1rem; border-bottom: 1px solid var(--border); font-size: .92rem; align-items: start; }
+    .review .r:last-child { border-bottom: 0; }
+    .review .r span:first-child { color: var(--muted); }
+    .review .r button { border: 0; background: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-size: .82rem; }
+    @media (max-width: 560px) { .review .r { grid-template-columns: 1fr auto; } .review .r span:first-child { grid-column: 1 / -1; } }
+    .agree { display: flex; gap: .7rem; align-items: flex-start; margin-top: 1.2rem; font-size: .9rem; color: #3f3f3c; cursor: pointer; }
+    .agree input { width: 1.15rem; height: 1.15rem; margin-top: .15rem; accent-color: #0a0a0a; flex: none; }
+
+    /* Done */
+    .done { text-align: center; }
+    .done .check { width: 84px; height: 84px; border-radius: 50%; background: var(--ok-bg); display: grid; place-items: center; margin: 0 auto 1.4rem; animation: pop .55s var(--ease) both; }
+    .done .check svg { width: 42px; height: 42px; stroke: var(--ok); stroke-width: 3; fill: none; stroke-dasharray: 30; stroke-dashoffset: 30; animation: draw .5s .25s var(--ease) forwards; }
+    @keyframes pop { from { transform: scale(.4); opacity: 0; } to { transform: none; opacity: 1; } }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    .timeline { text-align: left; max-width: 440px; margin: 1.8rem auto; }
+    .timeline div { display: flex; gap: .8rem; padding: .55rem 0; font-size: .95rem; }
+    .timeline i { flex: none; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--surface); display: grid; place-items: center; font-style: normal; font-size: .8rem; font-weight: 700; }
+    .confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 20; }
+    .confetti i { position: absolute; top: -12px; width: 8px; height: 12px; border-radius: 2px; animation: fall 1.8s ease-in forwards; }
+    @keyframes fall { to { transform: translateY(105vh) rotate(540deg); opacity: .2; } }
+
+    footer.site { border-top: 1px solid var(--border); padding: 1.4rem; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); text-align: center; }
+    footer.site a { margin: 0 .45rem; text-decoration: none; }
+    [hidden] { display: none !important; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <div class="in">
+      <a class="logo" href="/"><span></span>Coach-Halo</a>
+    </div>
+    <div class="bar" id="bar"><i></i></div>
+  </header>
+
+  <!-- ========== FORM ========== -->
+  <section id="view-form">
+    <div class="stage"><div class="q" id="q"></div></div>
+  </section>
+
+  <footer class="site">
+    <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="/coach-terms/">Coach Terms</a> · <a href="/disclaimer/">Disclaimer</a>
+  </footer>
+
+  <script>
+  (function () {
+    var TYPES = [
+      { v: "career", ico: "💼", label: "Career", sub: "Job search, resumes, career change" },
+      { v: "life", ico: "🌱", label: "Life", sub: "Transitions, confidence, direction" },
+      { v: "financial", ico: "💰", label: "Financial", sub: "Budgeting, debt, money habits" },
+      { v: "relationship", ico: "💬", label: "Relationship", sub: "Dating, breakups, couples" },
+      { v: "business", ico: "🚀", label: "Business", sub: "Starting, growing, freelancing" },
+      { v: "wellness", ico: "🧘", label: "Health & wellness", sub: "Stress, energy, routines" }
+    ];
+    var OFFERS = {
+      career: ["Resume review & writing", "LinkedIn profile", "Interview prep", "Job search strategy", "Career change", "Salary negotiation", "Leadership & executive", "Returning to work"],
+      life: ["Life transitions", "Confidence", "Goals & habits", "Starting over", "Purpose & direction", "Work–life balance"],
+      financial: ["Budgeting", "Debt payoff", "Saving & emergency fund", "Money mindset", "Couples & money", "Retirement readiness"],
+      relationship: ["Dating", "Breakups & divorce recovery", "Couples communication", "Co-parenting", "Family dynamics"],
+      business: ["Starting a business", "Marketing & growth", "Freelancing", "Leadership & teams"],
+      wellness: ["Stress", "Sleep & energy", "Nutrition habits", "Fitness habits"]
+    };
+    var KEYS = "ABCDEFGHIJ";
+    var S = { offers: [], levels: [], langs: ["English"], plan: "free" };
+
+    function first() { return (S.name || "").trim().split(/\s+/)[0] || ""; }
+    function coachName() { return first() ? "Coach " + first() : "Coach"; }
+    function typeLabel() { var t = TYPES.find(function (x) { return x.v === S.ctype; }); return t ? t.label : ""; }
+    function isCareer() { return S.ctype === "career"; }
+
+    var CHAT_URL = "https://calendly.com/coach-halo/coah-halo-discovery-call";
+    // Mirrors the paid plan on coach-halo.com; keep in sync with the live pricing section.
+    var PAID_FEATURES = [
+      "AI-powered lead matching using your full coaching profile",
+      "Opportunities based on real demand",
+      "Managed outreach and follow-ups across multiple channels",
+      "Exposure to people exploring Coach-Halo events",
+      "We work to get discovery calls booked with you",
+      "Coach portal to track outreach activity",
+      "Monthly office hours with the founder"
+    ];
+    var JOB_SEEKER_NEEDS = ["Resume review & writing", "LinkedIn profile", "Interview prep", "Job search strategy", "Career change", "Salary negotiation", "Returning to work"];
+    function fitOffers() { return (S.offers || []).filter(function (o) { return JOB_SEEKER_NEEDS.indexOf(o) >= 0; }); }
+    var LEVEL_TEXT = { "Students & entry level": "early-career", "Mid-career": "mid-career", "Senior & managers": "senior", "Executives": "executive" };
+    function lc(s) { return s.toLowerCase().replace(/&/g, "and").replace("linkedin", "LinkedIn"); }
+    function listText(a) { return a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
+    function prefsText() {
+      var parts = [];
+      if (S.offers.length) parts.push(listText(S.offers.slice(0, 3).map(lc)));
+      if (S.levels.length) parts.push("for " + listText(S.levels.map(function (l) { return LEVEL_TEXT[l] || lc(l); })) + " clients");
+      if (S.capacity) parts.push("paced to " + S.capacity.replace("-", "–") + " new clients a month");
+      return parts.length ? ": " + parts.join(", ") : "";
+    }
+    var MONTHLY_URL = "https://buy.stripe.com/7sYfZi8BHcc3eYLciI1gt0Q";
+    var ANNUAL_URL = "https://buy.stripe.com/00w8wQ7xD8ZR9ErgyY1gt0R";
+    function payUrl(base) { return S.email ? base + "?prefilled_email=" + encodeURIComponent(S.email) : base; }
+
+    var Q = [
+      { id: "welcome", type: "welcome" },
+      { id: "name", type: "text", title: function () { return "Let's start simple. What's your name?"; }, ph: "First and last name", req: true, auto: "name" },
+      { id: "email", type: "email", title: function () { return "Nice to meet you, " + coachName() + "! Where should we send new client requests?"; }, sub: "We'll use it to send you matches and updates.", ph: "you@example.com", req: true, auto: "email" },
+      { id: "title", type: "text", title: function () { return "How do you describe yourself professionally?"; }, sub: "How you'd introduce yourself to a potential client in a few words.", ph: "e.g. Career & Executive Coach", req: true },
+      { id: "website", type: "url", optional: true, title: function () { return "Where can we learn more about your work?"; }, sub: "Your website, or LinkedIn if you don't have one. We may review what you've published there to better understand your practice, who you serve, and how you coach.", ph: "yourwebsite.com" },
+      { id: "ctype", type: "single", grid: true, title: function () { return "What kind of coach are you?"; }, sub: "Pick your main focus. You can add other areas later.", options: function () { return TYPES; } },
+      { id: "offers", type: "multi", title: function () { return "What do you help " + typeLabel().toLowerCase() + " clients with?"; }, sub: "Select all that apply. Specific answers mean better matches.", options: function () { return OFFERS[S.ctype] || []; }, other: true, min: 1,
+        note: function () { return S.ctype === "financial" ? "ℹ️ Coach-Halo introduces financial <b>coaches</b>, not investment, tax, or legal advisors." : ""; } },
+      { id: "levels", type: "multi", optional: true, when: isCareer, title: function () { return "Who do you usually work with?"; }, options: function () { return ["Students & entry level", "Mid-career", "Senior & managers", "Executives"]; } },
+      { id: "industries", type: "text", optional: true, when: isCareer, title: function () { return "Any industries you know especially well?"; }, sub: "Helps us match people in your space.", ph: "e.g. Tech, healthcare, education" },
+      { id: "hasCal", type: "single", optional: true, when: isCareer, title: function () { return "Do you have a calendar link for discovery calls?"; }, sub: "After an introduction, people can book with you directly.", options: function () { return [{ v: "yes", ico: "📅", label: "Yes, I have one" }, { v: "no", ico: "⏳", label: "Not yet" }]; },
+        after: function () { return S.hasCal === "no" ? "No problem. You can add one later. Until then, people will reach you by email." : ""; } },
+      { id: "cal", type: "url", optional: true, when: function () { return isCareer() && S.hasCal === "yes"; }, title: function () { return "Paste your calendar link"; }, sub: "Calendly, Google Calendar, OnceHub, Acuity… any works.", ph: "https://calendly.com/you/discovery" },
+      { id: "freecall", type: "single", optional: true, when: isCareer, title: function () { return "Is your first call free?"; }, sub: "We mention this when we introduce you to someone.", options: function () { return [{ v: "yes", ico: "🎁", label: "Yes, first call is free" }, { v: "no", ico: "💳", label: "No, all sessions are paid" }]; } },
+      { id: "price", type: "price", optional: true, when: isCareer, title: function () { return "What do you usually charge for a one-hour session?"; }, sub: "Your typical hourly rate is fine. You can change it anytime.", presets: [75, 100, 150, 200, 250] },
+      { id: "bio", type: "textarea", optional: true, when: isCareer, title: function () { return "Introduce yourself to a future client"; }, sub: "2–4 sentences in your own voice. We may share it with people we introduce you to, so please leave out client names or details. You can also write this later.", ph: "I help mid-career professionals…", min: 60, max: 600 },
+      { id: "tz", type: "tz", title: function () { return "Where do you coach from?"; }, sub: "So we match people in time zones and languages that work for you." },
+      { id: "capacity", type: "single", optional: true, when: isCareer, title: function () { return "How many new clients can you take each month?"; }, sub: "We'll pace introductions to match.", options: function () { return [{ v: "1-2", label: "1–2" }, { v: "3-5", label: "3–5" }, { v: "6-10", label: "6–10" }, { v: "10+", label: "10 or more" }]; } },
+      { id: "heard", type: "single", optional: true, grid: true, title: function () { return "Last one! How did you hear about us?"; }, options: function () { return ["Job-Halo", "LinkedIn", "Another coach", "Google", "ChatGPT", "Other"].map(function (x) { return { v: x, label: x }; }); } },
+      { id: "review", type: "review" },
+      { id: "plan", type: "plan" },
+      { id: "done", type: "done" }
+    ];
+
+    var qEl = document.getElementById("q");
+    var barFill = document.querySelector("#bar i");
+    var idx = 0, dir = 1, history = [];
+
+    function visible(i) { var q = Q[i]; return !q.when || q.when(); }
+    function nextIdx(i) { var j = i + 1; while (j < Q.length && !visible(j)) j++; return j; }
+    function progress() {
+      var vis = Q.filter(function (_, i) { return visible(i); });
+      var pos = vis.indexOf(Q[idx]);
+      return Math.max(0, Math.min(1, pos / (vis.length - 1)));
+    }
+    function stepCount() {
+      var vis = Q.filter(function (q, i) { return visible(i) && ["welcome", "plan", "review", "done"].indexOf(q.type) < 0; });
+      return { n: vis.indexOf(Q[idx]) + 1, of: vis.length };
+    }
+    function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+    function go(i, d) {
+      dir = d || 1;
+      if (dir > 0) history.push(idx);
+      idx = i;
+      render();
+    }
+    var saving = false;
+    function signupKey() { return "ch-join:" + String(S.email || "").trim().toLowerCase(); }
+    function signupPayload() {
+      var sendWelcome = true;
+      try { sendWelcome = !sessionStorage.getItem(signupKey()); } catch (e) {}
+      return {
+        name: S.name || "", email: S.email || "", title: S.title || "", website: S.website || "",
+        coachType: S.ctype || "", offers: S.offers || [], levels: S.levels || [], industries: S.industries || "",
+        hasCal: S.hasCal || "", cal: S.cal || "", freecall: S.freecall || "", price: S.price || "",
+        bio: S.bio || "", tz: S.tz || "", langs: S.langs || [], capacity: S.capacity || "",
+        heard: S.heard || "", plan: S.plan || "free", agree: !!S.agree, sendWelcome: sendWelcome
+      };
+    }
+    function next() {
+      var j = nextIdx(idx);
+      if (Q[j] && Q[j].type === "done") { saveThen(j); return; }
+      go(j, 1);
+    }
+    function saveThen(j) {
+      if (saving) return;
+      if (S.subscribed) { go(j, 1); return; }
+      saving = true;
+      var nb = qEl.querySelector("[data-next]");
+      if (nb) nb.disabled = true;
+      setErr("");
+      fetch("/.netlify/functions/coach-join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(signupPayload())
+      }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok && d && d.ok, d: d }; });
+      }).then(function (res) {
+        saving = false;
+        if (!res.ok) {
+          if (nb) nb.disabled = false;
+          setErr("We couldn't finish signup. Email hello@coach-halo.com and we'll add you.");
+          return;
+        }
+        S.subscribed = true;
+        try { sessionStorage.setItem(signupKey(), "1"); } catch (e) {}
+        go(j, 1);
+      }).catch(function () {
+        saving = false;
+        if (nb) nb.disabled = false;
+        setErr("We couldn't finish signup. Email hello@coach-halo.com and we'll add you.");
+      });
+    }
+    function back() { if (history.length) { idx = history.pop(); dir = -1; render(); } }
+    function backHTML() {
+      return history.length ? '<button type="button" class="btn ghost" data-back><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Back</button>' : "";
+    }
+    function navHTML(label, disabled) {
+      return '<div class="nav">' + backHTML() + '<button type="button" class="btn" data-next ' + (disabled ? "disabled" : "") + '>' + (label || "Continue") +
+        ' <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>' +
+        '<span class="kbd">press <b>Enter ↵</b></span></div><div class="err" id="err"></div>';
+    }
+    function head(q) {
+      var c = stepCount();
+      var eb = c.n > 0 ? '<p class="eyebrow"><b>' + c.n + '</b> / ' + c.of + (q.optional ? ' <span class="opt-tag">Optional</span>' : "") + '</p>' : "";
+      return eb + '<h1 class="title">' + esc(q.title()) + '</h1>' + (q.sub ? '<p class="sub">' + esc(q.sub) + '</p>' : "");
+    }
+
+    function render() {
+      var q = Q[idx];
+      barFill.style.width = (progress() * 100) + "%";
+      var h = "";
+
+      if (q.type === "welcome") {
+        h = '<div class="welcome"><p class="eyebrow">For coaches · about 4 minutes · no card needed</p>' +
+          '<h1 class="title">Let\'s see if Coach-Halo is right for you.</h1>' +
+          '<p class="sub">Tell us how you coach and who you help. We\'ll show you where we can help you grow your practice, and be honest if we\'re not the right fit.</p>' +
+          '<div class="perks"><div class="perk"><b>Real demand</b>People looking for a coach reach out to us every week</div><div class="perk"><b>Less chasing</b>We handle outreach and follow-ups so you can focus on coaching</div><div class="perk"><b>0%</b>commission. You keep everything you earn</div></div>' +
+          '<div class="nav"><button type="button" class="btn lg" data-next>Let\'s find out <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><span class="kbd">press <b>Enter ↵</b></span></div></div>';
+      }
+
+      else if (q.type === "text" || q.type === "email" || q.type === "url") {
+        var t = q.type === "text" ? "text" : q.type;
+        h = head(q) + '<input class="field" id="inp" type="' + t + '" placeholder="' + esc(q.ph) + '" value="' + esc(S[q.id]) + '"' + (q.auto ? ' autocomplete="' + q.auto + '"' : "") + '>' + navHTML(q.req || S[q.id] ? "Continue" : "Skip");
+      }
+
+      else if (q.type === "single") {
+        var opts = q.options();
+        h = head(q) + '<div class="opts' + (q.grid ? " grid" : "") + '">' + opts.map(function (o, i) {
+          var on = S[q.id] === o.v;
+          return '<button type="button" class="opt" data-v="' + esc(o.v) + '" aria-pressed="' + on + '"><span class="key">' + KEYS[i] + '</span>' +
+            (o.ico ? '<span class="ico">' + o.ico + '</span>' : "") + '<span class="txt"><strong>' + esc(o.label) + '</strong>' + (o.sub ? '<small>' + esc(o.sub) + '</small>' : "") + '</span></button>';
+        }).join("") + '</div>' + (q.optional ? navHTML(S[q.id] ? "Continue" : "Skip") : '<div class="nav">' + backHTML() + '</div><div class="err" id="err"></div>') + '<div id="after"></div>';
+      }
+
+      else if (q.type === "multi") {
+        var list = q.options();
+        var arr = S[q.id];
+        var extras = arr.filter(function (x) { return list.indexOf(x) < 0; });
+        h = head(q) + '<div class="chips">' + list.concat(extras).map(function (o) {
+          return '<button type="button" class="chip" data-v="' + esc(o) + '" aria-pressed="' + (arr.indexOf(o) >= 0) + '">' + esc(o) + '</button>';
+        }).join("") + (q.other ? '<button type="button" class="chip add" data-add>+ Something else</button>' : "") + '</div>' +
+          (q.other ? '<input class="field other-input" id="other" placeholder="Type it and press Enter" hidden>' : "") +
+          (q.note && q.note() ? '<div class="note">' + q.note() + '</div>' : "") + navHTML(q.optional && !arr.length ? "Skip" : "Continue", arr.length < (q.min || 0));
+      }
+
+      else if (q.type === "price") {
+        h = head(q) + '<div class="price-wrap"><span>$</span><input id="inp" inputmode="numeric" placeholder="150" value="' + esc(S.price) + '"><small>/ hour</small></div>' +
+          '<div class="chips presets">' + q.presets.map(function (p) { return '<button type="button" class="chip" data-p="' + p + '" aria-pressed="' + (String(S.price) === String(p)) + '">$' + p + (p === 250 ? "+" : "") + '</button>'; }).join("") + '</div>' + navHTML(S.price ? "Continue" : "Skip");
+      }
+
+      else if (q.type === "textarea") {
+        var len = (S.bio || "").length;
+        h = head(q) + '<textarea class="field" id="inp" maxlength="' + q.max + '" placeholder="' + esc(q.ph) + '">' + esc(S.bio) + '</textarea>' +
+          '<div class="counter" id="count">' + len + ' / ' + q.max + '</div>' +
+          '<div class="nav">' + backHTML() + '<button type="button" class="btn" data-next ' + (len && len < q.min ? "disabled" : "") + '>' + (len ? "Continue" : "Skip") + ' <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><span class="kbd"><b>⌘</b> + <b>Enter ↵</b></span></div><div class="err" id="err"></div>';
+      }
+
+      else if (q.type === "tz") {
+        var zones = ["Pacific Time (PT)", "Mountain Time (MT)", "Central Time (CT)", "Eastern Time (ET)", "UK / Ireland", "Central Europe", "Other"];
+        var guess = S.tz || (function () { try { var z = Intl.DateTimeFormat().resolvedOptions().timeZone; return /Los_Angeles/.test(z) ? zones[0] : /Denver|Phoenix/.test(z) ? zones[1] : /Chicago/.test(z) ? zones[2] : /New_York/.test(z) ? zones[3] : /London|Dublin/.test(z) ? zones[4] : /Europe/.test(z) ? zones[5] : zones[3]; } catch (e) { return zones[3]; } })();
+        S.tz = guess;
+        h = head(q) + '<select class="field" id="tzsel">' + zones.map(function (z) { return '<option' + (z === guess ? " selected" : "") + '>' + z + '</option>'; }).join("") + '</select>' +
+          '<p class="sub" style="margin:1.4rem 0 .6rem;color:var(--text);font-weight:600">Languages you coach in</p><div class="chips">' +
+          ["English", "Spanish", "Portuguese", "French", "German", "Mandarin", "Hindi"].map(function (l) { return '<button type="button" class="chip" data-lang="' + l + '" aria-pressed="' + (S.langs.indexOf(l) >= 0) + '">' + l + '</button>'; }).join("") + '</div>' + navHTML();
+      }
+
+      else if (q.type === "plan") {
+        if (isCareer()) {
+          var fit = fitOffers();
+          var headline = fit.length
+            ? 'You\'re a great fit for our career network, ' + esc(coachName()) + '.'
+            : 'Welcome to the career network, ' + esc(coachName()) + '.';
+          var why = fit.length
+            ? 'People reach out to us every week looking for career coaching, and what you offer lines up with what they ask for.'
+            : 'Most career coaching requests we get are about resumes, interviews, and job search. Requests for ' + esc(listText(S.offers.slice(0, 2).map(lc)) || "your focus") + ' coaching come in less often, so introductions may be less frequent.';
+          h = '<p class="eyebrow">Profile submitted</p><h1 class="title">' + headline + '</h1><p class="sub">' + why + '</p>' +
+            '<div class="note ok"><div><strong>✓ You\'re in the network!</strong><br>We\'ll start sending you lead previews of real requests that match your profile, so you can see how Coach-Halo matches people with coaches like you. Previews don\'t include contact details, so to connect with those leads directly, join the Coach-Halo team with one of the options below.</div></div>' +
+            '<div class="plans" style="margin-top:1.2rem">' +
+            '<a class="plan" data-plan="monthly" href="' + payUrl(MONTHLY_URL) + '" target="_blank" rel="noopener"><strong>Monthly</strong><div class="amt">$35 <small>/ month</small></div><ul class="ticks">' +
+            PAID_FEATURES.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '<li>Cancel anytime</li></ul><span class="btn ghost plan-cta">Join monthly →</span></a>' +
+            '<a class="plan featured" data-plan="annual" href="' + payUrl(ANNUAL_URL) + '" target="_blank" rel="noopener"><span class="badge">Save 30%</span><strong>Annual</strong><div class="amt">$300 <small>/ year</small></div><ul class="ticks">' +
+            '<li>Everything in Monthly</li><li>Billed annually, $300 total</li><li>Save 30% vs. monthly</li></ul><span class="btn plan-cta">Join annual →</span></a>' +
+            '<div class="plan wide solo-row"><span><strong>Not sure yet?</strong><br><small style="color:var(--muted)">Talk it through with Joaquin in a 30-minute call before you pick a plan.</small></span>' +
+            '<a class="btn ghost" id="book-call" href="' + CHAT_URL + '" target="_blank" rel="noopener">📞 Book a time</a></div>' +
+            '</div><div class="note" id="plan-note" hidden></div>' + navHTML(S.plan === "free" ? "Continue with free previews" : "Continue");
+        } else {
+          var niche = esc(typeLabel().toLowerCase()) + " coaching";
+          h = '<p class="eyebrow">Welcome</p><h1 class="title">Welcome to the Coach-Halo network, ' + esc(coachName()) + '.</h1>' +
+            '<p class="sub">We\'ll be straight with you: we don\'t yet bring in enough ' + niche + ' requests of our own to support the volume you\'d want from us alone. We\'re working on it.</p>' +
+            '<p class="sub">Until then, we\'ll send you alerts for ' + niche + ' opportunities we find through third-party lead platforms. If one looks right, you respond directly on that platform. Any fees are charged there, not by Coach-Halo.</p>' +
+            '<div class="plan solo" aria-pressed="true"><strong>Free membership</strong><div class="amt">$0</div><ul class="ticks">' +
+            '<li>Alerts for opportunities in your niche</li><li>You decide which ones to pursue</li><li>No Coach-Halo fee, no card</li></ul></div>' +
+            '<div class="note">Alerts depend on demand in your niche and may be occasional.</div>' +
+            '<p class="sub" style="margin-top:1rem">Also coach careers? <button type="button" class="link" data-switch-career>Switch your focus to Career</button> to see our active matching plans.</p>' +
+            navHTML("Sounds good");
+        }
+      }
+
+      else if (q.type === "review") {
+        var rows = [
+          ["Name", S.name, "name"], ["Email", S.email, "email"], ["Headline", S.title, "title"], ["Website", S.website, "website"], ["Coach type", typeLabel(), "ctype"],
+          ["Helps with", (S.offers || []).join(", "), "offers"]
+        ];
+        if (isCareer()) {
+          var firstCall = S.freecall === "yes" ? "First call free" : S.freecall === "no" ? "All sessions paid" : "";
+          rows.push(["Works with", S.levels.join(", "), "levels"],
+            ["Calendar", S.hasCal === "yes" ? S.cal : "", "hasCal"],
+            ["Price", [S.price ? "$" + S.price + " / hour" : "", firstCall].filter(Boolean).join(" · "), "price"],
+            ["Bio", S.bio ? S.bio.slice(0, 80) + (S.bio.length > 80 ? "…" : "") : "", "bio"],
+            ["Capacity", S.capacity ? S.capacity + " new clients / month" : "", "capacity"]);
+        }
+        rows.push(["Based in", S.tz + " · " + S.langs.join(", "), "tz"]);
+        h = '<p class="eyebrow">Almost done</p><h1 class="title">Does everything look right?</h1><p class="sub">You can edit any answer now, or fill in anything you skipped later.</p>' +
+          '<div class="review">' + rows.map(function (r) { return '<div class="r"><span>' + r[0] + '</span><span' + (r[1] ? "" : ' style="color:var(--muted)"') + '>' + esc(r[1] || "Add later") + '</span><button type="button" data-edit="' + r[2] + '">Edit</button></div>'; }).join("") + '</div>' +
+          '<label class="agree"><input type="checkbox" id="agree"' + (S.agree ? " checked" : "") + '><span>I agree to the <a href="/coach-terms/" target="_blank" rel="noopener">Coach Terms</a> and have read the <a href="/privacy/" target="_blank" rel="noopener">Privacy Policy</a>. Coach-Halo uses these answers, along with information I\'ve published (like my website or LinkedIn), to understand my practice and match me with people who ask for a coach.</span></label>' +
+          navHTML("Looks good, let me in", !S.agree);
+      }
+
+      else if (q.type === "done") {
+        h = '<div class="done"><div class="check"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>' +
+          (!isCareer()
+            ? '<h1 class="title">You\'re in! 🎉</h1><p class="sub">Welcome to the Coach-Halo free network.</p>' +
+              '<p>We\'re currently not accepting new ' + esc(typeLabel().toLowerCase()) + ' coaches into our paid program. In the meantime, you\'ll receive free opportunity alerts as matches become available, and we\'ll let you know when enrollment opens.</p>' +
+              '<div class="note" style="text-align:left;margin-top:1.4rem"><div><strong>Keep an eye on your inbox 📬</strong><br>Your welcome email is on its way! If it lands in Promotions or Spam, move it to your Primary inbox or mark it as “Not spam,” and add hello@coach-halo.com to your contacts.</div></div>' +
+              '<p class="sub" style="margin-top:1.2rem"><em>Alerts are free. Third-party platforms may charge to contact leads.</em></p>'
+            : '<h1 class="title">You\'re in, ' + esc(coachName()) + '! 🎉</h1><p class="sub">Here\'s what happens next.</p><div class="timeline">' +
+            (S.plan === "chat"
+            ? '<div><i>1</i><span>Book a 30-minute call with Joaquin to ask anything about the program.</span></div><div><i>2</i><span>If it feels right, pick monthly or annual and introductions start.</span></div>'
+            : S.plan === "free"
+            ? '<div><i>1</i><span>We\'ll start sending you lead previews that match your profile.</span></div><div><i>2</i><span>Join monthly or annual anytime to connect with those leads directly.</span></div>'
+            : '<div><i>1</i><span>Finish checkout in the Stripe tab we opened for your ' + (S.plan === "annual" ? "annual" : "monthly") + ' plan.</span></div><div><i>2</i><span>Then we start sending you leads that match your profile.</span></div>') +
+            '</div>' + (S.plan === "chat" ? '<a class="btn lg" href="' + CHAT_URL + '" target="_blank" rel="noopener">Book a call with Joaquin →</a>' : "")) +
+          '</div>';
+        confetti();
+      }
+
+      qEl.innerHTML = h;
+      qEl.className = "q";
+      void qEl.offsetWidth;
+      qEl.className = "q enter" + (dir < 0 ? " rev" : "");
+      bind(q);
+    }
+
+    function setErr(msg) { var e = document.getElementById("err"); if (e) e.textContent = msg || ""; }
+
+    function bind(q) {
+      var inp = document.getElementById("inp");
+      var nb = qEl.querySelector("[data-next]");
+      var bb = qEl.querySelector("[data-back]");
+      if (bb) bb.onclick = back;
+      if (inp) setTimeout(function () { inp.focus(); }, 60);
+
+      if (q.type === "welcome") nb.onclick = next;
+
+      if (q.type === "text" || q.type === "email" || q.type === "url") {
+        inp.oninput = function () { S[q.id] = inp.value; if (!q.req) nb.firstChild.nodeValue = inp.value ? "Continue " : "Skip "; setErr(""); };
+        nb.onclick = function () {
+          var v = (inp.value || "").trim();
+          if (q.type === "url" && v && !/^https?:\/\//i.test(v)) v = "https://" + v;
+          S[q.id] = v;
+          if (q.req && !v) return setErr("Please fill this in to continue.");
+          if (q.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return setErr("That email doesn't look quite right.");
+          if (q.type === "url" && v && !/^https?:\/\/\S+\.\S+/.test(v)) return setErr("That link doesn't look quite right.");
+          next();
+        };
+      }
+
+      if (q.type === "single") {
+        qEl.querySelectorAll(".opt").forEach(function (b) {
+          b.onclick = function () {
+            S[q.id] = b.dataset.v;
+            if (q.id === "ctype") S.offers = [];
+            qEl.querySelectorAll(".opt").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+            b.classList.add("flash");
+            var msg = q.after && q.after();
+            var a = document.getElementById("after");
+            if (msg && a) a.innerHTML = '<div class="note ok">' + esc(msg) + '</div>';
+            setTimeout(next, msg ? 1100 : 380);
+          };
+        });
+        if (nb) nb.onclick = next;
+      }
+
+      if (q.type === "multi") {
+        var arr = S[q.id];
+        function sync() {
+          nb.disabled = arr.length < (q.min || 0);
+          if (q.optional) nb.firstChild.nodeValue = arr.length ? "Continue " : "Skip ";
+        }
+        qEl.querySelectorAll(".chip[data-v]").forEach(function (c) {
+          c.onclick = function () {
+            var v = c.dataset.v, k = arr.indexOf(v);
+            if (k >= 0) arr.splice(k, 1); else arr.push(v);
+            c.setAttribute("aria-pressed", String(k < 0)); sync();
+          };
+        });
+        var add = qEl.querySelector("[data-add]"), other = document.getElementById("other");
+        if (add) add.onclick = function () { other.hidden = false; other.focus(); };
+        if (other) other.onkeydown = function (e) {
+          if (e.key === "Enter" && other.value.trim()) { e.preventDefault(); e.stopPropagation(); arr.push(other.value.trim()); render(); }
+        };
+        nb.onclick = function () { if (arr.length < (q.min || 0)) return setErr("Pick at least one."); next(); };
+      }
+
+      if (q.type === "price") {
+        inp.oninput = function () {
+          inp.value = inp.value.replace(/[^\d]/g, ""); S.price = inp.value;
+          nb.firstChild.nodeValue = S.price ? "Continue " : "Skip ";
+          qEl.querySelectorAll("[data-p]").forEach(function (c) { c.setAttribute("aria-pressed", String(c.dataset.p === S.price)); });
+        };
+        qEl.querySelectorAll("[data-p]").forEach(function (c) { c.onclick = function () { S.price = c.dataset.p; inp.value = c.dataset.p; inp.oninput(); }; });
+        nb.onclick = next;
+      }
+
+      if (q.type === "textarea") {
+        var cnt = document.getElementById("count");
+        inp.oninput = function () {
+          S.bio = inp.value; var n = inp.value.length;
+          cnt.textContent = n + " / " + q.max + (n && n < q.min ? " · " + (q.min - n) + " more characters" : "");
+          nb.disabled = n > 0 && n < q.min;
+          nb.firstChild.nodeValue = n ? "Continue " : "Skip ";
+        };
+        inp.oninput();
+        nb.onclick = function () { var n = (S.bio || "").length; if (!n || n >= q.min) next(); };
+      }
+
+      if (q.type === "tz") {
+        document.getElementById("tzsel").onchange = function (e) { S.tz = e.target.value; };
+        qEl.querySelectorAll("[data-lang]").forEach(function (c) {
+          c.onclick = function () { var l = c.dataset.lang, k = S.langs.indexOf(l); if (k >= 0) S.langs.splice(k, 1); else S.langs.push(l); c.setAttribute("aria-pressed", String(k < 0)); };
+        });
+        nb.onclick = function () { if (!S.langs.length) return setErr("Pick at least one language."); next(); };
+      }
+
+      if (q.type === "plan") {
+        var pn = document.getElementById("plan-note");
+        var NOTES = {
+          monthly: "💳 Checkout opened in a new tab. Once you've finished, continue here.",
+          annual: "💳 Checkout opened in a new tab. Once you've finished, continue here.",
+          chat: "📞 Booking opened in a new tab. Once you've picked a time, continue here."
+        };
+        function choose(plan) {
+          S.plan = plan;
+          if (pn) { pn.textContent = NOTES[plan] || ""; pn.hidden = !NOTES[plan]; }
+          if (nb) nb.firstChild.nodeValue = "Continue ";
+        }
+        qEl.querySelectorAll("[data-plan]").forEach(function (a) { a.addEventListener("click", function () { choose(a.dataset.plan); }); });
+        var bc = document.getElementById("book-call");
+        if (bc) bc.addEventListener("click", function () { choose("chat"); });
+        var sw = qEl.querySelector("[data-switch-career]");
+        if (sw) sw.onclick = function () { S.ctype = "career"; S.plan = "free"; render(); };
+        nb.onclick = next;
+      }
+
+      if (q.type === "review") {
+        var ag = document.getElementById("agree");
+        ag.onchange = function () { S.agree = ag.checked; nb.disabled = !ag.checked; };
+        qEl.querySelectorAll("[data-edit]").forEach(function (b) {
+          b.onclick = function () { var i = Q.findIndex(function (x) { return x.id === b.dataset.edit; }); history.push(idx); idx = i; dir = -1; render(); };
+        });
+        nb.onclick = function () { if (S.agree) next(); };
+      }
+
+    }
+
+    document.addEventListener("keydown", function (e) {
+      var q = Q[idx];
+      var tag = (e.target.tagName || "").toLowerCase();
+      if (e.key === "Enter") {
+        if (tag === "textarea" && !(e.metaKey || e.ctrlKey)) return;
+        if (e.target.id === "other") return;
+        if (tag === "button" && !e.target.hasAttribute("data-next")) return;
+        var nb = qEl.querySelector("[data-next]");
+        if (nb && !nb.disabled) { e.preventDefault(); nb.click(); }
+        return;
+      }
+      if (q.type === "single" && tag !== "input" && tag !== "textarea" && !e.metaKey && !e.ctrlKey) {
+        var k = KEYS.indexOf(e.key.toUpperCase());
+        var opts = qEl.querySelectorAll(".opt");
+        if (k >= 0 && opts[k]) opts[k].click();
+      }
+    });
+
+    function confetti() {
+      var box = document.createElement("div"); box.className = "confetti";
+      var colors = ["#0a0a0a", "#15803d", "#f59e0b", "#6b6b6b", "#e5e7eb"];
+      for (var i = 0; i < 70; i++) {
+        var p = document.createElement("i");
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.background = colors[i % colors.length];
+        p.style.animationDelay = Math.random() * 0.6 + "s";
+        p.style.animationDuration = 1.4 + Math.random() * 1.2 + "s";
+        box.appendChild(p);
+      }
+      document.body.appendChild(box);
+      setTimeout(function () { box.remove(); }, 3200);
+    }
+
+    render();
+  })();
+  </script>
+</body>
+</html>

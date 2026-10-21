@@ -4,7 +4,11 @@
   <meta charset="utf-8" />
   <script defer data-website-id="dfid_ImJXeenE5zJoIlqGSMtN5" data-domain="coach-halo.com" src="https://datafa.st/js/script.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Price your coaching with confidence — Coach-Halo</title>
+  <title>Market benchmarks — Coach-Halo</title>
+  <!--
+    Static path: coach-halo/benchmarks.html
+    When hosted at site root: /coach-halo/benchmarks.html
+  -->
   <style>
     :root {
       --bg: #0c0f14;
@@ -14,42 +18,72 @@
       --muted: #8b9cb3;
       --accent: #6ee7ff;
       --radius: 14px;
-      --max: 760px;
+      --max: 1080px;
       --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     }
     * { box-sizing: border-box; }
     .visually-hidden {
-      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
     body {
       margin: 0;
       font-family: var(--font);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.55;
+      line-height: 1.6;
     }
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
     header {
-      position: sticky; top: 0; z-index: 10;
+      position: sticky;
+      top: 0;
+      z-index: 10;
       backdrop-filter: blur(12px);
       background: rgba(12, 15, 20, 0.85);
       border-bottom: 1px solid var(--border);
     }
     .nav {
-      max-width: var(--max); margin: 0 auto; padding: 14px 20px;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 16px; flex-wrap: wrap;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
     }
-    .logo { font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
-    .nav-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+    .logo {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
     .nav-links a:not(.btn) { color: var(--muted); font-size: 0.95rem; }
     .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 0.9rem;
-      border: 1px solid transparent; cursor: pointer; font: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font: inherit;
     }
     .btn-primary {
       background: linear-gradient(135deg, #6ee7ff, #a78bfa);
@@ -57,149 +91,109 @@
     }
 
     main { overflow-x: hidden; }
+
     section {
-      max-width: var(--max); margin: 0 auto; padding: 48px 20px 72px;
-    }
-    h1 {
-      font-size: clamp(1.7rem, 4vw, 2.25rem);
-      letter-spacing: -0.03em;
-      line-height: 1.15;
-      margin: 0 0 10px;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 56px 20px 72px;
     }
     h2 {
-      font-size: 1.05rem;
-      letter-spacing: -0.01em;
-      margin: 0 0 10px;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      letter-spacing: -0.02em;
+      margin: 0 0 12px;
     }
     .section-intro {
-      color: var(--muted); max-width: 46ch; margin: 0 0 28px; font-size: 1.02rem;
+      color: var(--muted);
+      max-width: 60ch;
+      margin: 0 0 36px;
     }
     .eyebrow {
-      display: inline-block; font-size: 0.75rem; text-transform: uppercase;
-      letter-spacing: 0.12em; color: var(--muted); margin-bottom: 8px;
+      display: inline-block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 12px;
     }
 
     .market-pricing {
       border-top: 1px solid var(--border);
       background: linear-gradient(180deg, transparent, rgba(20, 26, 34, 0.35));
     }
+    .plotly-chart-shell {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      line-height: 0;
+      max-width: 100%;
+    }
+    .market-chart-iframe {
+      width: 100%;
+      height: 820px;
+      border: 0;
+      display: block;
+    }
+    @media (max-width: 640px) {
+      .market-chart-iframe { height: 760px; }
+    }
 
     .benchmark-gate {
-      border: 1px solid var(--border); border-radius: var(--radius);
-      background: var(--surface); padding: 20px 22px; margin-bottom: 24px; max-width: 520px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 20px 22px;
+      margin-bottom: 24px;
+      max-width: 520px;
     }
-    .benchmark-gate p.note { margin: 0 0 14px; font-size: 0.9rem; color: var(--muted); }
-    .benchmark-gate form { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .benchmark-gate .eyebrow {
+      margin-bottom: 8px;
+    }
+    .benchmark-gate p.note {
+      margin: 0 0 14px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .benchmark-gate form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
     .benchmark-gate input[type="email"] {
-      flex: 1 1 200px; min-width: 0; padding: 10px 14px; border-radius: 10px;
-      border: 1px solid var(--border); background: rgba(0, 0, 0, 0.25);
-      color: var(--text); font: inherit; font-size: 0.95rem;
+      flex: 1 1 200px;
+      min-width: 0;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.95rem;
     }
-    .benchmark-gate .msg { margin: 12px 0 0; font-size: 0.92rem; color: #f0a8a8; }
-    .benchmark-gate .msg[hidden] { display: none; }
-
-    #benchmark-insights[hidden] { display: none; }
-
-    .specialty-row {
-      display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px;
+    .benchmark-gate input[type="email"]::placeholder {
+      color: var(--muted);
+      opacity: 0.85;
     }
-    .specialty-row button {
-      padding: 8px 14px; border-radius: 999px;
-      border: 1px solid var(--border); background: transparent;
-      color: var(--muted); font: inherit; font-size: 0.86rem; cursor: pointer;
+    .benchmark-gate .msg {
+      margin: 12px 0 0;
+      font-size: 0.92rem;
+      color: #f0a8a8;
     }
-    .specialty-row button[aria-checked="true"] {
-      border-color: var(--accent); color: var(--text);
-      background: rgba(110, 231, 255, 0.12);
-    }
-    .specialty-row button:focus-visible {
-      outline: 2px solid var(--accent); outline-offset: 2px;
+    .benchmark-gate .msg[hidden] {
+      display: none;
     }
 
-    .guidance-card {
-      border: 1px solid var(--border); border-radius: 18px;
-      background: var(--surface); padding: 26px 24px 22px;
+    #benchmark-chart-panel[hidden] {
+      display: none;
     }
-    .guidance-card .specialty-name {
-      font-size: 0.92rem; color: var(--muted); margin: 0 0 14px;
-    }
-    .start-label {
-      font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--muted); margin: 0 0 6px;
-    }
-    .start-price {
-      font-size: clamp(2.4rem, 8vw, 3.4rem);
-      font-weight: 750; letter-spacing: -0.04em;
-      line-height: 1; margin: 0 0 6px; color: var(--accent);
-    }
-    .start-why {
-      color: var(--muted); font-size: 0.98rem; margin: 10px 0 22px; max-width: 42ch;
-    }
-    .quiet-meta {
-      color: var(--muted); font-size: 0.82rem; margin: 14px 0 0;
-    }
-
-    .range-block { margin: 4px 0 8px; }
-    .range-block .label {
-      font-size: 0.9rem; color: var(--text); font-weight: 600; margin: 0 0 4px;
-    }
-    .range-block .explain {
-      font-size: 0.86rem; color: var(--muted); margin: 0 0 10px;
-    }
-    .range-viz {
-      height: 8px; border-radius: 999px; background: #1c2430; position: relative;
-    }
-    .range-viz .band {
-      position: absolute; top: 0; bottom: 0;
-      background: rgba(110, 231, 255, 0.32); border-radius: 999px;
-    }
-    .range-viz .mark {
-      position: absolute; top: -3px; bottom: -3px; width: 3px;
-      background: var(--accent); border-radius: 2px;
-    }
-    .range-labels {
-      display: flex; justify-content: space-between;
-      font-size: 0.82rem; color: var(--muted); margin-top: 8px;
-    }
-
-    .fit {
-      margin: 28px 0 0;
-    }
-    .fit ol {
-      margin: 0; padding-left: 1.15rem; color: var(--muted); font-size: 0.95rem;
-    }
-    .fit li { margin: 0 0 8px; }
-    .tip, .caveat {
-      color: var(--muted); font-size: 0.92rem; margin: 18px 0 0; max-width: 52ch;
-    }
-
-    details.about {
-      margin-top: 22px;
-      border-top: 1px solid var(--border);
-      padding-top: 12px;
-    }
-    details.about summary {
-      cursor: pointer; color: var(--muted); font-size: 0.88rem;
-      list-style: none;
-    }
-    details.about summary::-webkit-details-marker { display: none; }
-    details.about summary::after { content: " ▾"; color: var(--accent); }
-    details.about[open] summary::after { content: " ▴"; }
-    details.about .about-body {
-      margin-top: 10px; font-size: 0.86rem; color: var(--muted);
-    }
-    details.about ul { padding-left: 1.1rem; margin: 8px 0; }
-    details.about li { margin: 0 0 6px; }
-    details.about a { word-break: break-word; }
-
-    .insufficient {
-      padding: 16px 0 4px; color: var(--muted); font-size: 0.98rem;
-    }
-    .insufficient strong { color: var(--text); display: block; margin-bottom: 6px; font-size: 1.15rem; }
 
     footer {
-      border-top: 1px solid var(--border); padding: 28px 20px;
-      text-align: center; color: var(--muted); font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      padding: 28px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
     }
   </style>
 </head>
@@ -216,35 +210,35 @@
 
   <main>
     <section class="market-pricing" id="benchmarks">
-      <h1>Price your coaching with confidence</h1>
+      <h2>What the market is pricing</h2>
       <p class="section-intro">
-        Explore published rates in your specialty and find a practical starting point for your pricing.
+        Estimated hourly rates by category based on lead costs (assuming ~8% conversion).
       </p>
-
       <div class="benchmark-gate" id="benchmark-access">
         <span class="eyebrow">Subscriber access</span>
-        <p class="note">This guide is for paid Coach-Halo subscribers. Enter the email on your account to continue.</p>
+        <p class="note">Market insights are for paid Coach-Halo subscribers. Enter the email on your account to continue.</p>
         <form id="benchmark-email-form" action="#" method="get" novalidate>
           <label class="visually-hidden" for="benchmark-email">Email</label>
-          <input id="benchmark-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
-          <button type="submit" class="btn btn-primary">Open pricing guide</button>
+          <input
+            id="benchmark-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+            required
+          />
+          <button type="submit" class="btn btn-primary">View market insights</button>
         </form>
         <p id="benchmark-email-msg" class="msg" role="alert" hidden></p>
       </div>
-
-      <div id="benchmark-insights" hidden>
-        <div class="specialty-row" id="specialty-row" role="radiogroup" aria-label="Coaching specialty"></div>
-        <div class="guidance-card" id="guidance-card" aria-live="polite"></div>
-        <div class="fit" id="fit-block">
-          <h2>Choose where you fit</h2>
-          <ol>
-            <li>Consider the lower end while building experience and client results.</li>
-            <li>Start near the suggested rate when your experience and service are comparable to the providers sampled.</li>
-            <li>Consider the higher end when you offer specialized expertise, strong demonstrated results, or substantial additional support.</li>
-          </ol>
-          <p class="tip">Review your pricing as you learn. Consistent bookings and limited availability may support a higher rate. If prospects hesitate, consider your audience, offer, and how clearly you explain the value.</p>
-          <p class="caveat">Use this as a starting point. Your experience, location, clientele, and what’s included may justify a different price.</p>
-        </div>
+      <div class="plotly-chart-shell" id="benchmark-chart-panel" hidden>
+        <iframe
+          id="benchmark-chart-frame"
+          class="market-chart-iframe"
+          title="Distribution of estimated hourly rate estimates by category"
+          data-src="../market_pricing_hourly_histogram.html"
+          loading="lazy"
+        ></iframe>
       </div>
     </section>
   </main>
@@ -258,182 +252,18 @@
       var form = document.getElementById("benchmark-email-form");
       var msg = document.getElementById("benchmark-email-msg");
       var gate = document.getElementById("benchmark-access");
-      var insights = document.getElementById("benchmark-insights");
-      var specialtyRow = document.getElementById("specialty-row");
-      var card = document.getElementById("guidance-card");
-      var fitBlock = document.getElementById("fit-block");
+      var panel = document.getElementById("benchmark-chart-panel");
+      var iframe = document.getElementById("benchmark-chart-frame");
+      /* TODO: replace with server / billing API check (e.g. Outseta, Stripe customer list) */
       var allowed = "joaquinh@job-halo.com";
-      var data = null;
-      var selected = null;
-
-      function escapeHtml(s) {
-        return String(s == null ? "" : s)
-          .replace(/&/g, "&amp;").replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-      }
-
-      function money(n) {
-        if (n == null || !isFinite(n)) return "—";
-        return "$" + Math.round(n).toLocaleString();
-      }
-
-      function formatDate(iso) {
-        if (!iso) return "—";
-        var p = String(iso).split("-");
-        if (p.length < 3) return escapeHtml(iso);
-        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-        var m = months[parseInt(p[1], 10) - 1] || p[1];
-        return m + " " + parseInt(p[2], 10) + ", " + p[0];
-      }
-
-      function findSpecialty(name) {
-        if (!data || !data.specialties) return null;
-        for (var i = 0; i < data.specialties.length; i++) {
-          if (data.specialties[i].specialty === name) return data.specialties[i];
-        }
-        return null;
-      }
-
-      function renderCard(spec) {
-        if (!spec) {
-          card.innerHTML = "<p class='insufficient'><strong>Unable to load pricing data.</strong>Try again shortly.</p>";
-          if (fitBlock) fitBlock.hidden = true;
-          return;
-        }
-        if (spec.status !== "ok" || spec.suggested_starting_rate == null) {
-          if (fitBlock) fitBlock.hidden = true;
-          var limited = "<p class='specialty-name'>" + escapeHtml(spec.specialty) + "</p>";
-          limited += "<div class='insufficient'><strong>Limited published pricing data</strong>";
-          limited += escapeHtml(spec.data_needed || "We need more comparable published rates for this specialty before suggesting a starting rate.");
-          limited += "</div>";
-          limited += "<p class='quiet-meta'>Based on " + spec.unique_coaches + " providers · Updated " + formatDate(spec.last_updated) + "</p>";
-          card.innerHTML = limited;
-          return;
-        }
-        if (fitBlock) fitBlock.hidden = false;
-
-        var unit = spec.billing_unit || "per hour";
-        var rate = spec.suggested_starting_rate;
-        var lo = spec.p25;
-        var hi = spec.p75;
-        var mid = spec.median;
-        var span = Math.max(hi - lo, 1);
-        var pad = span * 0.28;
-        var axisMin = Math.max(0, lo - pad);
-        var axisMax = hi + pad;
-        var axisSpan = axisMax - axisMin;
-        var leftPct = ((lo - axisMin) / axisSpan) * 100;
-        var widthPct = ((hi - lo) / axisSpan) * 100;
-        var midPct = ((mid - axisMin) / axisSpan) * 100;
-
-        var html = "";
-        html += "<p class='specialty-name'>" + escapeHtml(spec.specialty) + "</p>";
-        html += "<p class='start-label'>Suggested starting rate</p>";
-        html += "<p class='start-price'>" + money(rate) + " <span style='font-size:0.38em;letter-spacing:0;font-weight:650;color:var(--text)'>" + escapeHtml(unit) + "</span></p>";
-        html += "<p class='start-why'>" + escapeHtml(spec.why || "A practical starting point based on the published prices in our sample.") + "</p>";
-
-        html += "<div class='range-block'>";
-        html += "<p class='label'>Published price range</p>";
-        html += "<p class='explain'>This shows the middle range of prices in our sample.</p>";
-        html += "<div class='range-viz' aria-hidden='true'>";
-        html += "<div class='band' style='left:" + leftPct + "%;width:" + Math.max(widthPct, 3) + "%'></div>";
-        html += "<div class='mark' style='left:" + midPct + "%'></div>";
-        html += "</div>";
-        html += "<div class='range-labels'><span>" + money(lo) + "</span><span>" + money(hi) + "</span></div>";
-        html += "</div>";
-
-        html += "<p class='quiet-meta'>Based on " + spec.unique_coaches + " providers · Updated " + formatDate(spec.last_updated) + "</p>";
-
-        html += "<details class='about'><summary>About this guidance</summary><div class='about-body'>";
-        html += "<p>These are published asking prices from a limited sample of provider pages — not verified amounts clients paid, and not a statistically representative market survey. The suggested rate is the middle published price in this specialty, rounded to the nearest $10. It is a starting point, not the price shown to produce the most bookings.</p>";
-        if (spec.comparability_note) {
-          html += "<p>" + escapeHtml(spec.comparability_note) + "</p>";
-        }
-        if (spec.currency_note) {
-          html += "<p>" + escapeHtml(spec.currency_note) + "</p>";
-        }
-        var sources = spec.sources || [];
-        if (sources.length) {
-          html += "<p>Sources</p><ul>";
-          sources.forEach(function (s) {
-            var label = escapeHtml(s.provider || "Provider");
-            var extra = [];
-            if (s.verification) extra.push(s.verification);
-            if (s.currency_basis) extra.push(s.currency_basis);
-            var note = extra.length ? " — " + escapeHtml(extra.join(" · ")) : "";
-            if (s.url) {
-              html += "<li><a href=\"" + escapeHtml(s.url) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + label + "</a>" + note + "</li>";
-            } else {
-              html += "<li>" + label + note + "</li>";
-            }
-          });
-          html += "</ul>";
-        }
-        html += "</div></details>";
-        card.innerHTML = html;
-      }
-
-      function selectSpecialty(name) {
-        selected = name;
-        var buttons = specialtyRow.querySelectorAll("button");
-        for (var i = 0; i < buttons.length; i++) {
-          var on = buttons[i].getAttribute("data-specialty") === name;
-          buttons[i].setAttribute("aria-checked", on ? "true" : "false");
-          buttons[i].tabIndex = on ? 0 : -1;
-        }
-        renderCard(findSpecialty(name));
-      }
-
-      function populateSpecialties() {
-        specialtyRow.innerHTML = "";
-        if (!data || !data.specialties || !data.specialties.length) {
-          card.innerHTML = "<p class='insufficient'><strong>Limited published pricing data</strong>No specialty file loaded yet.</p>";
-          if (fitBlock) fitBlock.hidden = true;
-          return;
-        }
-        data.specialties.forEach(function (spec, idx) {
-          var btn = document.createElement("button");
-          btn.type = "button";
-          btn.setAttribute("role", "radio");
-          btn.textContent = spec.specialty;
-          btn.setAttribute("data-specialty", spec.specialty);
-          btn.setAttribute("aria-checked", idx === 0 ? "true" : "false");
-          btn.tabIndex = idx === 0 ? 0 : -1;
-          btn.addEventListener("click", function () { selectSpecialty(spec.specialty); });
-          specialtyRow.appendChild(btn);
-        });
-        specialtyRow.addEventListener("keydown", function (e) {
-          var keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
-          if (!keys[e.key]) return;
-          e.preventDefault();
-          var names = data.specialties.map(function (s) { return s.specialty; });
-          var i = names.indexOf(selected);
-          if (i < 0) i = 0;
-          var next = (i + keys[e.key] + names.length) % names.length;
-          selectSpecialty(names[next]);
-          var focusBtn = specialtyRow.querySelector('[data-specialty="' + names[next] + '"]');
-          if (focusBtn) focusBtn.focus();
-        });
-        selectSpecialty(data.specialties[0].specialty);
-      }
-
-      function loadRates() {
-        fetch("../advertised_coaching_rates.json", { cache: "no-store" })
-          .then(function (res) { return res.ok ? res.json() : Promise.reject(); })
-          .then(function (payload) {
-            data = payload;
-            populateSpecialties();
-          })
-          .catch(function () {
-            if (fitBlock) fitBlock.hidden = true;
-            card.innerHTML = "<p class='insufficient'><strong>Limited published pricing data</strong>Could not load published rates.</p>";
-          });
-      }
 
       function showInsights() {
         if (gate) gate.hidden = true;
-        if (insights) insights.hidden = false;
-        loadRates();
+        if (panel) panel.hidden = false;
+        if (iframe) {
+          var url = iframe.getAttribute("data-src");
+          if (url && !iframe.getAttribute("src")) iframe.setAttribute("src", url);
+        }
       }
 
       if (new URLSearchParams(window.location.search).get("bypass") === "1") {
@@ -442,6 +272,7 @@
       }
 
       if (!form || !msg) return;
+
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         var input = document.getElementById("benchmark-email");
@@ -449,6 +280,7 @@
         var email = (input.value || "").trim().toLowerCase();
         msg.hidden = true;
         msg.textContent = "";
+
         if (email === allowed) {
           showInsights();
           return;
