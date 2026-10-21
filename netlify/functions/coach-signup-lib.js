@@ -9,7 +9,8 @@
 
 const crypto = require("crypto");
 
-const LIST_UID = "7maRvjQE";
+const FREE_LIST_UID = "7maRvjQE";
+const PAID_LIST_UID = "aWxRZbQV";
 const DOMAIN = process.env.OUTSETA_DOMAIN || "job-halo.outseta.com";
 const PROFILE_BASE = "apppbUQrzMKIHnPUl";
 const FREE_TABLE = "tbldOPTV5xCkv23yc";
@@ -251,7 +252,7 @@ async function outseta(auth, path, body) {
   return { ok: res.ok, status: res.status, data: data };
 }
 
-async function sendFreeWelcome(payload, name, email) {
+async function sendListWelcome(listUid, payload, name, email) {
   const auth = authHeader();
   if (!auth) return { welcomeSent: false };
   const parts = name.split(/\s+/);
@@ -259,8 +260,8 @@ async function sendFreeWelcome(payload, name, email) {
   if (parts.length > 1) person.LastName = parts.slice(1).join(" ");
   const title = clip(payload.title, 100);
   if (title) person.Title = title;
-  const subscription = await outseta(auth, "/api/v1/email/lists/" + LIST_UID + "/subscriptions", {
-    EmailList: { Uid: LIST_UID },
+  const subscription = await outseta(auth, "/api/v1/email/lists/" + listUid + "/subscriptions", {
+    EmailList: { Uid: listUid },
     Person: person,
     SendWelcomeEmail: payload.sendWelcome !== false,
     Source: "coach-halo.com/join",
@@ -354,9 +355,13 @@ async function fulfillPaidCheckout(store, session) {
   const payload = Object.assign({}, signup, { paidConfirmed: true, plan: signup.plan });
   const saved = await saveCoach(payload, signup.name, signup.email);
   if (!saved.ok) return saved;
+  let welcome = { welcomeSent: false };
+  if (!saved.existingMember) {
+    welcome = await sendListWelcome(PAID_LIST_UID, payload, signup.name, signup.email);
+  }
   await store.set(doneKey, { at: Date.now() });
   await store.delete(ref);
-  return { ok: true, saved: true, table: "paid" };
+  return { ok: true, saved: true, table: "paid", welcomeSent: welcome.welcomeSent === true };
 }
 
 function verifyStripeSignature(rawBody, header, secret) {
@@ -393,7 +398,9 @@ module.exports = {
   PLAN_CENTS: PLAN_CENTS,
   cleanSignup: cleanSignup,
   saveCoach: saveCoach,
-  sendFreeWelcome: sendFreeWelcome,
+  sendFreeWelcome: function (payload, name, email) {
+    return sendListWelcome(FREE_LIST_UID, payload, name, email);
+  },
   memoryStore: memoryStore,
   productionStore: productionStore,
   holdProfile: holdProfile,
