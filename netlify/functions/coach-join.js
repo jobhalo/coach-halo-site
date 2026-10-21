@@ -41,10 +41,26 @@ exports.handler = async function (event) {
     return json(400, { ok: false, error: "invalid_json" });
   }
   delete payload.paidConfirmed;
+  const rawPhoto = payload.photo;
+  delete payload.photo;
+  let storedPhoto = false;
+  if (payload.coachType === "career" && typeof rawPhoto === "string" && rawPhoto) {
+    const stored = await lib.storeCoachPhoto(payload.email, payload.name, rawPhoto);
+    if (!stored.ok) return json(stored.status || 400, { ok: false, error: stored.error || "photo_failed" });
+    payload.photoKey = stored.key;
+    storedPhoto = true;
+  }
 
   const signup = lib.cleanSignup(payload);
   if (!lib.validEmail(signup.email) || signup.name.length < 2 || signup.agree !== true) {
     return json(400, { ok: false, error: "invalid_signup" });
+  }
+  if (!lib.careerProfileComplete(signup)) {
+    return json(400, { ok: false, error: "career_profile" });
+  }
+  if (signup.coachType === "career" && !storedPhoto) {
+    const existingPhoto = await lib.loadCoachPhoto(signup.photoKey);
+    if (!existingPhoto) return json(400, { ok: false, error: "photo_invalid" });
   }
 
   if (payload.holdForPayment === true) {
@@ -56,7 +72,7 @@ exports.handler = async function (event) {
       return json(503, { ok: false, error: "not_configured" });
     }
     if (!held.ok) return json(held.status || 400, { ok: false, error: held.error || "invalid_signup" });
-    return json(200, { ok: true, checkoutRef: held.checkoutRef, welcomeSent: false });
+    return json(200, { ok: true, checkoutRef: held.checkoutRef, photoKey: signup.photoKey || "", welcomeSent: false });
   }
 
   let saved;
@@ -70,7 +86,8 @@ exports.handler = async function (event) {
   if (saved.awaitingPayment) return json(200, { ok: true, awaitingPayment: true, welcomeSent: false });
   if (saved.existingMember) return json(200, { ok: true, existingMember: true, welcomeSent: false });
   if (saved.table === "paid") return json(200, { ok: true, welcomeSent: false });
+  if (lib.isSignupTest(signup.email)) return json(200, { ok: true, photoKey: signup.photoKey || "", welcomeSent: false });
 
   const welcome = await lib.sendFreeWelcome(signup, signup.name, signup.email);
-  return json(200, Object.assign({ ok: true }, welcome));
+  return json(200, Object.assign({ ok: true, photoKey: signup.photoKey || "" }, welcome));
 };

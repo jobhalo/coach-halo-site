@@ -60,6 +60,9 @@
     textarea.field { font-size: 1.05rem; line-height: 1.55; min-height: 150px; resize: vertical; border: 2px solid var(--border); border-radius: var(--radius-sm); padding: .9rem 1rem; }
     textarea.field:focus { border-color: var(--accent); }
     .counter { font-size: .78rem; color: var(--muted); text-align: right; margin-top: .35rem; }
+    .photo-row { display: flex; align-items: center; gap: 1rem; }
+    .photo-preview { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; background: var(--surface); border: 1.5px solid var(--border); flex: none; }
+    input[type="file"].field { font-size: 1rem; border-bottom: 0; padding: .4rem 0; }
     select.field { font-size: 1.1rem; appearance: none; background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%230a0a0a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right .2rem center; cursor: pointer; }
 
     .opts { display: grid; gap: .6rem; }
@@ -265,6 +268,10 @@
       { id: "freecall", type: "single", optional: true, when: isCareer, title: function () { return "Is your first call free?"; }, sub: "We mention this when we introduce you to someone.", options: function () { return [{ v: "yes", ico: "🎁", label: "Yes, first call is free" }, { v: "no", ico: "💳", label: "No, all sessions are paid" }]; } },
       { id: "price", type: "price", optional: true, when: isCareer, title: function () { return "What do you usually charge for a one-hour session?"; }, sub: "Your typical hourly rate is fine. You can change it anytime.", presets: [75, 100, 150, 200, 250] },
       { id: "bio", type: "textarea", optional: true, when: isCareer, title: function () { return "Introduce yourself to a future client"; }, sub: "2–4 sentences in your own voice. We may share it with people we introduce you to, so please leave out client names or details. You can also write this later.", ph: "I help mid-career professionals…", min: 60, max: 600 },
+      { id: "ideal", type: "textarea", when: isCareer, title: function () { return "Who is your ideal client?"; }, sub: "Who you most want to work with. We use this to match you, and on your directory profile if you join the paid membership.", ph: "Mid-career managers changing fields…", min: 20, max: 1000 },
+      { id: "approach", type: "textarea", when: isCareer, title: function () { return "How do you help them?"; }, sub: "Your coaching approach, in one short paragraph. We use this when we introduce you.", ph: "I start with a clear target role, then…", min: 20, max: 1000 },
+      { id: "result", type: "textarea", when: isCareer, title: function () { return "What result do they typically achieve, and in what timeframe?"; }, sub: "A specific outcome and roughly how long it takes.", ph: "A stronger resume and a first interview within a month…", min: 20, max: 1000 },
+      { id: "photo", type: "photo", when: isCareer, title: function () { return "Add a photo of you"; }, sub: "We use this on your Coach-Halo directory profile. A clear headshot works best." },
       { id: "tz", type: "tz", title: function () { return "Where do you coach from?"; }, sub: "So we match people in time zones and languages that work for you." },
       { id: "capacity", type: "single", optional: true, when: isCareer, title: function () { return "How many new clients can you take each month?"; }, sub: "We'll pace introductions to match.", options: function () { return [{ v: "1-2", label: "1–2" }, { v: "3-5", label: "3–5" }, { v: "6-10", label: "6–10" }, { v: "10+", label: "10 or more" }]; } },
       { id: "heard", type: "single", optional: true, grid: true, title: function () { return "Last one! How did you hear about us?"; }, options: function () { return ["Job-Halo", "LinkedIn", "Another coach", "Google", "ChatGPT", "Other"].map(function (x) { return { v: x, label: x }; }); } },
@@ -301,13 +308,17 @@
     function signupPayload() {
       var sendWelcome = true;
       try { sendWelcome = !sessionStorage.getItem(signupKey()); } catch (e) {}
-      return {
+      var body = {
         name: S.name || "", email: S.email || "", title: S.title || "", website: S.website || "",
         coachType: S.ctype || "", offers: S.offers || [], levels: S.levels || [], industries: S.industries || "",
         hasCal: S.hasCal || "", cal: S.cal || "", freecall: S.freecall || "", price: S.price || "",
-        bio: S.bio || "", tz: S.tz || "", langs: S.langs || [], capacity: S.capacity || "",
+        bio: S.bio || "", ideal: S.ideal || "", approach: S.approach || "", result: S.result || "",
+        tz: S.tz || "", langs: S.langs || [], capacity: S.capacity || "",
         heard: S.heard || "", plan: S.plan || "free", agree: !!S.agree, paidTerms: S.paidTerms === true, sendWelcome: sendWelcome
       };
+      if (S.photoKey) body.photoKey = S.photoKey;
+      else if (isCareer() && S.photo) body.photo = String(S.photo).replace(/^data:image\/\w+;base64,/, "");
+      return body;
     }
     function next() {
       var j = nextIdx(idx);
@@ -338,6 +349,7 @@
           setErr("We couldn't open checkout. Email hello@coach-halo.com and we'll add you.");
           return;
         }
+        if (res.d && res.d.photoKey) S.photoKey = res.d.photoKey;
         S.checkoutRef = res.d.checkoutRef;
         window.location.href = payUrl(plan === "annual" ? ANNUAL_URL : MONTHLY_URL);
       }).catch(function () {
@@ -367,6 +379,7 @@
           return;
         }
         S.subscribed = true;
+        if (res.d && res.d.photoKey) S.photoKey = res.d.photoKey;
         S.welcomeSent = !!(res.d && res.d.welcomeSent);
         if (S.welcomeSent) { try { sessionStorage.setItem(signupKey(), "1"); } catch (e) {} }
         go(j, 1);
@@ -436,10 +449,17 @@
       }
 
       else if (q.type === "textarea") {
-        var len = (S.bio || "").length;
-        h = head(q) + '<textarea class="field" id="inp" maxlength="' + q.max + '" placeholder="' + esc(q.ph) + '">' + esc(S.bio) + '</textarea>' +
+        var len = (S[q.id] || "").length;
+        var need = !q.optional && len < q.min;
+        h = head(q) + '<textarea class="field" id="inp" maxlength="' + q.max + '" placeholder="' + esc(q.ph) + '">' + esc(S[q.id]) + '</textarea>' +
           '<div class="counter" id="count">' + len + ' / ' + q.max + '</div>' +
-          '<div class="nav">' + backHTML() + '<button type="button" class="btn" data-next ' + (len && len < q.min ? "disabled" : "") + '>' + (len ? "Continue" : "Skip") + ' <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><span class="kbd"><b>⌘</b> + <b>Enter ↵</b></span></div><div class="err" id="err"></div>';
+          '<div class="nav">' + backHTML() + '<button type="button" class="btn" data-next ' + (need || (q.optional && len && len < q.min) ? "disabled" : "") + '>' + (q.optional ? (len ? "Continue" : "Skip") : "Continue") + ' <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><span class="kbd"><b>⌘</b> + <b>Enter ↵</b></span></div><div class="err" id="err"></div>';
+      }
+
+      else if (q.type === "photo") {
+        h = head(q) + '<div class="photo-row"><img class="photo-preview" id="photo-preview" alt=""' + (S.photo ? ' src="' + esc(S.photo) + '"' : " hidden") + '>' +
+          '<input class="field" id="photo" type="file" accept="image/*"></div>' +
+          navHTML("Continue", !S.photo);
       }
 
       else if (q.type === "tz") {
@@ -499,6 +519,10 @@
             ["Calendar", S.hasCal === "yes" ? S.cal : "", "hasCal"],
             ["Price", [S.price ? "$" + S.price + " / hour" : "", firstCall].filter(Boolean).join(" · "), "price"],
             ["Bio", S.bio ? S.bio.slice(0, 80) + (S.bio.length > 80 ? "…" : "") : "", "bio"],
+            ["Ideal client", S.ideal ? S.ideal.slice(0, 80) + (S.ideal.length > 80 ? "…" : "") : "", "ideal"],
+            ["Approach", S.approach ? S.approach.slice(0, 80) + (S.approach.length > 80 ? "…" : "") : "", "approach"],
+            ["Result", S.result ? S.result.slice(0, 80) + (S.result.length > 80 ? "…" : "") : "", "result"],
+            ["Photo", S.photo ? "Added" : "", "photo"],
             ["Capacity", S.capacity ? S.capacity + " new clients / month" : "", "capacity"]);
         }
         rows.push(["Based in", S.tz + " · " + S.langs.join(", "), "tz"]);
@@ -607,13 +631,59 @@
       if (q.type === "textarea") {
         var cnt = document.getElementById("count");
         inp.oninput = function () {
-          S.bio = inp.value; var n = inp.value.length;
+          S[q.id] = inp.value; var n = inp.value.length;
           cnt.textContent = n + " / " + q.max + (n && n < q.min ? " · " + (q.min - n) + " more characters" : "");
-          nb.disabled = n > 0 && n < q.min;
-          nb.firstChild.nodeValue = n ? "Continue " : "Skip ";
+          nb.disabled = q.optional ? (n > 0 && n < q.min) : n < q.min;
+          if (q.optional) nb.firstChild.nodeValue = n ? "Continue " : "Skip ";
         };
         inp.oninput();
-        nb.onclick = function () { var n = (S.bio || "").length; if (!n || n >= q.min) next(); };
+        nb.onclick = function () {
+          var n = (S[q.id] || "").length;
+          if (q.optional) { if (!n || n >= q.min) next(); return; }
+          if (n < q.min) return setErr("Add a bit more detail to continue.");
+          next();
+        };
+      }
+
+      if (q.type === "photo") {
+        var file = document.getElementById("photo");
+        var preview = document.getElementById("photo-preview");
+        file.onchange = function () {
+          var picked = file.files && file.files[0];
+          if (!picked) return;
+          if (!/^image\//.test(picked.type) || picked.size > 12 * 1024 * 1024) {
+            setErr("Choose a photo under 12 MB.");
+            return;
+          }
+          nb.disabled = true;
+          setErr("");
+          var img = new Image();
+          var url = URL.createObjectURL(picked);
+          img.onload = function () {
+            var max = 800;
+            var scale = Math.min(1, max / Math.max(img.width, img.height));
+            var canvas = document.createElement("canvas");
+            canvas.width = Math.max(1, Math.round(img.width * scale));
+            canvas.height = Math.max(1, Math.round(img.height * scale));
+            canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+            URL.revokeObjectURL(url);
+            var quality = 0.82;
+            var data = canvas.toDataURL("image/jpeg", quality);
+            while (data.length > 46000 && quality > 0.4) {
+              quality -= 0.08;
+              data = canvas.toDataURL("image/jpeg", quality);
+            }
+            if (data.length > 90000) { setErr("That photo is still too large. Try another one."); nb.disabled = true; return; }
+            S.photo = data;
+            S.photoKey = "";
+            preview.src = data;
+            preview.hidden = false;
+            nb.disabled = false;
+          };
+          img.onerror = function () { URL.revokeObjectURL(url); setErr("We couldn't read that photo. Try a JPG or PNG."); };
+          img.src = url;
+        };
+        nb.onclick = function () { if (!S.photo && !S.photoKey) return setErr("Add a photo to continue."); next(); };
       }
 
       if (q.type === "tz") {

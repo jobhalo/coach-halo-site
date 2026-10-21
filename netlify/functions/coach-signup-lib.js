@@ -106,6 +106,10 @@ function cleanSignup(payload) {
     freecall: clip(payload.freecall, 20),
     price: clip(payload.price, 6),
     bio: clip(payload.bio, 4000),
+    ideal: clip(payload.coachType, 40) === "career" ? clip(payload.ideal, 1500) : "",
+    approach: clip(payload.coachType, 40) === "career" ? clip(payload.approach, 1500) : "",
+    result: clip(payload.coachType, 40) === "career" ? clip(payload.result, 1500) : "",
+    photoKey: clip(payload.coachType, 40) === "career" && validPhotoKey(payload.photoKey) ? payload.photoKey : "",
     tz: clip(payload.tz, 80),
     langs: listValues(payload.langs),
     capacity: clip(payload.capacity, 20),
@@ -115,6 +119,19 @@ function cleanSignup(payload) {
     paidTerms: payload.paidTerms === true,
     sendWelcome: payload.sendWelcome !== false,
   };
+}
+
+function validPhotoKey(value) {
+  return /^ph_[a-f0-9]{32}$/.test(value) || /^op_[A-Za-z0-9]+_[a-f0-9]{16}$/.test(value);
+}
+
+function isSignupTest(email) {
+  return /^signup-test-[a-z0-9-]+@coach-halo\.com$/.test(String(email || ""));
+}
+
+function careerProfileComplete(signup) {
+  if (!signup || signup.coachType !== "career") return true;
+  return signup.ideal.length >= 20 && signup.approach.length >= 20 && signup.result.length >= 20 && validPhotoKey(signup.photoKey);
 }
 
 function profileText(payload) {
@@ -139,6 +156,9 @@ function profileText(payload) {
 
 function idealClient(payload) {
   return [
+    line("Ideal client", payload.ideal),
+    line("Approach", payload.approach),
+    line("Results", payload.result),
     line("Helps with", listify(payload.offers)),
     line("Works with", listify(payload.levels)),
     line("Industries", payload.industries),
@@ -158,7 +178,7 @@ function freeFields(payload, name, email) {
     "Coach Name": parts[0],
     "Coach Email": email,
     "Account Type": "Free",
-    "Status": "Subscribed",
+    "Status": isSignupTest(email) ? "Unsubscribed" : "Subscribed",
     "Ideal Client": idealClient(payload),
   };
   if (parts.length > 1) fields["Coach Last Name"] = parts.slice(1).join(" ");
@@ -173,7 +193,9 @@ function paidFields(payload, name, email) {
     "Contact Me": email,
     "Coach title": clip(payload.title, 200),
     "About Me & My Practice": clip(payload.bio, 4000),
-    "Tell us about your ideal client": idealClient(payload),
+    "Tell us about your ideal client": clip(payload.ideal, 1500),
+    "Describe your coaching approach and style in one short paragraph.": clip(payload.approach, 1500),
+    "What specific result do your ideal clients typically achieve after working with you, and in what timeframe?": clip(payload.result, 1500),
     "Visit My Website!": clip(payload.website, 400),
     "Scheduler URL": clip(payload.cal, 400),
   };
@@ -239,7 +261,31 @@ async function saveCoach(payload, name, email) {
     console.log("coach-join airtable save", saved.status, paid ? "paid" : "free");
     return { ok: false, status: 502, error: "save_failed" };
   }
-  return { ok: true, existingMember: false, table: paid ? "paid" : "free" };
+  const recordId = (saved.data && saved.data.id) || (existing && existing.id);
+  return { ok: true, existingMember: false, table: paid ? "paid" : "free", recordId: recordId || "" };
+}
+
+async function markDistroPaid(email) {
+  const token = airtableToken();
+  const clean = clip(email, 200).toLowerCase();
+  if (!token || !validEmail(clean)) return { ok: false, status: 503, error: "not_configured" };
+  const formula = "LOWER({Coach Email})='" + clean.replace(/'/g, "\\'") + "'";
+  const findUrl = "https://api.airtable.com/v0/" + PROFILE_BASE + "/" + FREE_TABLE +
+    "?maxRecords=1&filterByFormula=" + encodeURIComponent(formula);
+  const found = await airtable(token, findUrl, { method: "GET" });
+  if (!found.ok) return { ok: false, status: 502, error: "save_failed" };
+  const existing = found.data.records && found.data.records[0];
+  if (!existing) return { ok: true, missing: true };
+  if (existing.fields && existing.fields["Account Type"] === "Paid") return { ok: true, already: true };
+  const saved = await airtable(token, "https://api.airtable.com/v0/" + PROFILE_BASE + "/" + FREE_TABLE + "/" + encodeURIComponent(existing.id), {
+    method: "PATCH",
+    body: { fields: { "Account Type": "Paid" }, typecast: false },
+  });
+  if (!saved.ok) {
+    console.log("coach-join distro paid", saved.status);
+    return { ok: false, status: 502, error: "save_failed" };
+  }
+  return { ok: true };
 }
 
 async function outseta(auth, path, body) {
@@ -282,9 +328,106 @@ async function findOrCreatePerson(signup) {
   return again && again.Uid ? again.Uid : "";
 }
 
-async function personActivities(uid) {
-  const found = await outsetaGet("/api/v1/activities?EntityType=2&EntityUid=" + encodeURIComponent(uid) + "&limit=20");
+async function personActivities(uid, limit) {
+  const cap = limit || 50;
+  const found = await outsetaGet("/api/v1/activities?EntityType=2&EntityUid=" + encodeURIComponent(uid) + "&limit=" + cap);
   return (found.data && found.data.items) || [];
+}
+
+function decodePhoto(value) {
+  const b64 = String(value || "").replace(/^data:image\/\w+;base64,/i, "").replace(/\s/g, "");
+  if (!b64 || b64.length > 120000) return null;
+  const buf = Buffer.from(b64, "base64");
+  if (buf.length < 800 || buf.length > 80000) return null;
+  if (buf[0] !== 0xff || buf[1] !== 0xd8) return null;
+  return buf;
+}
+
+async function storePhotoOutseta(email, name, buf) {
+  const uid = await findOrCreatePerson({ email: email, name: name || "Coach" });
+  if (!uid) return { ok: false, status: 503, error: "photo_failed" };
+  const auth = authHeader();
+  if (!auth) return { ok: false, status: 503, error: "photo_failed" };
+  const b64 = buf.toString("base64url");
+  const gen = crypto.randomBytes(8).toString("hex");
+  const size = 6500;
+  const parts = [];
+  for (let i = 0; i < b64.length; i += size) parts.push(b64.slice(i, i + size));
+  if (parts.length > 8) return { ok: false, status: 400, error: "photo_too_large" };
+  for (let i = 0; i < parts.length; i += 1) {
+    const noted = await outseta(auth, "/api/v1/activities/customactivity", {
+      Title: "coach-photo",
+      Description: gen + "|" + i + "|" + parts.length + "|" + parts[i],
+      ActivityType: 50,
+      EntityType: 2,
+      EntityUid: uid,
+    });
+    if (!noted.ok) {
+      console.log("coach-join photo note", noted.status);
+      return { ok: false, status: 502, error: "photo_failed" };
+    }
+  }
+  return { ok: true, key: "op_" + uid + "_" + gen };
+}
+
+async function storeCoachPhoto(email, name, value) {
+  const buf = decodePhoto(value);
+  if (!buf) return { ok: false, status: 400, error: "photo_invalid" };
+  const key = "ph_" + crypto.randomBytes(16).toString("hex");
+  try {
+    const store = require("@netlify/blobs").getStore("coach-photos");
+    await store.set(key, buf);
+    return { ok: true, key: key };
+  } catch (err) {
+    console.log("coach-join photo blob unavailable");
+    return storePhotoOutseta(email, name, buf);
+  }
+}
+
+async function loadCoachPhoto(key) {
+  if (/^ph_[a-f0-9]{32}$/.test(key)) {
+    try {
+      const store = require("@netlify/blobs").getStore("coach-photos");
+      const data = await store.get(key, { type: "arrayBuffer" });
+      if (data) return Buffer.from(data);
+    } catch (err) {
+      console.log("coach-join photo blob read failed");
+    }
+    return null;
+  }
+  const match = /^op_([A-Za-z0-9]+)_([a-f0-9]{16})$/.exec(key || "");
+  if (!match) return null;
+  const items = await personActivities(match[1], 100);
+  const chunks = [];
+  items.forEach(function (item) {
+    if (item.Title !== "coach-photo" || !item.Description) return;
+    const raw = String(item.Description).replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"');
+    const bits = raw.split("|");
+    if (bits.length < 4 || bits[0] !== match[2]) return;
+    chunks[Number(bits[1])] = bits.slice(3).join("|");
+  });
+  if (!chunks.length || chunks.some(function (part) { return !part; })) return null;
+  return Buffer.from(chunks.join(""), "base64url");
+}
+
+async function attachHeadshot(recordId, buf) {
+  const token = airtableToken();
+  if (!token || !recordId || !buf) return false;
+  await airtable(token, "https://api.airtable.com/v0/" + PROFILE_BASE + "/" + PAID_TABLE + "/" + encodeURIComponent(recordId), {
+    method: "PATCH",
+    body: { fields: { Headshot: [] }, typecast: false },
+  });
+  const res = await fetch("https://content.airtable.com/v0/" + PROFILE_BASE + "/" + recordId + "/Headshot/uploadAttachment", {
+    method: "POST",
+    headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contentType: "image/jpeg",
+      file: buf.toString("base64"),
+      filename: "headshot.jpg",
+    }),
+  });
+  if (!res.ok) console.log("coach-join headshot", res.status);
+  return res.ok;
 }
 
 async function holdForCheckout(payload) {
@@ -298,9 +441,22 @@ async function holdForCheckout(payload) {
   const uid = await findOrCreatePerson(signup);
   if (!uid) return { ok: false, status: 503, error: "not_configured" };
   const auth = authHeader();
+  const heldSignup = Object.assign({}, signup);
+  let description = JSON.stringify({ signup: heldSignup, createdAt: Date.now() });
+  while (description.length > 6800) {
+    let clipped = false;
+    ["bio", "ideal", "approach", "result", "industries"].forEach(function (key) {
+      if (heldSignup[key] && heldSignup[key].length > 80) {
+        heldSignup[key] = heldSignup[key].slice(0, Math.floor(heldSignup[key].length * 0.75));
+        clipped = true;
+      }
+    });
+    if (!clipped) break;
+    description = JSON.stringify({ signup: heldSignup, createdAt: Date.now() });
+  }
   const noted = await outseta(auth, "/api/v1/activities/customactivity", {
     Title: "coach-paid-hold",
-    Description: JSON.stringify({ signup: signup, createdAt: Date.now() }).slice(0, 7000),
+    Description: description.slice(0, 7000),
     ActivityType: 50,
     EntityType: 2,
     EntityUid: uid,
@@ -605,6 +761,12 @@ async function fulfillPaidCheckout(store, session) {
   const payload = Object.assign({}, signup, { paidConfirmed: true, plan: signup.plan });
   const saved = await saveCoach(payload, signup.name, signup.email);
   if (!saved.ok) return saved;
+  if (!saved.existingMember && saved.recordId && signup.photoKey) {
+    const photo = await loadCoachPhoto(signup.photoKey);
+    if (photo) await attachHeadshot(saved.recordId, photo);
+  }
+  const distro = await markDistroPaid(signup.email);
+  if (!distro.ok) return distro;
   let welcome = { welcomeSent: true };
   if (!saved.existingMember) {
     welcome = await deliverWelcome(PAID_LIST_UID, payload, signup.name, signup.email, true);
@@ -652,6 +814,12 @@ module.exports = {
   PLAN_CENTS: PLAN_CENTS,
   cleanSignup: cleanSignup,
   saveCoach: saveCoach,
+  markDistroPaid: markDistroPaid,
+  storeCoachPhoto: storeCoachPhoto,
+  loadCoachPhoto: loadCoachPhoto,
+  attachHeadshot: attachHeadshot,
+  careerProfileComplete: careerProfileComplete,
+  isSignupTest: isSignupTest,
   sendFreeWelcome: function (payload, name, email) {
     return deliverWelcome(FREE_LIST_UID, payload, name, email);
   },
