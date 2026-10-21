@@ -137,6 +137,7 @@
     .plan.solo-row { cursor: default; }
     .plan.solo-row:hover { transform: none; box-shadow: none; }
     .plan.solo-row .btn { flex: none; white-space: nowrap; }
+    .stay-free { width: 100%; justify-content: center; margin-top: .9rem; text-align: center; }
     .nav .btn.ghost { padding: .8rem 1.2rem; }
     .plan.solo { cursor: default; max-width: 420px; }
     .plan.solo:hover { transform: none; box-shadow: none; }
@@ -379,7 +380,8 @@
     function backHTML() {
       return history.length ? '<button type="button" class="btn ghost" data-back><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Back</button>' : "";
     }
-    function navHTML(label, disabled) {
+    function navHTML(label, disabled, backOnly) {
+      if (backOnly) return '<div class="nav">' + backHTML() + '</div><div class="err" id="err"></div>';
       return '<div class="nav">' + backHTML() + '<button type="button" class="btn" data-next ' + (disabled ? "disabled" : "") + '>' + (label || "Continue") +
         ' <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>' +
         '<span class="kbd">press <b>Enter ↵</b></span></div><div class="err" id="err"></div>';
@@ -467,7 +469,10 @@
             '<li>Everything in Monthly</li><li>Billed annually, $300 total</li><li>Save 30% vs. monthly</li></ul><span class="btn plan-cta">Continue annual →</span></button>' +
             '<div class="plan wide solo-row"><span><strong>Not sure yet?</strong><br><small style="color:var(--muted)">Talk it through with Joaquin in a 30-minute call before you pick a plan.</small></span>' +
             '<a class="btn ghost" id="book-call" href="' + CHAT_URL + '" target="_blank" rel="noopener">📞 Book a time</a></div>' +
-            '</div><div class="note" id="plan-note" hidden></div>' + navHTML(S.plan === "free" ? "Continue with free previews" : "Continue");
+            '</div><div class="note" id="plan-note" hidden></div>' +
+            '<div class="note ok"><div><strong>✓ You\'re in the network!</strong><br>We\'ll start sending you lead previews of real requests that match your profile, so you can see how Coach-Halo matches people with coaches like you. Previews don\'t include contact details, so to connect with those leads directly, join the Coach-Halo team with one of the options above.</div></div>' +
+            '<button type="button" class="btn ghost stay-free" id="stay-free">No thanks, I\'m good with free lead previews for now</button>' +
+            navHTML("", false, true);
         } else {
           var niche = esc(typeLabel().toLowerCase()) + " coaching";
           h = '<p class="eyebrow">Welcome</p><h1 class="title">Welcome to the Coach-Halo network, ' + esc(coachName()) + '.</h1>' +
@@ -642,7 +647,6 @@
         function choose(plan) {
           S.plan = plan;
           if (pn) { pn.textContent = NOTES[plan] || ""; pn.hidden = !NOTES[plan]; }
-          if (nb) nb.firstChild.nodeValue = "Continue ";
         }
         qEl.querySelectorAll("[data-plan]").forEach(function (a) {
           a.addEventListener("click", function () {
@@ -652,9 +656,11 @@
         });
         var bc = document.getElementById("book-call");
         if (bc) bc.addEventListener("click", function () { choose("chat"); });
+        var stay = document.getElementById("stay-free");
+        if (stay) stay.onclick = function () { S.plan = "free"; next(); };
         var sw = qEl.querySelector("[data-switch-career]");
         if (sw) sw.onclick = function () { S.ctype = "career"; S.plan = "free"; render(); };
-        nb.onclick = next;
+        if (nb) nb.onclick = next;
       }
 
       if (q.type === "review") {
