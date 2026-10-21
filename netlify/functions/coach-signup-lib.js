@@ -393,61 +393,96 @@ function firstName(name) {
   return part || "there";
 }
 
-function welcomeHtml(name, email) {
+function mailP(html, last) {
+  return '<p style="margin:0 0 ' + (last ? "0" : "16px") + ';font-size:15px;line-height:24px;color:#535353;">' + html + "</p>";
+}
+
+function mailH(text) {
+  return '<p style="margin:8px 0 8px;font-size:15px;line-height:24px;color:#0a0a0a;font-weight:bold;">' + text + "</p>";
+}
+
+function welcomeCopy(kind) {
+  if (kind === "paid") {
+    return {
+      subject: "You're in — welcome to Coach-Halo",
+      label: "WELCOME",
+      preheader: "You're in the Coach-Halo network. Lead previews will come to this inbox.",
+      body: mailP("Thanks for signing up. You're in the Coach-Halo network.") +
+        mailP("Starting today, you'll receive notifications when people explore coaching support and their needs align with your expertise and ideal client profile. These may be individuals seeking guidance across career, life, business, finances, and more.") +
+        mailP("When there's a strong fit, Coach-Halo helps surface coach profiles to create warm introductions rather than cold outreach.") +
+        mailP("One quick favor: move this email to your Primary inbox, or mark it as Not Spam, so future notifications land where they should.") +
+        mailP("Welcome aboard. Let's help more people grow, in their careers and in life.", true),
+    };
+  }
+  return {
+    subject: "Welcome to the Coach-Halo free network",
+    label: "WELCOME",
+    preheader: "You're in the Coach-Halo free network. Alerts will come to this inbox.",
+    body: mailP("Welcome to the Coach-Halo free network! 🎉") +
+      mailP("You'll receive email alerts when we find coaching opportunities that could fit your specialty and ideal clients. Each alert will explain the opportunity and how to pursue it.") +
+      mailH("What does free mean?") +
+      mailP("There's no Coach-Halo subscription fee for these alerts. Some opportunities link to marketplaces like Bark or Thumbtack, which may charge you to contact the lead. Alerts depend on fit and availability.") +
+      mailP("If paid enrollment is currently closed for your specialty, we'll let you know when it opens.") +
+      mailH("Keep us in your inbox 📬") +
+      mailP('Add <a href="mailto:joaquinh@coach-halo.com" style="color:#0a0a0a;text-decoration:underline;">joaquinh@coach-halo.com</a> to your contacts. If this email lands in Promotions, move it to Primary. If it lands in Spam, mark it as “Not spam.”') +
+      mailP("Glad to have you here! Questions? Just reply.", true),
+  };
+}
+
+function welcomeHtml(name, email, kind) {
+  const copy = welcomeCopy(kind === "paid" ? "paid" : "free");
   const first = escapeHtml(firstName(name));
   const unsub = "https://airtable.com/apppbUQrzMKIHnPUl/pagXojKMMsO6ThuWB/form?prefill_Your%20Email%20(Required)=" + encodeURIComponent(email);
-  return '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="x-apple-disable-message-reformatting"><title>You\'re in — welcome to Coach-Halo</title></head>' +
+  return '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="x-apple-disable-message-reformatting"><title>' + escapeHtml(copy.subject) + '</title></head>' +
     '<body style="margin:0;padding:0;width:100%;background-color:#fafafa;font-family:Arial,Helvetica,sans-serif;color:#0a0a0a;">' +
-    '<div style="display:none;font-size:1px;color:#fafafa;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">You\'re in the Coach-Halo network. Lead previews will come to this inbox.</div>' +
+    '<div style="display:none;font-size:1px;color:#fafafa;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">' + escapeHtml(copy.preheader) + '</div>' +
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#fafafa"><tr><td align="center" style="padding:36px 16px;">' +
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="max-width:600px;border:1px solid #e8e8e8;">' +
     '<tr><td style="padding:27px 36px;border-top:3px solid #0a0a0a;border-bottom:1px solid #e8e8e8;">' +
     '<table role="presentation" width="100%"><tr><td><a href="https://coach-halo.com" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;letter-spacing:2.8px;color:#0a0a0a;text-decoration:none;">COACH-HALO</a></td>' +
-    '<td align="right" style="font-size:11px;letter-spacing:1.5px;color:#6b6b6b;">WELCOME</td></tr></table></td></tr>' +
+    '<td align="right" style="font-size:11px;letter-spacing:1.5px;color:#6b6b6b;">' + escapeHtml(copy.label) + '</td></tr></table></td></tr>' +
     '<tr><td style="padding:30px 36px 8px;">' +
     '<p style="margin:0 0 16px;font-size:16px;line-height:25px;color:#0a0a0a;">Hey ' + first + ',</p>' +
-    '<p style="margin:0 0 16px;font-size:15px;line-height:24px;color:#535353;">Thanks for signing up. You\'re in the Coach-Halo network.</p>' +
-    '<p style="margin:0 0 16px;font-size:15px;line-height:24px;color:#535353;">Starting today, you\'ll receive notifications when people explore coaching support and their needs align with your expertise and ideal client profile. These may be individuals seeking guidance across career, life, business, finances, and more.</p>' +
-    '<p style="margin:0 0 16px;font-size:15px;line-height:24px;color:#535353;">When there\'s a strong fit, Coach-Halo helps surface coach profiles to create warm introductions rather than cold outreach.</p>' +
-    '<p style="margin:0 0 16px;font-size:15px;line-height:24px;color:#535353;">One quick favor: move this email to your Primary inbox, or mark it as Not Spam, so future notifications land where they should.</p>' +
-    '<p style="margin:0;font-size:15px;line-height:24px;color:#535353;">Welcome aboard. Let\'s help more people grow, in their careers and in life.</p>' +
+    copy.body +
     '</td></tr>' +
-    '<tr><td style="padding:28px 36px 30px;"><p style="margin:0 0 14px;font-size:14px;line-height:22px;color:#0a0a0a;">Questions? Just reply.</p>' +
-    '<p style="margin:0;font-size:14px;line-height:22px;color:#0a0a0a;">Joaquin<br><span style="font-size:12px;color:#6b6b6b;">Founder, Coach-Halo</span></p></td></tr>' +
+    '<tr><td style="padding:28px 36px 30px;"><p style="margin:0;font-size:14px;line-height:22px;color:#0a0a0a;">Joaquin<br><span style="font-size:12px;color:#6b6b6b;">Founder, Coach-Halo</span></p></td></tr>' +
     '<tr><td style="padding:20px 36px;border-top:1px solid #e8e8e8;"><a href="' + escapeHtml(unsub) + '" style="font-size:12px;line-height:20px;color:#6b6b6b;text-decoration:underline;">Unsubscribe</a></td></tr>' +
     '</table>' +
     '<table role="presentation" width="100%" style="max-width:600px;"><tr><td align="center" style="padding:19px 20px 0;font-size:11px;line-height:18px;color:#6b6b6b;">You\'re receiving this because you signed up at <a href="https://coach-halo.com" style="color:#6b6b6b;text-decoration:underline;">coach-halo.com</a>.</td></tr></table>' +
     '</td></tr></table></body></html>';
 }
 
-async function welcomeAlreadySent(email) {
+async function welcomeAlreadySent(email, kind) {
   const person = await findPerson(email);
   if (!person || !person.Uid) return false;
   const found = await outsetaGet("/api/v1/activities?EntityType=2&EntityUid=" + encodeURIComponent(person.Uid) + "&limit=50");
   const items = (found.data && found.data.items) || [];
-  return items.some(function (item) { return item.Title === "coach-welcome-sent"; });
+  return items.some(function (item) {
+    return item.Title === "coach-welcome-sent" && item.Description === kind;
+  });
 }
 
-async function markWelcomeSent(email) {
+async function markWelcomeSent(email, kind) {
   const auth = authHeader();
   const person = await findPerson(email);
   if (!auth || !person || !person.Uid) return;
   await outseta(auth, "/api/v1/activities/customactivity", {
     Title: "coach-welcome-sent",
-    Description: "sendgrid",
+    Description: kind,
     ActivityType: 50,
     EntityType: 2,
     EntityUid: person.Uid,
   });
 }
 
-async function sendBrandedWelcome(name, email) {
+async function sendBrandedWelcome(name, email, kind) {
   const apiKey = String(process.env.SENDGRID_API_KEY || "").trim();
   const fromAddr = String(process.env.SENDGRID_FROM_EMAIL || "joaquinh@coach-halo.com").trim();
   if (!apiKey.startsWith("SG.") || !fromAddr.toLowerCase().endsWith("@coach-halo.com") || !validEmail(email)) {
     console.log("coach-join welcome not configured");
     return { welcomeSent: false };
   }
+  const letter = kind === "paid" ? "paid" : "free";
   const unsub = "https://airtable.com/apppbUQrzMKIHnPUl/pagXojKMMsO6ThuWB/form?prefill_Your%20Email%20(Required)=" + encodeURIComponent(email);
   const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
     method: "POST",
@@ -456,8 +491,8 @@ async function sendBrandedWelcome(name, email) {
       personalizations: [{ to: [{ email: email }] }],
       from: { email: fromAddr, name: "Joaquin @ Coach-Halo" },
       reply_to: { email: fromAddr, name: "Joaquin @ Coach-Halo" },
-      subject: "You're in — welcome to Coach-Halo",
-      content: [{ type: "text/html", value: welcomeHtml(name, email) }],
+      subject: welcomeCopy(letter).subject,
+      content: [{ type: "text/html", value: welcomeHtml(name, email, letter) }],
       headers: {
         "List-Unsubscribe": "<" + unsub + ">",
         "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
@@ -477,15 +512,16 @@ async function sendBrandedWelcome(name, email) {
 }
 
 async function deliverWelcome(listUid, payload, name, email, force) {
+  const kind = listUid === PAID_LIST_UID ? "paid" : "free";
   const listed = await sendListWelcome(listUid, Object.assign({}, payload, { sendWelcome: false }), name, email);
   if (!force && payload.sendWelcome === false) {
     return { profileSaved: listed.profileSaved === true, welcomeSent: false };
   }
-  if (await welcomeAlreadySent(email)) {
+  if (await welcomeAlreadySent(email, kind)) {
     return { profileSaved: listed.profileSaved === true, welcomeSent: true };
   }
-  const sent = await sendBrandedWelcome(name, email);
-  if (sent.welcomeSent) await markWelcomeSent(email);
+  const sent = await sendBrandedWelcome(name, email, kind);
+  if (sent.welcomeSent) await markWelcomeSent(email, kind);
   return { profileSaved: listed.profileSaved === true, welcomeSent: sent.welcomeSent === true };
 }
 
