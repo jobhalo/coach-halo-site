@@ -125,6 +125,7 @@
     .ticks li { padding-left: 1.5rem; position: relative; margin: .4rem 0; }
     .ticks li::before { content: ""; position: absolute; left: 0; top: .32rem; width: .95rem; height: .95rem; border-radius: 50%; background: var(--ok-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2315803d' stroke-width='3.2'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") no-repeat center / 70%; }
     .plans .plan { display: flex; flex-direction: column; justify-content: flex-start; text-decoration: none; color: inherit; }
+    button.plan { font: inherit; width: 100%; }
     .plan.featured { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
     .plan .ticks { flex: 1; }
     .plan-cta { margin-top: 1rem; justify-content: center; }
@@ -260,6 +261,8 @@
       { id: "heard", type: "single", optional: true, grid: true, title: function () { return "Last one! How did you hear about us?"; }, options: function () { return ["Job-Halo", "LinkedIn", "Another coach", "Google", "ChatGPT", "Other"].map(function (x) { return { v: x, label: x }; }); } },
       { id: "review", type: "review" },
       { id: "plan", type: "plan" },
+      { id: "paidTerms", type: "paidTerms", when: function () { return S.plan === "monthly" || S.plan === "annual"; } },
+      { id: "pay", type: "pay", when: function () { return S.plan === "monthly" || S.plan === "annual"; } },
       { id: "done", type: "done" }
     ];
 
@@ -296,12 +299,14 @@
         coachType: S.ctype || "", offers: S.offers || [], levels: S.levels || [], industries: S.industries || "",
         hasCal: S.hasCal || "", cal: S.cal || "", freecall: S.freecall || "", price: S.price || "",
         bio: S.bio || "", tz: S.tz || "", langs: S.langs || [], capacity: S.capacity || "",
-        heard: S.heard || "", plan: S.plan || "free", agree: !!S.agree, sendWelcome: sendWelcome
+        heard: S.heard || "", plan: S.plan || "free", agree: !!S.agree, paidTerms: S.paidTerms === true, sendWelcome: sendWelcome
       };
     }
     function next() {
       var j = nextIdx(idx);
-      if (Q[j] && Q[j].type === "done") { saveThen(j); return; }
+      var dest = Q[j];
+      var paid = S.plan === "monthly" || S.plan === "annual";
+      if (dest && dest.type === "done" && !paid) { saveThen(j); return; }
       go(j, 1);
     }
     function saveThen(j) {
@@ -419,10 +424,10 @@
           h = '<p class="eyebrow">Profile submitted</p><h1 class="title">' + headline + '</h1><p class="sub">' + why + '</p>' +
             '<div class="note ok"><div><strong>✓ You\'re in the network!</strong><br>We\'ll start sending you lead previews of real requests that match your profile, so you can see how Coach-Halo matches people with coaches like you. Previews don\'t include contact details, so to connect with those leads directly, join the Coach-Halo team with one of the options below.</div></div>' +
             '<div class="plans" style="margin-top:1.2rem">' +
-            '<a class="plan" data-plan="monthly" href="' + payUrl(MONTHLY_URL) + '" target="_blank" rel="noopener"><strong>Monthly</strong><div class="amt">$35 <small>/ month</small></div><ul class="ticks">' +
-            PAID_FEATURES.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '<li>Cancel anytime</li></ul><span class="btn ghost plan-cta">Join monthly →</span></a>' +
-            '<a class="plan featured" data-plan="annual" href="' + payUrl(ANNUAL_URL) + '" target="_blank" rel="noopener"><span class="badge">Save 30%</span><strong>Annual</strong><div class="amt">$300 <small>/ year</small></div><ul class="ticks">' +
-            '<li>Everything in Monthly</li><li>Billed annually, $300 total</li><li>Save 30% vs. monthly</li></ul><span class="btn plan-cta">Join annual →</span></a>' +
+            '<button type="button" class="plan" data-plan="monthly"><strong>Monthly</strong><div class="amt">$35 <small>/ month</small></div><ul class="ticks">' +
+            PAID_FEATURES.map(function (f) { return "<li>" + f + "</li>"; }).join("") + '<li>Cancel anytime</li></ul><span class="btn ghost plan-cta">Continue monthly →</span></button>' +
+            '<button type="button" class="plan featured" data-plan="annual"><span class="badge">Save 30%</span><strong>Annual</strong><div class="amt">$300 <small>/ year</small></div><ul class="ticks">' +
+            '<li>Everything in Monthly</li><li>Billed annually, $300 total</li><li>Save 30% vs. monthly</li></ul><span class="btn plan-cta">Continue annual →</span></button>' +
             '<div class="plan wide solo-row"><span><strong>Not sure yet?</strong><br><small style="color:var(--muted)">Talk it through with Joaquin in a 30-minute call before you pick a plan.</small></span>' +
             '<a class="btn ghost" id="book-call" href="' + CHAT_URL + '" target="_blank" rel="noopener">📞 Book a time</a></div>' +
             '</div><div class="note" id="plan-note" hidden></div>' + navHTML(S.plan === "free" ? "Continue with free previews" : "Continue");
@@ -437,6 +442,21 @@
             '<p class="sub" style="margin-top:1rem">Also coach careers? <button type="button" class="link" data-switch-career>Switch your focus to Career</button> to see our active matching plans.</p>' +
             navHTML("Sounds good");
         }
+      }
+
+      else if (q.type === "paidTerms") {
+        h = '<p class="eyebrow">Before payment</p><h1 class="title">Agree to the paid membership terms.</h1>' +
+          '<p class="sub">Payment is the step after this. Stripe will email you a receipt when it goes through.</p>' +
+          '<label class="agree"><input type="checkbox" id="paid-terms"' + (S.paidTerms ? " checked" : "") + '><span>I agree to the <a href="/coach-terms/" target="_blank" rel="noopener">Coach Terms</a> for the paid Coach-Halo membership.</span></label>' +
+          navHTML("Continue to payment", !S.paidTerms);
+      }
+
+      else if (q.type === "pay") {
+        var amount = S.plan === "annual" ? "$300/year" : "$35/month";
+        h = '<p class="eyebrow">Checkout</p><h1 class="title">Pay ' + amount + '.</h1>' +
+          '<p class="sub">This opens Stripe in a new tab. When payment succeeds, Stripe emails you a receipt. Your profile is added after payment is confirmed.</p>' +
+          '<a class="btn lg" id="open-stripe" href="' + payUrl(S.plan === "annual" ? ANNUAL_URL : MONTHLY_URL) + '" target="_blank" rel="noopener">Continue to Stripe →</a>' +
+          navHTML("I've opened checkout");
       }
 
       else if (q.type === "review") {
@@ -471,7 +491,7 @@
             ? '<div><i>1</i><span>Book a 30-minute call with Joaquin to ask anything about the program.</span></div><div><i>2</i><span>If it feels right, pick monthly or annual and introductions start.</span></div>'
             : S.plan === "free"
             ? '<div><i>1</i><span>We\'ll start sending you lead previews that match your profile.</span></div><div><i>2</i><span>Join monthly or annual anytime to connect with those leads directly.</span></div>'
-            : '<div><i>1</i><span>Finish checkout in the Stripe tab we opened for your ' + (S.plan === "annual" ? "annual" : "monthly") + ' plan.</span></div><div><i>2</i><span>Then we start sending you leads that match your profile.</span></div>') +
+            : '<div><i>1</i><span>Finish checkout in the Stripe tab. Stripe emails you a receipt.</span></div><div><i>2</i><span>Your profile is added after payment is confirmed.</span></div>') +
             '</div>' + (S.plan === "chat" ? '<a class="btn lg" href="' + CHAT_URL + '" target="_blank" rel="noopener">Book a call with Joaquin →</a>' : "")) +
           '</div>';
         confetti();
@@ -578,8 +598,8 @@
       if (q.type === "plan") {
         var pn = document.getElementById("plan-note");
         var NOTES = {
-          monthly: "💳 Checkout opened in a new tab. Once you've finished, continue here.",
-          annual: "💳 Checkout opened in a new tab. Once you've finished, continue here.",
+          monthly: "Next you’ll confirm the paid terms. Stripe comes after that.",
+          annual: "Next you’ll confirm the paid terms. Stripe comes after that.",
           chat: "📞 Booking opened in a new tab. Once you've picked a time, continue here."
         };
         function choose(plan) {
@@ -602,6 +622,18 @@
           b.onclick = function () { var i = Q.findIndex(function (x) { return x.id === b.dataset.edit; }); history.push(idx); idx = i; dir = -1; render(); };
         });
         nb.onclick = function () { if (S.agree) next(); };
+      }
+
+      if (q.type === "paidTerms") {
+        var pt = document.getElementById("paid-terms");
+        pt.onchange = function () { S.paidTerms = pt.checked; nb.disabled = !pt.checked; };
+        nb.onclick = function () { if (S.paidTerms) next(); };
+      }
+
+      if (q.type === "pay") {
+        var open = document.getElementById("open-stripe");
+        if (open) open.addEventListener("click", function () { S.checkoutOpened = true; });
+        nb.onclick = next;
       }
 
     }
