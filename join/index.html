@@ -127,7 +127,8 @@
     .ticks li { padding-left: 1.5rem; position: relative; margin: .4rem 0; }
     .ticks li::before { content: ""; position: absolute; left: 0; top: .32rem; width: .95rem; height: .95rem; border-radius: 50%; background: var(--ok-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2315803d' stroke-width='3.2'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") no-repeat center / 70%; }
     .plans .plan { display: flex; flex-direction: column; justify-content: flex-start; text-decoration: none; color: inherit; }
-    button.plan { font: inherit; width: 100%; }
+    button.plan { font: inherit; width: 100%; touch-action: manipulation; }
+    button.plan:disabled { opacity: .55; }
     .plan.featured { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
     .plan .ticks { flex: 1; }
     .plan-cta { margin-top: 1rem; justify-content: center; pointer-events: none; }
@@ -269,8 +270,6 @@
       { id: "heard", type: "single", optional: true, grid: true, title: function () { return "Last one! How did you hear about us?"; }, options: function () { return ["Job-Halo", "LinkedIn", "Another coach", "Google", "ChatGPT", "Other"].map(function (x) { return { v: x, label: x }; }); } },
       { id: "review", type: "review" },
       { id: "plan", type: "plan" },
-      { id: "paidTerms", type: "paidTerms", when: function () { return S.plan === "monthly" || S.plan === "annual"; } },
-      { id: "pay", type: "pay", when: function () { return S.plan === "monthly" || S.plan === "annual"; } },
       { id: "done", type: "done" }
     ];
 
@@ -314,16 +313,15 @@
       var j = nextIdx(idx);
       var dest = Q[j];
       var paid = S.plan === "monthly" || S.plan === "annual";
-      if (dest && dest.type === "pay") { holdThen(j); return; }
       if (dest && dest.type === "done" && !paid) { saveThen(j); return; }
       go(j, 1);
     }
-    function holdThen(j) {
+    function goStripe(plan) {
       if (saving) return;
+      S.plan = plan;
       saving = true;
-      var nb = qEl.querySelector("[data-next]");
-      if (nb) nb.disabled = true;
       setErr("");
+      qEl.querySelectorAll("[data-plan]").forEach(function (a) { a.disabled = true; });
       var body = signupPayload();
       body.holdForPayment = true;
       fetch("/.netlify/functions/coach-join", {
@@ -333,17 +331,17 @@
       }).then(function (r) {
         return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok && d && d.ok && d.checkoutRef, d: d }; });
       }).then(function (res) {
-        saving = false;
         if (!res.ok) {
-          if (nb) nb.disabled = false;
+          saving = false;
+          qEl.querySelectorAll("[data-plan]").forEach(function (a) { a.disabled = false; });
           setErr("We couldn't open checkout. Email hello@coach-halo.com and we'll add you.");
           return;
         }
         S.checkoutRef = res.d.checkoutRef;
-        go(j, 1);
+        window.location.href = payUrl(plan === "annual" ? ANNUAL_URL : MONTHLY_URL);
       }).catch(function () {
         saving = false;
-        if (nb) nb.disabled = false;
+        qEl.querySelectorAll("[data-plan]").forEach(function (a) { a.disabled = false; });
         setErr("We couldn't open checkout. Email hello@coach-halo.com and we'll add you.");
       });
     }
@@ -486,21 +484,6 @@
         }
       }
 
-      else if (q.type === "paidTerms") {
-        h = '<p class="eyebrow">Before payment</p><h1 class="title">Agree to the paid membership terms.</h1>' +
-          '<p class="sub">Payment is the step after this. Stripe will email you a receipt when it goes through.</p>' +
-          '<label class="agree"><input type="checkbox" id="paid-terms"' + (S.paidTerms ? " checked" : "") + '><span>I agree to the <a href="/coach-terms/" target="_blank" rel="noopener">Coach Terms</a> for the paid Coach-Halo membership.</span></label>' +
-          navHTML("Continue to payment", !S.paidTerms);
-      }
-
-      else if (q.type === "pay") {
-        var amount = S.plan === "annual" ? "$300/year" : "$35/month";
-        h = '<p class="eyebrow">Checkout</p><h1 class="title">Pay ' + amount + '.</h1>' +
-          '<p class="sub">This opens Stripe in a new tab. When payment succeeds, Stripe emails you a receipt. Your profile is added after payment is confirmed.</p>' +
-          '<a class="btn lg" id="open-stripe" href="' + payUrl(S.plan === "annual" ? ANNUAL_URL : MONTHLY_URL) + '" target="_blank" rel="noopener">Continue to Stripe →</a>' +
-          navHTML("I've opened checkout");
-      }
-
       else if (q.type === "review") {
         var rows = [
           ["Name", S.name, "name"], ["Email", S.email, "email"], ["Headline", S.title, "title"], ["Website", S.website, "website"], ["Coach type", typeLabel(), "ctype"],
@@ -640,8 +623,6 @@
       if (q.type === "plan") {
         var pn = document.getElementById("plan-note");
         var NOTES = {
-          monthly: "Next you’ll confirm the paid terms. Stripe comes after that.",
-          annual: "Next you’ll confirm the paid terms. Stripe comes after that.",
           chat: "📞 Booking opened in a new tab. Once you've picked a time, continue here."
         };
         function choose(plan) {
@@ -649,10 +630,7 @@
           if (pn) { pn.textContent = NOTES[plan] || ""; pn.hidden = !NOTES[plan]; }
         }
         qEl.querySelectorAll("[data-plan]").forEach(function (a) {
-          a.addEventListener("click", function () {
-            choose(a.dataset.plan);
-            if (a.dataset.plan === "monthly" || a.dataset.plan === "annual") next();
-          });
+          a.addEventListener("click", function () { goStripe(a.dataset.plan); });
         });
         var bc = document.getElementById("book-call");
         if (bc) bc.addEventListener("click", function () { choose("chat"); });
@@ -670,18 +648,6 @@
           b.onclick = function () { var i = Q.findIndex(function (x) { return x.id === b.dataset.edit; }); history.push(idx); idx = i; dir = -1; render(); };
         });
         nb.onclick = function () { if (S.agree) next(); };
-      }
-
-      if (q.type === "paidTerms") {
-        var pt = document.getElementById("paid-terms");
-        pt.onchange = function () { S.paidTerms = pt.checked; nb.disabled = !pt.checked; };
-        nb.onclick = function () { if (S.paidTerms) next(); };
-      }
-
-      if (q.type === "pay") {
-        var open = document.getElementById("open-stripe");
-        if (open) open.addEventListener("click", function () { S.checkoutOpened = true; });
-        nb.onclick = next;
       }
 
     }

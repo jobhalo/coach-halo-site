@@ -295,7 +295,6 @@ async function holdForCheckout(payload) {
   if (signup.plan !== "monthly" && signup.plan !== "annual") {
     return { ok: false, status: 400, error: "invalid_signup" };
   }
-  if (!signup.paidTerms) return { ok: false, status: 400, error: "invalid_signup" };
   const uid = await findOrCreatePerson(signup);
   if (!uid) return { ok: false, status: 503, error: "not_configured" };
   const auth = authHeader();
