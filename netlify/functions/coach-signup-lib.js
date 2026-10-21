@@ -320,7 +320,8 @@ async function loadOutsetaHold(ref) {
   const latest = holds[0];
   if (!latest) return null;
   try {
-    const parsed = JSON.parse(latest.Description);
+    const raw = String(latest.Description).replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"');
+    const parsed = JSON.parse(raw);
     return parsed && parsed.signup ? parsed : null;
   } catch (err) {
     return null;

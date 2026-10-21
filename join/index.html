@@ -313,6 +313,7 @@
       var j = nextIdx(idx);
       var dest = Q[j];
       var paid = S.plan === "monthly" || S.plan === "annual";
+      if (Q[idx] && Q[idx].type === "review") { saveThen(j); return; }
       if (dest && dest.type === "done" && !paid) { saveThen(j); return; }
       go(j, 1);
     }
@@ -366,7 +367,8 @@
           return;
         }
         S.subscribed = true;
-        try { sessionStorage.setItem(signupKey(), "1"); } catch (e) {}
+        S.welcomeSent = !!(res.d && res.d.welcomeSent);
+        if (S.welcomeSent) { try { sessionStorage.setItem(signupKey(), "1"); } catch (e) {} }
         go(j, 1);
       }).catch(function () {
         saving = false;
@@ -459,6 +461,7 @@
             ? 'People reach out to us every week looking for career coaching, and what you offer lines up with what they ask for.'
             : 'Most career coaching requests we get are about resumes, interviews, and job search. Requests for ' + esc(listText(S.offers.slice(0, 2).map(lc)) || "your focus") + ' coaching come in less often, so introductions may be less frequent.';
           h = '<p class="eyebrow">Profile submitted</p><h1 class="title">' + headline + '</h1><p class="sub">' + why + '</p>' +
+            (S.welcomeSent ? '<div class="note"><div><strong>Check your inbox.</strong><br>A welcome email is on its way to ' + esc(S.email) + '. If it lands in Promotions or Spam, move it to Primary.</div></div>' : '') +
             '<div class="note ok"><div><strong>✓ You\'re in the network!</strong><br>We\'ll start sending you lead previews of real requests that match your profile, so you can see how Coach-Halo matches people with coaches like you. Previews don\'t include contact details, so to connect with those leads directly, join the Coach-Halo team with one of the options below.</div></div>' +
             '<div class="plans" style="margin-top:1.2rem">' +
             '<button type="button" class="plan" data-plan="monthly"><strong>Monthly</strong><div class="amt">$35 <small>/ month</small></div><ul class="ticks">' +
@@ -475,6 +478,7 @@
           var niche = esc(typeLabel().toLowerCase()) + " coaching";
           h = '<p class="eyebrow">Welcome</p><h1 class="title">Welcome to the Coach-Halo network, ' + esc(coachName()) + '.</h1>' +
             '<p class="sub">We\'ll be straight with you: we don\'t yet bring in enough ' + niche + ' requests of our own to support the volume you\'d want from us alone. We\'re working on it.</p>' +
+            (S.welcomeSent ? '<div class="note"><div><strong>Check your inbox.</strong><br>A welcome email is on its way to ' + esc(S.email) + '. If it lands in Promotions or Spam, move it to Primary.</div></div>' : '') +
             '<p class="sub">Until then, we\'ll send you alerts for ' + niche + ' opportunities we find through third-party lead platforms. If one looks right, you respond directly on that platform. Any fees are charged there, not by Coach-Halo.</p>' +
             '<div class="plan solo" aria-pressed="true"><strong>Free membership</strong><div class="amt">$0</div><ul class="ticks">' +
             '<li>Alerts for opportunities in your niche</li><li>You decide which ones to pursue</li><li>No Coach-Halo fee, no card</li></ul></div>' +
