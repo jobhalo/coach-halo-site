@@ -382,6 +382,113 @@ async function sendListWelcome(listUid, payload, name, email) {
   return { profileSaved: profileSaved, welcomeSent: true };
 }
 
+function escapeHtml(value) {
+  return String(value == null ? "" : value).replace(/[&<>"]/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+  });
+}
+
+function firstName(name) {
+  const part = clip(name, 80).split(/\s+/).filter(Boolean)[0];
+  return part || "there";
+}
+
+function welcomeHtml(name, email) {
+  const first = escapeHtml(firstName(name));
+  const unsub = "https://airtable.com/apppbUQrzMKIHnPUl/pagXojKMMsO6ThuWB/form?prefill_Your%20Email%20(Required)=" + encodeURIComponent(email);
+  return '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="x-apple-disable-message-reformatting"><title>You\'re in — welcome to Coach-Halo</title></head>' +
+    '<body style="margin:0;padding:0;width:100%;background-color:#fafafa;font-family:Arial,Helvetica,sans-serif;color:#0a0a0a;">' +
+    '<div style="display:none;font-size:1px;color:#fafafa;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">You\'re in the Coach-Halo network. Lead previews will come to this inbox.</div>' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#fafafa"><tr><td align="center" style="padding:36px 16px;">' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="max-width:600px;border:1px solid #e8e8e8;">' +
+    '<tr><td style="padding:27px 36px;border-top:3px solid #0a0a0a;border-bottom:1px solid #e8e8e8;">' +
+    '<table role="presentation" width="100%"><tr><td><a href="https://coach-halo.com" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;letter-spacing:2.8px;color:#0a0a0a;text-decoration:none;">COACH-HALO</a></td>' +
+    '<td align="right" style="font-size:11px;letter-spacing:1.5px;color:#6b6b6b;">WELCOME</td></tr></table></td></tr>' +
+    '<tr><td style="padding:30px 36px 8px;">' +
+    '<p style="margin:0 0 16px;font-size:16px;line-height:25px;color:#0a0a0a;">Hey ' + first + ',</p>' +
+    '<p style="margin:0 0 16px;font-size:15px;line-height:24px;color:#535353;">Thanks for signing up. You\'re in the Coach-Halo network.</p>' +
+    '<p style="margin:0 0 16px;font-size:15px;line-height:24px;color:#535353;">Starting today, you\'ll receive notifications when people explore coaching support and their needs align with your expertise and ideal client profile. These may be individuals seeking guidance across career, life, business, finances, and more.</p>' +
+    '<p style="margin:0 0 16px;font-size:15px;line-height:24px;color:#535353;">When there\'s a strong fit, Coach-Halo helps surface coach profiles to create warm introductions rather than cold outreach.</p>' +
+    '<p style="margin:0 0 16px;font-size:15px;line-height:24px;color:#535353;">One quick favor: move this email to your Primary inbox, or mark it as Not Spam, so future notifications land where they should.</p>' +
+    '<p style="margin:0;font-size:15px;line-height:24px;color:#535353;">Welcome aboard. Let\'s help more people grow, in their careers and in life.</p>' +
+    '</td></tr>' +
+    '<tr><td style="padding:28px 36px 30px;"><p style="margin:0 0 14px;font-size:14px;line-height:22px;color:#0a0a0a;">Questions? Just reply.</p>' +
+    '<p style="margin:0;font-size:14px;line-height:22px;color:#0a0a0a;">Joaquin<br><span style="font-size:12px;color:#6b6b6b;">Founder, Coach-Halo</span></p></td></tr>' +
+    '<tr><td style="padding:20px 36px;border-top:1px solid #e8e8e8;"><a href="' + escapeHtml(unsub) + '" style="font-size:12px;line-height:20px;color:#6b6b6b;text-decoration:underline;">Unsubscribe</a></td></tr>' +
+    '</table>' +
+    '<table role="presentation" width="100%" style="max-width:600px;"><tr><td align="center" style="padding:19px 20px 0;font-size:11px;line-height:18px;color:#6b6b6b;">You\'re receiving this because you signed up at <a href="https://coach-halo.com" style="color:#6b6b6b;text-decoration:underline;">coach-halo.com</a>.</td></tr></table>' +
+    '</td></tr></table></body></html>';
+}
+
+async function welcomeAlreadySent(email) {
+  const person = await findPerson(email);
+  if (!person || !person.Uid) return false;
+  const found = await outsetaGet("/api/v1/activities?EntityType=2&EntityUid=" + encodeURIComponent(person.Uid) + "&limit=50");
+  const items = (found.data && found.data.items) || [];
+  return items.some(function (item) { return item.Title === "coach-welcome-sent"; });
+}
+
+async function markWelcomeSent(email) {
+  const auth = authHeader();
+  const person = await findPerson(email);
+  if (!auth || !person || !person.Uid) return;
+  await outseta(auth, "/api/v1/activities/customactivity", {
+    Title: "coach-welcome-sent",
+    Description: "sendgrid",
+    ActivityType: 50,
+    EntityType: 2,
+    EntityUid: person.Uid,
+  });
+}
+
+async function sendBrandedWelcome(name, email) {
+  const apiKey = String(process.env.SENDGRID_API_KEY || "").trim();
+  const fromAddr = String(process.env.SENDGRID_FROM_EMAIL || "joaquinh@coach-halo.com").trim();
+  if (!apiKey.startsWith("SG.") || !fromAddr.toLowerCase().endsWith("@coach-halo.com") || !validEmail(email)) {
+    console.log("coach-join welcome not configured");
+    return { welcomeSent: false };
+  }
+  const unsub = "https://airtable.com/apppbUQrzMKIHnPUl/pagXojKMMsO6ThuWB/form?prefill_Your%20Email%20(Required)=" + encodeURIComponent(email);
+  const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
+    method: "POST",
+    headers: { Authorization: "Bearer " + apiKey, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      personalizations: [{ to: [{ email: email }] }],
+      from: { email: fromAddr, name: "Joaquin @ Coach-Halo" },
+      reply_to: { email: fromAddr, name: "Joaquin @ Coach-Halo" },
+      subject: "You're in — welcome to Coach-Halo",
+      content: [{ type: "text/html", value: welcomeHtml(name, email) }],
+      headers: {
+        "List-Unsubscribe": "<" + unsub + ">",
+        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+      },
+      categories: ["ch_welcome"],
+      tracking_settings: {
+        click_tracking: { enable: true, enable_text: false },
+        open_tracking: { enable: true },
+      },
+    }),
+  });
+  if (!res.ok) {
+    console.log("coach-join welcome status", res.status);
+    return { welcomeSent: false };
+  }
+  return { welcomeSent: true };
+}
+
+async function deliverWelcome(listUid, payload, name, email, force) {
+  const listed = await sendListWelcome(listUid, Object.assign({}, payload, { sendWelcome: false }), name, email);
+  if (!force && payload.sendWelcome === false) {
+    return { profileSaved: listed.profileSaved === true, welcomeSent: false };
+  }
+  if (await welcomeAlreadySent(email)) {
+    return { profileSaved: listed.profileSaved === true, welcomeSent: true };
+  }
+  const sent = await sendBrandedWelcome(name, email);
+  if (sent.welcomeSent) await markWelcomeSent(email);
+  return { profileSaved: listed.profileSaved === true, welcomeSent: sent.welcomeSent === true };
+}
+
 function memoryStore() {
   const map = new Map();
   return {
@@ -456,14 +563,15 @@ async function fulfillPaidCheckout(store, session) {
   const payload = Object.assign({}, signup, { paidConfirmed: true, plan: signup.plan });
   const saved = await saveCoach(payload, signup.name, signup.email);
   if (!saved.ok) return saved;
-  let welcome = { welcomeSent: false };
+  let welcome = { welcomeSent: true };
+  if (!saved.existingMember) {
+    welcome = await deliverWelcome(PAID_LIST_UID, payload, signup.name, signup.email, true);
+    if (!welcome.welcomeSent) return { ok: false, status: 502, error: "welcome_failed" };
+  }
   if (outsetaRef) await markOutsetaDone(ref, sessionId);
   else if (store) {
     await store.set("done:" + sessionId, { at: Date.now() });
     await store.delete(ref);
-  }
-  if (!saved.existingMember) {
-    welcome = await sendListWelcome(PAID_LIST_UID, payload, signup.name, signup.email);
   }
   return { ok: true, saved: true, table: "paid", welcomeSent: welcome.welcomeSent === true };
 }
@@ -503,7 +611,7 @@ module.exports = {
   cleanSignup: cleanSignup,
   saveCoach: saveCoach,
   sendFreeWelcome: function (payload, name, email) {
-    return sendListWelcome(FREE_LIST_UID, payload, name, email);
+    return deliverWelcome(FREE_LIST_UID, payload, name, email);
   },
   memoryStore: memoryStore,
   productionStore: productionStore,
