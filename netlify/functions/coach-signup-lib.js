@@ -297,7 +297,9 @@ function memoryStore() {
 
 function productionStore(event) {
   const blobs = require("@netlify/blobs");
-  if (event) blobs.connectLambda(event);
+  if (event && event.blobs) {
+    try { blobs.connectLambda(event); } catch (err) { /* runtime context is enough */ }
+  }
   const store = blobs.getStore({ name: "coach-paid-holds", consistency: "strong" });
   return {
     get: function (key) { return store.get(key, { type: "json" }); },
