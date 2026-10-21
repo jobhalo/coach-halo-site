@@ -404,14 +404,20 @@ function mailH(text) {
 function welcomeCopy(kind) {
   if (kind === "paid") {
     return {
-      subject: "You're in — welcome to Coach-Halo",
+      subject: "Welcome to Coach-Halo 🎉 Let’s get started!",
       label: "WELCOME",
-      preheader: "You're in the Coach-Halo network. Lead previews will come to this inbox.",
-      body: mailP("Thanks for signing up. You're in the Coach-Halo network.") +
-        mailP("Starting today, you'll receive notifications when people explore coaching support and their needs align with your expertise and ideal client profile. These may be individuals seeking guidance across career, life, business, finances, and more.") +
-        mailP("When there's a strong fit, Coach-Halo helps surface coach profiles to create warm introductions rather than cold outreach.") +
-        mailP("One quick favor: move this email to your Primary inbox, or mark it as Not Spam, so future notifications land where they should.") +
-        mailP("Welcome aboard. Let's help more people grow, in their careers and in life.", true),
+      preheader: "Your paid Coach-Halo membership is active.",
+      body: mailP("I'm Joaquin, founder of Coach-Halo. Thanks for joining! Your paid membership is active, and I'm excited to help you connect with potential career coaching clients.") +
+        mailH("We're getting your profile ready") +
+        mailP('We\'re reviewing the details you\'ve submitted and will be in touch within <strong style="color:#0a0a0a;">two business days</strong> with a link to your Coach-Halo directory profile or any questions we need answered to finalize it.') +
+        mailH("Here's how it works") +
+        mailP("When we identify an opportunity that aligns with your practice, we reach out on your behalf, share your profile, and follow up with the potential client.") +
+        mailP("When they express interest, we work to confirm their readiness and coordinate an introduction or book a discovery call based on your availability.") +
+        mailP("Your membership also includes featured placement in our coach directory, access to your coach portal to follow outreach activity, and monthly office hours with me to review your profile, positioning, and messaging.") +
+        mailP("Opportunities depend on demand and fit, so we don't guarantee a set number of leads, calls, or clients.") +
+        mailH("Keep an eye on your inbox 📬") +
+        mailP('We\'ll email you about your profile, introductions, and any next steps. Add <a href="mailto:joaquinh@coach-halo.com" style="color:#0a0a0a;text-decoration:underline;">joaquinh@coach-halo.com</a> to your contacts, move this email to Primary if it lands in Promotions, or mark it as “Not spam” if needed.') +
+        mailP("I'm glad to have you on board. If you have any questions, just hit reply.", true),
     };
   }
   return {
