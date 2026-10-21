@@ -237,7 +237,12 @@
     }
     var MONTHLY_URL = "https://buy.stripe.com/7sYfZi8BHcc3eYLciI1gt0Q";
     var ANNUAL_URL = "https://buy.stripe.com/00w8wQ7xD8ZR9ErgyY1gt0R";
-    function payUrl(base) { return S.email ? base + "?prefilled_email=" + encodeURIComponent(S.email) : base; }
+    function payUrl(base) {
+      var params = [];
+      if (S.email) params.push("prefilled_email=" + encodeURIComponent(S.email));
+      if (S.checkoutRef) params.push("client_reference_id=" + encodeURIComponent(S.checkoutRef));
+      return params.length ? base + "?" + params.join("&") : base;
+    }
 
     var Q = [
       { id: "welcome", type: "welcome" },
@@ -306,8 +311,38 @@
       var j = nextIdx(idx);
       var dest = Q[j];
       var paid = S.plan === "monthly" || S.plan === "annual";
+      if (dest && dest.type === "pay") { holdThen(j); return; }
       if (dest && dest.type === "done" && !paid) { saveThen(j); return; }
       go(j, 1);
+    }
+    function holdThen(j) {
+      if (saving) return;
+      saving = true;
+      var nb = qEl.querySelector("[data-next]");
+      if (nb) nb.disabled = true;
+      setErr("");
+      var body = signupPayload();
+      body.holdForPayment = true;
+      fetch("/.netlify/functions/coach-join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok && d && d.ok && d.checkoutRef, d: d }; });
+      }).then(function (res) {
+        saving = false;
+        if (!res.ok) {
+          if (nb) nb.disabled = false;
+          setErr("We couldn't open checkout. Email hello@coach-halo.com and we'll add you.");
+          return;
+        }
+        S.checkoutRef = res.d.checkoutRef;
+        go(j, 1);
+      }).catch(function () {
+        saving = false;
+        if (nb) nb.disabled = false;
+        setErr("We couldn't open checkout. Email hello@coach-halo.com and we'll add you.");
+      });
     }
     function saveThen(j) {
       if (saving) return;
