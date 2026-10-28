@@ -45,15 +45,27 @@
     .skip { display: block; text-align: center; font-size: .92rem; color: var(--muted); margin: 0 0 1.6rem; }
     .skip a { font-weight: 600; color: var(--text); }
 
-    .field-block { margin: 0 0 1.25rem; }
+    .field-block { margin: 0 0 1.35rem; }
     .field-block label { display: block; font-weight: 620; margin: 0 0 .4rem; font-size: .95rem; }
     .field-block .hint { display: block; color: var(--muted); font-size: .85rem; font-weight: 400; margin: .15rem 0 .45rem; }
     .field { width: 100%; font: inherit; font-size: 1.05rem; padding: .7rem .85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: #fff; outline: none; }
     .field:focus { border-color: var(--accent); }
     textarea.field { min-height: 96px; resize: vertical; line-height: 1.5; }
+    select.field { appearance: none; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%230a0a0a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right .85rem center; }
     .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
     .chip { border: 1.5px solid var(--border); background: #fff; border-radius: 999px; padding: .5rem .9rem; cursor: pointer; font-size: .92rem; }
     .chip[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .opts { display: grid; gap: .55rem; }
+    .opts.two { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 520px) { .opts.two { grid-template-columns: 1fr; } }
+    .opt { display: flex; align-items: center; gap: .7rem; width: 100%; text-align: left; border: 1.5px solid var(--border); background: #fff; border-radius: var(--radius-sm); padding: .8rem 1rem; cursor: pointer; }
+    .opt[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); background: rgba(10,10,10,.04); }
+    .opt .ico { font-size: 1.2rem; }
+    .price-wrap { display: flex; align-items: baseline; gap: .35rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: .55rem .9rem; max-width: 260px; }
+    .price-wrap:focus-within { border-color: var(--accent); }
+    .price-wrap span { font-size: 1.4rem; font-weight: 700; color: var(--muted); }
+    .price-wrap input { border: 0; outline: none; font: inherit; font-size: 1.8rem; font-weight: 750; width: 100%; background: transparent; }
+    .price-wrap small { color: var(--muted); white-space: nowrap; }
     .photo-row { display: flex; align-items: center; gap: 1rem; }
     .photo-preview { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; background: var(--surface); border: 1.5px solid var(--border); flex: none; }
     .agree { display: flex; gap: .7rem; align-items: flex-start; margin: 1.2rem 0; font-size: .9rem; color: #3f3f3c; cursor: pointer; }
@@ -81,68 +93,124 @@
     <div class="panel" id="form-panel">
       <p class="eyebrow">Membership confirmed</p>
       <h1 class="title">Finish setting up your Coach-Halo profile</h1>
-      <p class="sub">So we can match you with the right people and build your directory listing. Takes a few minutes.</p>
+      <p class="sub">Same career profile details we collect in the full signup — so we can match you and build your directory listing.</p>
 
       <div class="note ok">Your payment went through. We’ll review what you submit and follow up by email within about two business days.</div>
 
-      <p class="skip">Already completed the full coach signup before paying? <a href="/" id="skip-link">You’re done — go to Coach-Halo</a></p>
+      <p class="skip">Already completed the full coach signup before paying? <a href="/">You’re done — go to Coach-Halo</a></p>
 
       <form id="onboard" novalidate>
         <div class="field-block">
           <label for="name">Your name</label>
-          <input class="field" id="name" name="name" autocomplete="name" required>
+          <input class="field" id="name" name="name" autocomplete="name" required placeholder="First and last name">
         </div>
         <div class="field-block">
           <label for="email">Email we should use</label>
-          <span class="hint">Use the same email you paid with when you can.</span>
-          <input class="field" id="email" name="email" type="email" autocomplete="email" required>
+          <span class="hint">Use the same email you paid with when you can. We’ll send matches and updates here.</span>
+          <input class="field" id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
         </div>
         <div class="field-block">
-          <label for="title">Professional headline</label>
+          <label for="title">How do you describe yourself professionally?</label>
+          <span class="hint">How you’d introduce yourself to a potential client in a few words.</span>
           <input class="field" id="title" name="title" placeholder="e.g. Career &amp; Executive Coach" required>
         </div>
         <div class="field-block">
-          <label for="website">Website or LinkedIn</label>
-          <input class="field" id="website" name="website" type="url" placeholder="https://…">
+          <label for="website">Where can we learn more about your work?</label>
+          <span class="hint">Your website, or LinkedIn if you don’t have one.</span>
+          <input class="field" id="website" name="website" type="url" placeholder="yourwebsite.com">
         </div>
         <div class="field-block">
           <label>What do you help career clients with?</label>
-          <span class="hint">Select all that apply.</span>
+          <span class="hint">Select all that apply. Specific answers mean better matches.</span>
           <div class="chips" id="offers"></div>
         </div>
         <div class="field-block">
-          <label for="cal">Calendar link for discovery calls</label>
-          <span class="hint">Optional. Calendly, Google Calendar, OnceHub…</span>
-          <input class="field" id="cal" name="cal" type="url" placeholder="https://calendly.com/…">
+          <label>Who do you usually work with?</label>
+          <span class="hint">Optional.</span>
+          <div class="chips" id="levels"></div>
         </div>
         <div class="field-block">
-          <label for="photo">Headshot</label>
-          <span class="hint">Used on your directory profile.</span>
+          <label for="industries">Any industries you know especially well?</label>
+          <span class="hint">Optional. Helps us match people in your space.</span>
+          <input class="field" id="industries" name="industries" placeholder="e.g. Tech, healthcare, education">
+        </div>
+        <div class="field-block">
+          <label>Do you have a calendar link for discovery calls?</label>
+          <span class="hint">After an introduction, people can book with you directly.</span>
+          <div class="opts two" id="hasCal">
+            <button type="button" class="opt" data-v="yes" aria-pressed="false"><span class="ico">📅</span><span>Yes, I have one</span></button>
+            <button type="button" class="opt" data-v="no" aria-pressed="false"><span class="ico">⏳</span><span>Not yet</span></button>
+          </div>
+        </div>
+        <div class="field-block hidden" id="cal-block">
+          <label for="cal">Paste your calendar link</label>
+          <span class="hint">Calendly, Google Calendar, OnceHub, Acuity… any works.</span>
+          <input class="field" id="cal" name="cal" type="url" placeholder="https://calendly.com/you/discovery">
+        </div>
+        <div class="field-block">
+          <label>Is your first call free?</label>
+          <span class="hint">We mention this when we introduce you to someone.</span>
+          <div class="opts two" id="freecall">
+            <button type="button" class="opt" data-v="yes" aria-pressed="false"><span class="ico">🎁</span><span>Yes, first call is free</span></button>
+            <button type="button" class="opt" data-v="no" aria-pressed="false"><span class="ico">💳</span><span>No, all sessions are paid</span></button>
+          </div>
+        </div>
+        <div class="field-block">
+          <label for="price">What do you usually charge for a one-hour session?</label>
+          <span class="hint">Your typical hourly rate is fine. You can change it anytime.</span>
+          <div class="price-wrap">
+            <span>$</span>
+            <input id="price" name="price" inputmode="numeric" pattern="[0-9]*" placeholder="150">
+            <small>/ hour</small>
+          </div>
+          <div class="chips" id="price-presets" style="margin-top:.7rem"></div>
+        </div>
+        <div class="field-block">
+          <label for="bio">Introduce yourself to a future client</label>
+          <span class="hint">2–4 sentences in your own voice. Optional — you can also write this later.</span>
+          <textarea class="field" id="bio" name="bio" placeholder="I help mid-career professionals…"></textarea>
+        </div>
+        <div class="field-block">
+          <label for="ideal">Who is your ideal client?</label>
+          <span class="hint">Who you most want to work with. We use this to match you and on your directory profile.</span>
+          <textarea class="field" id="ideal" name="ideal" minlength="20" required placeholder="Mid-career managers changing fields…"></textarea>
+        </div>
+        <div class="field-block">
+          <label for="approach">How do you help them?</label>
+          <span class="hint">Your coaching approach, in one short paragraph.</span>
+          <textarea class="field" id="approach" name="approach" minlength="20" required placeholder="I start with a clear target role, then…"></textarea>
+        </div>
+        <div class="field-block">
+          <label for="result">What result do they typically achieve, and in what timeframe?</label>
+          <span class="hint">A specific outcome and roughly how long it takes.</span>
+          <textarea class="field" id="result" name="result" minlength="20" required placeholder="A stronger resume and a first interview within a month…"></textarea>
+        </div>
+        <div class="field-block">
+          <label for="photo">Add a photo of you</label>
+          <span class="hint">We use this on your Coach-Halo directory profile. A clear headshot works best.</span>
           <div class="photo-row">
             <img class="photo-preview" id="photo-preview" alt="" hidden>
             <input class="field" id="photo" name="photo" type="file" accept="image/*" required>
           </div>
         </div>
         <div class="field-block">
-          <label for="ideal">Who is your ideal client?</label>
-          <textarea class="field" id="ideal" name="ideal" minlength="20" required placeholder="Mid-career managers changing fields…"></textarea>
+          <label for="tz">Where do you coach from?</label>
+          <span class="hint">So we match people in time zones that work for you.</span>
+          <select class="field" id="tz"></select>
         </div>
         <div class="field-block">
-          <label for="approach">How do you help them?</label>
-          <textarea class="field" id="approach" name="approach" minlength="20" required placeholder="I start with a clear target role, then…"></textarea>
+          <label>Languages you coach in</label>
+          <div class="chips" id="langs"></div>
         </div>
         <div class="field-block">
-          <label for="result">Typical result and timeframe</label>
-          <textarea class="field" id="result" name="result" minlength="20" required placeholder="A stronger resume and a first interview within a month…"></textarea>
-        </div>
-        <div class="field-block">
-          <label for="bio">Short bio (optional)</label>
-          <textarea class="field" id="bio" name="bio" placeholder="2–4 sentences in your own voice…"></textarea>
+          <label>How many new clients can you take each month?</label>
+          <span class="hint">Optional. We’ll pace introductions to match.</span>
+          <div class="chips" id="capacity"></div>
         </div>
 
         <label class="agree">
           <input type="checkbox" id="agree" required>
-          <span>I agree to the <a href="/coach-terms/" target="_blank" rel="noopener">Coach Terms</a> and have read the <a href="/privacy/" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+          <span>I agree to the <a href="/coach-terms/" target="_blank" rel="noopener">Coach Terms</a> and have read the <a href="/privacy/" target="_blank" rel="noopener">Privacy Policy</a>. Coach-Halo uses these answers, along with information I’ve published (like my website or LinkedIn), to understand my practice and match me with people who ask for a coach.</span>
         </label>
 
         <button class="btn" type="submit" id="submit">Save my profile</button>
@@ -163,26 +231,115 @@
   <script>
   (function () {
     var OFFERS = ["Resume review & writing", "LinkedIn profile", "Interview prep", "Job search strategy", "Career change", "Salary negotiation", "Leadership & executive", "Returning to work"];
-    var selected = [];
+    var LEVELS = ["Students & entry level", "Mid-career", "Senior & managers", "Executives"];
+    var LANGS = ["English", "Spanish", "Portuguese", "French", "German", "Mandarin", "Hindi"];
+    var CAPACITY = ["1-2", "3-5", "6-10", "10+"];
+    var PRICE_PRESETS = [75, 100, 150, 200, 250];
+    var ZONES = ["Pacific Time (PT)", "Mountain Time (MT)", "Central Time (CT)", "Eastern Time (ET)", "UK / Ireland", "Central Europe", "Other"];
+
+    var selectedOffers = [];
+    var selectedLevels = [];
+    var selectedLangs = ["English"];
+    var capacity = "";
+    var hasCal = "";
+    var freecall = "";
     var photoData = "";
     var params = new URLSearchParams(window.location.search);
     var emailParam = (params.get("email") || params.get("prefilled_email") || "").trim();
 
-    var offersEl = document.getElementById("offers");
-    OFFERS.forEach(function (label) {
+    function wireChips(el, items, selected, multi) {
+      items.forEach(function (label) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "chip";
+        b.textContent = label;
+        b.setAttribute("aria-pressed", selected.indexOf(label) >= 0 ? "true" : "false");
+        b.addEventListener("click", function () {
+          if (multi) {
+            var i = selected.indexOf(label);
+            if (i >= 0) selected.splice(i, 1);
+            else selected.push(label);
+            b.setAttribute("aria-pressed", selected.indexOf(label) >= 0 ? "true" : "false");
+          } else {
+            selected.length = 0;
+            selected.push(label);
+            el.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+            b.setAttribute("aria-pressed", "true");
+          }
+        });
+        el.appendChild(b);
+      });
+    }
+
+    function wireSingleOpts(el, onPick) {
+      el.querySelectorAll(".opt").forEach(function (b) {
+        b.addEventListener("click", function () {
+          el.querySelectorAll(".opt").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+          b.setAttribute("aria-pressed", "true");
+          onPick(b.dataset.v);
+        });
+      });
+    }
+
+    wireChips(document.getElementById("offers"), OFFERS, selectedOffers, true);
+    wireChips(document.getElementById("levels"), LEVELS, selectedLevels, true);
+    wireChips(document.getElementById("langs"), LANGS, selectedLangs, true);
+
+    var capEl = document.getElementById("capacity");
+    CAPACITY.forEach(function (v) {
       var b = document.createElement("button");
       b.type = "button";
       b.className = "chip";
-      b.textContent = label;
+      b.textContent = v === "10+" ? "10 or more" : v.replace("-", "–");
       b.setAttribute("aria-pressed", "false");
       b.addEventListener("click", function () {
-        var i = selected.indexOf(label);
-        if (i >= 0) selected.splice(i, 1);
-        else selected.push(label);
-        b.setAttribute("aria-pressed", selected.indexOf(label) >= 0 ? "true" : "false");
+        capacity = v;
+        capEl.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+        b.setAttribute("aria-pressed", "true");
       });
-      offersEl.appendChild(b);
+      capEl.appendChild(b);
     });
+
+    var priceInput = document.getElementById("price");
+    var presets = document.getElementById("price-presets");
+    PRICE_PRESETS.forEach(function (n) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.textContent = "$" + n;
+      b.addEventListener("click", function () {
+        priceInput.value = String(n);
+        presets.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+        b.setAttribute("aria-pressed", "true");
+      });
+      b.setAttribute("aria-pressed", "false");
+      presets.appendChild(b);
+    });
+
+    var tz = document.getElementById("tz");
+    var guess = ZONES[3];
+    try {
+      var z = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      if (/Los_Angeles/.test(z)) guess = ZONES[0];
+      else if (/Denver|Phoenix/.test(z)) guess = ZONES[1];
+      else if (/Chicago/.test(z)) guess = ZONES[2];
+      else if (/New_York/.test(z)) guess = ZONES[3];
+      else if (/London|Dublin/.test(z)) guess = ZONES[4];
+      else if (/Europe/.test(z)) guess = ZONES[5];
+    } catch (e) {}
+    ZONES.forEach(function (zone) {
+      var o = document.createElement("option");
+      o.value = zone;
+      o.textContent = zone;
+      if (zone === guess) o.selected = true;
+      tz.appendChild(o);
+    });
+
+    wireSingleOpts(document.getElementById("hasCal"), function (v) {
+      hasCal = v;
+      document.getElementById("cal-block").classList.toggle("hidden", v !== "yes");
+    });
+    wireSingleOpts(document.getElementById("freecall"), function (v) { freecall = v; });
 
     if (emailParam) document.getElementById("email").value = emailParam;
 
@@ -225,7 +382,9 @@
       var email = document.getElementById("email").value.trim();
       var title = document.getElementById("title").value.trim();
       var website = document.getElementById("website").value.trim();
+      var industries = document.getElementById("industries").value.trim();
       var cal = document.getElementById("cal").value.trim();
+      var price = document.getElementById("price").value.trim().replace(/[^0-9]/g, "");
       var ideal = document.getElementById("ideal").value.trim();
       var approach = document.getElementById("approach").value.trim();
       var result = document.getElementById("result").value.trim();
@@ -236,12 +395,14 @@
         setErr("Please add your name, a valid email, and headline.");
         return;
       }
-      if (!selected.length) { setErr("Pick at least one area you help with."); return; }
+      if (!selectedOffers.length) { setErr("Pick at least one area you help with."); return; }
+      if (hasCal === "yes" && !cal) { setErr("Paste your calendar link, or choose Not yet."); return; }
       if (ideal.length < 20 || approach.length < 20 || result.length < 20) {
         setErr("Ideal client, approach, and result each need at least a short paragraph.");
         return;
       }
       if (!photoData) { setErr("Add a headshot so we can use it on your directory profile."); return; }
+      if (!selectedLangs.length) { setErr("Pick at least one language."); return; }
       if (!agree) { setErr("Please agree to the Coach Terms to continue."); return; }
 
       var btn = document.getElementById("submit");
@@ -254,15 +415,21 @@
         title: title,
         website: website,
         coachType: "career",
-        offers: selected,
-        hasCal: cal ? "yes" : "no",
-        cal: cal,
+        offers: selectedOffers.slice(),
+        levels: selectedLevels.slice(),
+        industries: industries,
+        hasCal: hasCal || (cal ? "yes" : "no"),
+        cal: hasCal === "yes" || cal ? cal : "",
+        freecall: freecall,
+        price: price,
+        bio: bio,
         ideal: ideal,
         approach: approach,
         result: result,
-        bio: bio,
         photo: photoData,
-        langs: ["English"],
+        tz: document.getElementById("tz").value,
+        langs: selectedLangs.slice(),
+        capacity: capacity,
         plan: "free",
         agree: true,
         sendWelcome: false
