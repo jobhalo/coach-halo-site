@@ -229,7 +229,8 @@ async function saveIntroduction(token, baseId, tableId, body) {
   }
   const availability = lib.availabilityFromWindows(body.windows, timeZone, new Date());
   if (!availability.ok) return json(400, { ok: false, error: 'availability', message: availability.message });
-  const windowsText = availability.text;
+  /* The monitor parses the window lines and ignores the rest, so the message
+     can share this field. */
   availability.text += '\n\nWhat they want to talk about:\n' + coachMessage;
 
   const recordUrl = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableId)}/${encodeURIComponent(recordId)}`;
