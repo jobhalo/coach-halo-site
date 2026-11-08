@@ -300,19 +300,26 @@
     wireConnect(coach);
   }
 
-  /* Keeps the lead on the page. The old Meet link sent them to Airtable. */
+  /* Keeps the lead on the page. The old Meet link sent them to Airtable.
+     The first two lines stay visible so the summary itself does the work,
+     rather than a label the eye skips on the way to the connect button. */
   function summaryBlock(coach) {
     var first = coachFirst(coach.name);
     var wrap = document.createElement('div');
     wrap.className = 'coach-summary';
 
-    var toggle = document.createElement('button');
-    toggle.type = 'button';
-    toggle.className = 'link-quiet-coach';
-    toggle.id = 'coach-summary-toggle';
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.setAttribute('aria-controls', 'coach-summary-body');
-    toggle.textContent = 'More about ' + first;
+    var teaser = document.createElement('p');
+    teaser.className = 'coach-summary-text coach-summary-teaser';
+    teaser.id = 'coach-summary-teaser';
+    teaser.textContent = coach.summary;
+    wrap.appendChild(teaser);
+
+    /* Stays visible while collapsed too, so the teaser is never mistaken
+       for the coach's own words. */
+    var note = document.createElement('p');
+    note.className = 'coach-connect-note coach-summary-credit';
+    note.textContent = 'Summary by Coach-Halo, from ' + first + '’s profile.';
+    wrap.appendChild(note);
 
     var body = document.createElement('div');
     body.className = 'coach-summary-body';
@@ -321,33 +328,41 @@
 
     function part(label, text) {
       if (!text) return;
-      if (label) {
-        var heading = document.createElement('p');
-        heading.className = 'coach-summary-label';
-        heading.textContent = label;
-        body.appendChild(heading);
-      }
+      var heading = document.createElement('p');
+      heading.className = 'coach-summary-label';
+      heading.textContent = label;
+      body.appendChild(heading);
       var copy = document.createElement('p');
       copy.className = 'coach-summary-text';
       copy.textContent = text;
       body.appendChild(copy);
     }
 
-    part('', coach.summary);
     part('Who ' + first + ' works with', coach.ideal_client);
     part('What ' + first + ' helps with', coach.offer);
 
-    var note = document.createElement('p');
-    note.className = 'coach-connect-note';
-    note.textContent = 'Summary by Coach-Halo, from ' + first + '’s profile.';
-    body.appendChild(note);
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'coach-summary-toggle';
+    toggle.id = 'coach-summary-toggle';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', 'coach-summary-body');
+    var toggleLabel = document.createElement('span');
+    toggleLabel.textContent = 'How ' + first + ' works';
+    var caret = document.createElement('span');
+    caret.className = 'coach-summary-caret';
+    caret.setAttribute('aria-hidden', 'true');
+    caret.textContent = '⌄';
+    toggle.appendChild(toggleLabel);
+    toggle.appendChild(caret);
 
     var opened = false;
     toggle.addEventListener('click', function () {
-      var show = body.hidden;
-      body.hidden = !show;
+      var show = toggle.getAttribute('aria-expanded') !== 'true';
       toggle.setAttribute('aria-expanded', show ? 'true' : 'false');
-      toggle.textContent = (show ? 'Less about ' : 'More about ') + first;
+      teaser.classList.toggle('is-open', show);
+      body.hidden = !show || !body.childElementCount;
+      toggleLabel.textContent = show ? 'Show less' : 'How ' + first + ' works';
       if (show && !opened) {
         opened = true;
         track('coach_summary_open', { topic: topic });
@@ -356,6 +371,13 @@
 
     wrap.appendChild(toggle);
     wrap.appendChild(body);
+
+    /* With no extra sections, only a clamped summary is worth opening. */
+    if (!body.childElementCount) {
+      requestAnimationFrame(function () {
+        if (teaser.scrollHeight <= teaser.clientHeight + 1) toggle.hidden = true;
+      });
+    }
     return wrap;
   }
 

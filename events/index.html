@@ -393,9 +393,9 @@
       width: 100%;
     }
     .link-quiet-coach:hover { color: var(--black); }
+    .coach-summary { text-align: left; }
     .coach-summary-body {
-      margin-top: 0.75rem;
-      text-align: left;
+      margin-top: 0.25rem;
       border-top: 1px solid var(--border);
       padding-top: 0.85rem;
     }
@@ -405,6 +405,19 @@
       font-weight: 300;
       line-height: 1.6;
     }
+    .coach-summary-teaser {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 0.3rem;
+    }
+    .coach-summary-teaser.is-open {
+      display: block;
+      overflow: visible;
+      -webkit-line-clamp: unset;
+    }
+    .coach-summary-credit { text-align: left; margin: 0; }
     .coach-summary-label {
       margin: 0 0 0.2rem;
       font-size: 0.6875rem;
@@ -412,7 +425,30 @@
       text-transform: uppercase;
       color: var(--text-muted);
     }
-    .coach-summary-body .coach-connect-note { text-align: left; margin-top: 0.25rem; }
+    .coach-summary-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin: 0.7rem 0 1rem;
+      padding: 0;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--black);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+    .coach-summary-toggle:hover { opacity: 0.65; }
+    .coach-summary-caret {
+      display: inline-block;
+      font-size: 0.85em;
+      line-height: 1;
+      transition: transform 0.15s ease;
+    }
+    .coach-summary-toggle[aria-expanded='true'] .coach-summary-caret { transform: rotate(180deg); }
     .notice { margin: 0.85rem 0 0; font-size: 0.875rem; font-weight: 300; color: var(--text-muted); }
     .message { margin-top: 1rem; padding: 0.75rem 1rem; font-size: 0.9rem; display: none; }
     .message.error {
