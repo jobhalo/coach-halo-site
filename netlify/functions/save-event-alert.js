@@ -9,6 +9,7 @@
 const guard = require('./signup-guard');
 const lib = require('./events-lib');
 const welcomeEmail = require('./event-welcome');
+const introEmail = require('./event-intro-email');
 
 const DEFAULT_BASE = 'appYMfUftdmhlnU6q';
 const DEFAULT_ALERTS_TABLE = 'tblcD101NOUECJgV3';
@@ -115,6 +116,7 @@ async function saveAlert(token, baseId, tableId, body) {
     .slice(0, 40);
   const eventUrl = httpUrl(body.event_url);
   const utm = body.utm && typeof body.utm === 'object' ? body.utm : {};
+  const wantNewsletter = body.want_newsletter !== false;
 
   if (name) {
     const nameProblem = guard.jhSignupNameProblem(name);
@@ -175,7 +177,7 @@ async function saveAlert(token, baseId, tableId, body) {
   const id = (record && record.id) || '';
 
   let welcomeSent = false;
-  if (id) {
+  if (id && wantNewsletter) {
     try {
       const welcome = await welcomeEmail.sendWelcome(email, topic, id);
       welcomeSent = welcome.sent === true;
@@ -229,6 +231,7 @@ async function saveIntroduction(token, baseId, tableId, body) {
   }
   const availability = lib.availabilityFromWindows(body.windows, timeZone, new Date());
   if (!availability.ok) return json(400, { ok: false, error: 'availability', message: availability.message });
+  const windowsText = availability.text;
   availability.text += '\n\nWhat they want to talk about:\n' + coachMessage;
 
   const recordUrl = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableId)}/${encodeURIComponent(recordId)}`;
@@ -256,5 +259,23 @@ async function saveIntroduction(token, baseId, tableId, body) {
     }),
   });
   if (!patched.ok) return json(502, { ok: false, error: 'save_failed' });
-  return json(200, { ok: true, id: recordId });
+
+  let introSent = false;
+  try {
+    const intro = await introEmail.sendIntroduction({
+      name: String(fields.Name || '').trim(),
+      email: savedEmail,
+      topic,
+      topicLabel: (lib.TOPICS[topic] && lib.TOPICS[topic].label) || topic,
+      coachName,
+      timeZone,
+      availabilityText: windowsText,
+      coachMessage,
+    });
+    introSent = intro.sent === true;
+  } catch (_) {
+    console.log('event intro failed');
+  }
+
+  return json(200, { ok: true, id: recordId, intro_sent: introSent });
 }

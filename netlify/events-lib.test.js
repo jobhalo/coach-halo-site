@@ -123,3 +123,39 @@ test('every topic has a welcome with a signed unsubscribe link', () => {
   assert.equal(welcome.validUnsubscribeToken('recBBBBBBBBBBBBBB', token), false);
   assert.equal(welcome.welcomeEmail('nope', 'recAAAAAAAAAAAAAA'), null);
 });
+
+test('the coach map covers every topic and leaves business unmapped', () => {
+  const map = require('./functions/event-coach-map.json');
+  assert.deepEqual(Object.keys(map), Object.keys(lib.TOPICS));
+  assert.equal(map.business, '');
+  for (const [slug, id] of Object.entries(map)) {
+    if (slug === 'business') continue;
+    assert.match(id, /^rec[a-zA-Z0-9]{10,}$/, slug + ' needs a directory record id');
+  }
+});
+
+test('the intro email shares only the consented details', () => {
+  const intro = require('./functions/event-intro-email');
+  assert.equal(intro.coachEmailFrom({ 'Contact Me': 'coach@example.com' }), 'coach@example.com');
+  assert.equal(intro.coachEmailFrom({ 'Contact Me': 'mailto:coach@example.com?subject=hi' }), 'coach@example.com');
+  assert.equal(intro.coachEmailFrom({ 'Contact Me': 'not an email' }), '');
+  assert.equal(intro.coachEmailFrom({}), '');
+
+  const body = intro.introBody({
+    coachName: 'Casey Coach',
+    name: 'Ada',
+    email: 'ada@library.org',
+    topicLabel: 'money',
+    timeZone: 'America/Los_Angeles',
+    availabilityText: '2026-11-10 09:00–09:45 America/Los_Angeles',
+    coachMessage: 'I want to build a budget that sticks.',
+  });
+  for (const value of [body.text, body.html]) {
+    assert.match(value, /Hi Casey,/);
+    assert.match(value, /ada@library\.org/);
+    assert.match(value, /budget that sticks/);
+    assert.match(value, /America\/Los_Angeles/);
+    assert.doesNotMatch(value, /do not share with coach/i);
+    assert.doesNotMatch(value, /session note/i);
+  }
+});
