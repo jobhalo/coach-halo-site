@@ -134,6 +134,25 @@ test('the coach map covers every topic and leaves business unmapped', () => {
   }
 });
 
+test('every mapped coach has a stored summary within the caps', () => {
+  const map = require('./functions/event-coach-map.json');
+  const summaries = require('./functions/event-coach-summaries.json');
+  const caps = { summary: 320, ideal_client: 160, offer: 160 };
+  const mapped = [...new Set(Object.values(map).filter(Boolean))];
+  assert.ok(mapped.length > 0);
+  for (const id of mapped) {
+    const entry = summaries[id];
+    assert.ok(entry, id + ' needs a summary');
+    assert.match(entry.name, /\S/, id + ' needs the directory name');
+    assert.ok(entry.summary.length > 40, id + ' needs a real summary');
+    for (const [key, cap] of Object.entries(caps)) {
+      assert.ok(entry[key].length <= cap, id + ' ' + key + ' is over ' + cap);
+      /* No quotation marks, so nothing reads as the coach's own words. */
+      assert.ok(!/["\u201c\u201d]/.test(entry[key]), id + ' ' + key + ' must not quote');
+    }
+  }
+});
+
 test('the intro email shares only the consented details', () => {
   const intro = require('./functions/event-intro-email');
   assert.equal(intro.coachEmailFrom({ 'Contact Me': 'coach@example.com' }), 'coach@example.com');

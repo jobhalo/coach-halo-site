@@ -8,6 +8,7 @@
 
 const lib = require('./events-lib');
 const map = require('./event-coach-map.json');
+const summaries = require('./event-coach-summaries.json');
 
 const DEFAULT_BASE = 'appYMfUftdmhlnU6q';
 const DEFAULT_DIRECTORY = 'tblUGp4lLiJyABtzt';
@@ -41,17 +42,24 @@ function mappedId(topic) {
   return /^rec[a-zA-Z0-9]{10,}$/.test(id) ? id : '';
 }
 
-function publicCoach(fields) {
+function publicCoach(fields, recordId) {
   const name = String(fields['Coach Name'] || '').trim();
   if (!name) return null;
   const line = String(fields['Coach title'] || '').trim().replace(/\s+/g, ' ').slice(0, 140);
-  const coach = {
+  /* Pre-written by scripts/write-coach-summaries.js. Only used when the
+     stored name still matches the directory, so a remapped record cannot
+     show another coach's summary. */
+  const stored = summaries[recordId];
+  const fresh = stored && String(stored.name || '').trim() === name ? stored : {};
+  return {
     name: name.slice(0, 80),
     image: httpsUrl(fields['Outseta Image URL']),
     line: line,
     profile_url: httpsUrl(fields['Directory Link Short']),
+    summary: String(fresh.summary || ''),
+    ideal_client: String(fresh.ideal_client || ''),
+    offer: String(fresh.offer || ''),
   };
-  return coach;
 }
 
 exports.handler = async function (event) {
@@ -78,7 +86,7 @@ exports.handler = async function (event) {
     const res = await fetch(url, { headers: { Authorization: 'Bearer ' + token } });
     if (!res.ok) return json(200, { ok: true, topic, coach: null });
     const data = await res.json();
-    return json(200, { ok: true, topic, coach: publicCoach(data.fields || {}) });
+    return json(200, { ok: true, topic, coach: publicCoach(data.fields || {}, recordId) });
   } catch (_) {
     return json(200, { ok: true, topic, coach: null });
   }

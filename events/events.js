@@ -290,24 +290,73 @@
     row.appendChild(avatar);
     row.appendChild(names);
     block.appendChild(row);
-    if (coach.profile_url) {
-      var first = coach.name.trim().split(/\s+/)[0];
-      var link = document.createElement('a');
-      link.className = 'btn-secondary';
-      link.href = coach.profile_url;
-      link.target = '_blank';
-      link.rel = 'noopener';
-      link.textContent = 'Meet ' + first;
-      link.addEventListener('click', function () {
-        track('coach_profile_click', { topic: topic });
-      });
-      block.appendChild(link);
+    if (coach.summary) {
+      block.appendChild(summaryBlock(coach));
     }
     var connect = document.createElement('div');
     connect.id = 'coach-connect';
     connect.innerHTML = connectMarkup(coach);
     block.appendChild(connect);
     wireConnect(coach);
+  }
+
+  /* Keeps the lead on the page. The old Meet link sent them to Airtable. */
+  function summaryBlock(coach) {
+    var first = coachFirst(coach.name);
+    var wrap = document.createElement('div');
+    wrap.className = 'coach-summary';
+
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'link-quiet-coach';
+    toggle.id = 'coach-summary-toggle';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', 'coach-summary-body');
+    toggle.textContent = 'More about ' + first;
+
+    var body = document.createElement('div');
+    body.className = 'coach-summary-body';
+    body.id = 'coach-summary-body';
+    body.hidden = true;
+
+    function part(label, text) {
+      if (!text) return;
+      if (label) {
+        var heading = document.createElement('p');
+        heading.className = 'coach-summary-label';
+        heading.textContent = label;
+        body.appendChild(heading);
+      }
+      var copy = document.createElement('p');
+      copy.className = 'coach-summary-text';
+      copy.textContent = text;
+      body.appendChild(copy);
+    }
+
+    part('', coach.summary);
+    part('Who ' + first + ' works with', coach.ideal_client);
+    part('What ' + first + ' helps with', coach.offer);
+
+    var note = document.createElement('p');
+    note.className = 'coach-connect-note';
+    note.textContent = 'Summary by Coach-Halo, from ' + first + '’s profile.';
+    body.appendChild(note);
+
+    var opened = false;
+    toggle.addEventListener('click', function () {
+      var show = body.hidden;
+      body.hidden = !show;
+      toggle.setAttribute('aria-expanded', show ? 'true' : 'false');
+      toggle.textContent = (show ? 'Less about ' : 'More about ') + first;
+      if (show && !opened) {
+        opened = true;
+        track('coach_summary_open', { topic: topic });
+      }
+    });
+
+    wrap.appendChild(toggle);
+    wrap.appendChild(body);
+    return wrap;
   }
 
   function connectMarkup(coach) {
