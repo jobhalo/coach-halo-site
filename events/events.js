@@ -230,14 +230,16 @@
     }
   }
 
-  function showSaved(isNew) {
+  function showSaved(isNew, welcomeSent) {
     document.getElementById('alert-form').hidden = true;
     document.getElementById('alert-done').hidden = false;
     document.getElementById('alert-done-title').textContent = isNew
-      ? 'Your email is saved.'
+      ? 'You’re on the list.'
       : 'This email is already saved.';
     document.getElementById('alert-done-copy').textContent = isNew
-      ? 'It’s recorded for ' + topicWord() + ' workshops.'
+      ? welcomeSent
+        ? 'Check your inbox for a welcome email about ' + topicWord() + ' workshops.'
+        : 'It’s recorded for ' + topicWord() + ' workshops.'
       : 'This email was already saved for this topic.';
     document.title = pageTitle;
   }
@@ -286,7 +288,7 @@
       }
       var isNew = !(result.data && result.data.existing);
       if (isNew) track('weekly_events_signup_success', { topic: topic });
-      showSaved(isNew);
+      showSaved(isNew, !!(result.data && result.data.welcome_sent));
     }).catch(function () {
       button.dataset.sending = '';
       button.disabled = false;

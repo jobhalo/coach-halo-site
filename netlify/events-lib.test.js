@@ -106,3 +106,20 @@ test('alert fields include welcome and introductions omit the session note', () 
   );
   assert.equal(Object.prototype.hasOwnProperty.call(fields, 'Session note (do not share with coach)'), false);
 });
+
+test('every topic has a welcome with a signed unsubscribe link', () => {
+  process.env.EVENT_UNSUBSCRIBE_SECRET = 'test-secret';
+  const welcome = require('./functions/event-welcome');
+  assert.deepEqual(Object.keys(welcome.COPY), Object.keys(lib.TOPICS));
+  for (const topic of Object.keys(lib.TOPICS)) {
+    const mail = welcome.welcomeEmail(topic, 'recAAAAAAAAAAAAAA');
+    assert.match(mail.subject, /workshops$/);
+    assert.match(mail.html, new RegExp('/events/' + topic + '/'));
+    assert.doesNotMatch(mail.html, /Job-Halo/);
+    assert.match(mail.unsubscribeUrl, /event-unsubscribe\?id=recAAAAAAAAAAAAAA&t=[0-9a-f]{32}$/);
+  }
+  const token = welcome.unsubscribeToken('recAAAAAAAAAAAAAA');
+  assert.equal(welcome.validUnsubscribeToken('recAAAAAAAAAAAAAA', token), true);
+  assert.equal(welcome.validUnsubscribeToken('recBBBBBBBBBBBBBB', token), false);
+  assert.equal(welcome.welcomeEmail('nope', 'recAAAAAAAAAAAAAA'), null);
+});

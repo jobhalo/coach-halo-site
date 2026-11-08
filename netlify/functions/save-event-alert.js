@@ -1,13 +1,14 @@
 /**
- * Saves a coach-halo.com/events signup to Airtable Event Alerts.
- * Does not send email and does not subscribe anyone in Outseta.
+ * Saves a coach-halo.com/events signup to Airtable Event Alerts, then sends
+ * the SendGrid welcome for that topic. Does not use Outseta.
  *
  * Env: AIRTABLE_PAT or AIRTABLE_TOKEN, optional AIRTABLE_BASE_ID,
- * CH_EVENT_ALERTS_TABLE_ID.
+ * CH_EVENT_ALERTS_TABLE_ID, SENDGRID_API_KEY, optional SENDGRID_FROM_EMAIL.
  */
 
 const guard = require('./signup-guard');
 const lib = require('./events-lib');
+const welcomeEmail = require('./event-welcome');
 
 const DEFAULT_BASE = 'appYMfUftdmhlnU6q';
 const DEFAULT_ALERTS_TABLE = 'tblcD101NOUECJgV3';
@@ -171,7 +172,29 @@ async function saveAlert(token, baseId, tableId, body) {
     return json(502, { ok: false, error: 'save_failed', message: 'Something went wrong. Try again.' });
   }
   const record = created.data.records && created.data.records[0];
-  return json(200, { ok: true, id: (record && record.id) || '', existing: false });
+  const id = (record && record.id) || '';
+
+  let welcomeSent = false;
+  if (id) {
+    try {
+      const welcome = await welcomeEmail.sendWelcome(email, topic, id);
+      welcomeSent = welcome.sent === true;
+      if (welcomeSent) {
+        await airtable(
+          token,
+          `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableId)}/${encodeURIComponent(id)}`,
+          {
+            method: 'PATCH',
+            body: JSON.stringify({ fields: { 'Send event welcome': 'Sent' }, typecast: true }),
+          }
+        );
+      }
+    } catch (_) {
+      console.log('event welcome failed');
+    }
+  }
+
+  return json(200, { ok: true, id, existing: false, welcome_sent: welcomeSent });
 }
 
 async function saveIntroduction(token, baseId, tableId, body) {
