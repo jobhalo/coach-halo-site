@@ -153,28 +153,48 @@ test('every mapped coach has a stored summary within the caps', () => {
   }
 });
 
-test('the intro email shares only the consented details', () => {
-  const intro = require('./functions/event-intro-email');
-  assert.equal(intro.coachEmailFrom({ 'Contact Me': 'coach@example.com' }), 'coach@example.com');
-  assert.equal(intro.coachEmailFrom({ 'Contact Me': 'mailto:coach@example.com?subject=hi' }), 'coach@example.com');
-  assert.equal(intro.coachEmailFrom({ 'Contact Me': 'not an email' }), '');
-  assert.equal(intro.coachEmailFrom({}), '');
+/* The scheduling monitor reads the saved Availability field line by line with
+   ^(\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})(?:\s+(\S+))?$
+   (_parse_coach_halo_availability_windows in coaching_intro_generate.py).
+   Reformat these lines and the lead stops getting a reply. */
+test('saved availability stays in the format the scheduling monitor parses', () => {
+  const availability = lib.availabilityFromWindows(
+    [
+      { date: '2027-03-02', start: '09:00', end: '09:45' },
+      { date: '2027-03-04', start: '17:30', end: '18:15' },
+    ],
+    'America/New_York',
+    new Date('2027-02-01T00:00:00Z')
+  );
+  assert.ok(availability.ok, availability.message);
 
-  const body = intro.introBody({
-    coachName: 'Casey Coach',
-    name: 'Ada',
-    email: 'ada@library.org',
-    topicLabel: 'money',
-    timeZone: 'America/Los_Angeles',
-    availabilityText: '2026-11-10 09:00–09:45 America/Los_Angeles',
-    coachMessage: 'I want to build a budget that sticks.',
-  });
-  for (const value of [body.text, body.html]) {
-    assert.match(value, /Hi Casey,/);
-    assert.match(value, /ada@library\.org/);
-    assert.match(value, /budget that sticks/);
-    assert.match(value, /America\/Los_Angeles/);
-    assert.doesNotMatch(value, /do not share with coach/i);
-    assert.doesNotMatch(value, /session note/i);
+  const monitor = /^(\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})(?:\s+(\S+))?$/;
+  const lines = availability.text.split('\n').filter((line) => line.trim());
+  assert.equal(lines.length, 2);
+  for (const line of lines) {
+    /* The monitor normalises en dashes before matching. */
+    assert.match(line.replace(/\u2013/g, '-'), monitor);
+    assert.match(line, /America\/New_York$/);
   }
+
+  /* Non-window lines are skipped by the monitor, so the message is safe to
+     append, but it must never land on a window line. */
+  const withMessage = availability.text + '\n\nWhat they want to talk about:\nBudgeting.';
+  const parsed = withMessage
+    .split('\n')
+    .filter((line) => monitor.test(line.trim().replace(/\u2013/g, '-')));
+  assert.equal(parsed.length, 2);
+});
+
+test('requesting a coach does not email anyone from the function', () => {
+  const source = require('fs').readFileSync(
+    require('path').join(__dirname, 'functions', 'save-event-alert.js'),
+    'utf8'
+  );
+  /* The monitor emails the lead after checking the coach's real calendar.
+     Sending from here would duplicate it. The newsletter welcome is separate
+     and still sends on the alert action. */
+  assert.doesNotMatch(source, /event-intro-email/);
+  assert.doesNotMatch(source, /sendIntroduction/);
+  assert.match(source, /sendWelcome/);
 });

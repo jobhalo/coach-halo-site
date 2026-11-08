@@ -9,8 +9,6 @@
 const guard = require('./signup-guard');
 const lib = require('./events-lib');
 const welcomeEmail = require('./event-welcome');
-const introEmail = require('./event-intro-email');
-
 const DEFAULT_BASE = 'appYMfUftdmhlnU6q';
 const DEFAULT_ALERTS_TABLE = 'tblcD101NOUECJgV3';
 function corsHeaders() {
@@ -260,22 +258,10 @@ async function saveIntroduction(token, baseId, tableId, body) {
   });
   if (!patched.ok) return json(502, { ok: false, error: 'save_failed' });
 
-  let introSent = false;
-  try {
-    const intro = await introEmail.sendIntroduction({
-      name: String(fields.Name || '').trim(),
-      email: savedEmail,
-      topic,
-      topicLabel: (lib.TOPICS[topic] && lib.TOPICS[topic].label) || topic,
-      coachName,
-      timeZone,
-      availabilityText: windowsText,
-      coachMessage,
-    });
-    introSent = intro.sent === true;
-  } catch (_) {
-    console.log('event intro failed');
-  }
-
-  return json(200, { ok: true, id: recordId, intro_sent: introSent });
+  /* No email from here. The scheduling monitor compares these windows against
+     the coach's real booking calendar and writes back to the lead itself, so
+     sending anything now would duplicate it. See
+     scripts/coaching_intro_generate.py in the RemoteRocketship repo
+     (process_pending_coach_halo_event_intros). */
+  return json(200, { ok: true, id: recordId });
 }

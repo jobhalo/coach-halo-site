@@ -388,7 +388,7 @@
       '<div id="connect-actions">' +
       '<button type="button" class="btn-primary" id="connect-open">Connect with this coach</button>' +
       '<span class="coach-connect-note">Ask ' + esc(first) +
-      ' for a free discovery call. We’ll introduce you by email.</span>' +
+      ' for a free discovery call. We’ll email you a time that works for you both.</span>' +
       '</div>' +
       '<form id="connect-form" class="coach-availability-block" hidden>' +
       '<p class="coach-availability-title">Preferred times for your call with ' + esc(first) + '</p>' +
@@ -547,10 +547,9 @@
           }
           track('coach_intro_request', { topic: topic });
           finishConnect(
-            result.data.intro_sent
-              ? 'Your request is on its way to ' + coachFirst(coach.name) +
-                  '. Watch your inbox. Those times are a preference, not a booked appointment.'
-              : 'Your request is saved. Coach-Halo will follow up by email to set a time.'
+            'Your request is in. We’ll check your times against ' + coachFirst(coach.name) +
+              '’s calendar and email you to confirm a time, or suggest the closest ones that work. ' +
+              'Nothing is booked yet.'
           );
         });
       }
