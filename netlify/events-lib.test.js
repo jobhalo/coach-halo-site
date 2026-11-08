@@ -71,17 +71,26 @@ test('alert fields include welcome and introductions omit the session note', () 
     topic: 'career',
     sessionNote: 'a workshop',
     signedUpFrom: 'Alert form',
+    heardFrom: 'reddit',
   });
+  assert.equal(alert.Name, 'Ada');
+  assert.equal(alert['Heard from'], 'reddit');
   assert.equal(alert['Session note (do not share with coach)'], 'a workshop');
-  assert.equal(alert['Send event welcome'], 'Yes');
-  assert.match(alert['Event welcome subject'], /Coach-Halo event list/);
-  assert.match(alert['Event welcome body'], /creator of Coach-Halo/);
-  assert.match(alert['Event welcome body'], /Career change and job search/);
-  assert.doesNotMatch(
-    alert['Event welcome body'],
-    /does not introduce you to a coach/i
-  );
+  assert.equal(alert['Send event welcome'], undefined);
+  assert.equal(alert['Event welcome subject'], undefined);
+  assert.equal(alert['Event welcome body'], undefined);
   assert.equal(alert.Coach, undefined);
+
+  const bare = lib.alertFields({
+    email: 'ada@library.org',
+    topic: 'relationships',
+    signedUpFrom: 'Category page',
+    utm: { utm_source: 'chatgpt', utm_campaign: 'events_comm' },
+  });
+  assert.equal(bare.Name, undefined);
+  assert.match(bare['Signed up from'], /utm_source=chatgpt/);
+  assert.match(bare['Signed up from'], /utm_campaign=events_comm/);
+  assert.equal(bare['Event welcome body'], undefined);
 
   const fields = lib.introFields({
     coachName: 'Casey Coach',

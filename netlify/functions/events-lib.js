@@ -121,22 +121,18 @@ function consentTextFor(coachName) {
 
 const CONSENT_TEXT = consentTextFor(COACH_NAME);
 
-function welcomeSubject() {
-  return 'You’re on the Coach-Halo event list';
-}
-
-function welcomeBody(name, topicLabel) {
-  const topic = String(topicLabel || 'this topic').trim();
-  return [
-    '👋 Hi there! I’m Joaquin, creator of Coach-Halo.',
-    'You’re on the event list. I’ll email you when a free online event fits the topic you chose' +
-      (topic && topic !== 'this topic' ? ' (' + topic + ')' : '') +
-      '.',
-    'We use that topic to find events that fit what you’re looking for.',
-    '✅ **Quick tip.** Drag this email to your Primary inbox if you are on Gmail, or mark it as Not Spam, so the event notes don’t get buried.',
-    'Thanks for letting Coach-Halo be part of your journey.',
-    'Joaquin, Creator of Coach-Halo.com',
-  ].join('\n\n');
+function signupAttribution(utm) {
+  const source = utm && typeof utm === 'object' ? utm : {};
+  return ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+    .map(function (key) {
+      const value = String(source[key] || '')
+        .trim()
+        .replace(/[|\n\r]/g, ' ')
+        .slice(0, 120);
+      return value ? key + '=' + value : '';
+    })
+    .filter(Boolean)
+    .join('; ');
 }
 
 function withCoachHaloRef(raw) {
@@ -292,22 +288,19 @@ function availabilityFromWindows(windows, timeZone, now) {
 
 function alertFields(input) {
   const topic = topicSlug(input.topic);
-  const info = TOPICS[topic] || {};
-  const subject = welcomeSubject();
-  const body = welcomeBody(input.name, info.label || topic);
   const sourceParts = [input.signedUpFrom || 'Category page'];
+  const attribution = signupAttribution(input.utm);
+  if (attribution) sourceParts.push(attribution);
   if (input.eventId) sourceParts.push(String(input.eventId).trim());
   if (input.eventUrl) sourceParts.push(String(input.eventUrl).trim());
   const fields = {
-    Name: input.name,
     Email: input.email,
     Topic: topic,
-    'Heard from': 'events',
+    'Heard from': input.heardFrom || 'events',
     'Signed up from': sourceParts.filter(Boolean).join(' | ').slice(0, 500),
-    'Event welcome subject': subject,
-    'Event welcome body': body,
-    'Send event welcome': 'Yes',
   };
+  const name = String(input.name || '').trim();
+  if (name) fields.Name = name;
   if (input.sessionNote) fields['Session note (do not share with coach)'] = input.sessionNote;
   return fields;
 }
@@ -334,8 +327,6 @@ module.exports = {
   TOPICS,
   TIME_ZONES,
   consentTextFor,
-  welcomeSubject,
-  welcomeBody,
   withCoachHaloRef,
   pacificHour,
   startsInWindow,
@@ -346,4 +337,5 @@ module.exports = {
   availabilityFromWindows,
   alertFields,
   introFields,
+  signupAttribution,
 };

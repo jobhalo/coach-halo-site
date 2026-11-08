@@ -101,7 +101,13 @@ exports.handler = async function (event) {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ ok: true, configured: false, topic, count: 0, events: [] }),
+      body: JSON.stringify({
+        ok: true,
+        configured: false,
+        topic,
+        count: 0,
+        events: [],
+      }),
     };
   }
 
@@ -121,7 +127,13 @@ exports.handler = async function (event) {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ ok: true, configured: true, topic, count: events.length, events }),
+      body: JSON.stringify({
+        ok: true,
+        configured: true,
+        topic,
+        count: events.length,
+        events,
+      }),
     };
   } catch (e) {
     return {

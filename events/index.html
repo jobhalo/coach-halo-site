@@ -12,6 +12,35 @@
       window.datafast.q.push(arguments);
     };
   </script>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var code = params.get("r") || "";
+      if (/^[smq][abcdefghjkmnpqrstuvwxyz23456789]{4}$/.test(code)) {
+        var medium = { s: "sms", m: "message", q: "quote" }[code.charAt(0)];
+        params.set("utm_source", "thumbtack");
+        params.set("utm_medium", medium);
+        params.set("utm_campaign", "events_invite");
+        params.set("utm_content", code);
+        window.history.replaceState(null, "", window.location.pathname + "?" + params.toString() + window.location.hash);
+        window.addEventListener("load", function () {
+          window.setTimeout(function () {
+            var clean = new URLSearchParams(window.location.search);
+            ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(function (key) {
+              clean.delete(key);
+            });
+            var query = clean.toString();
+            window.history.replaceState(null, "", window.location.pathname + (query ? "?" + query : "") + window.location.hash);
+          }, 0);
+        });
+      }
+      window.__eventSignupUtm = {};
+      ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(function (key) {
+        var value = params.get(key);
+        if (value) window.__eventSignupUtm[key] = value.slice(0, 120);
+      });
+    })();
+  </script>
   <script defer data-website-id="dfid_ImJXeenE5zJoIlqGSMtN5" data-domain="coach-halo.com" src="https://datafa.st/js/script.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -113,11 +142,30 @@
       border: 1px solid var(--border);
       text-decoration: none;
     }
-    .event-card {
-      grid-template-columns: 11.5rem 1fr auto;
+    .event-card { align-items: start; }
+    .events-layout { display: block; }
+    .events-side {
+      display: grid;
       gap: 1.25rem;
-      align-items: start;
+      padding-bottom: clamp(2.5rem, 6vw, 3.5rem);
     }
+    .events-side .alert {
+      padding: 0;
+      background: transparent;
+      border-top: 0;
+    }
+    .public-coach {
+      border: 1px solid var(--border);
+      background: var(--white);
+      padding: 1.15rem 1.1rem;
+    }
+    .public-coach h2 {
+      margin: 0 0 0.85rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .view-workshop { width: auto; margin-top: 0.85rem; min-height: 44px; }
     .topic-card:hover, .event-card:hover { border-color: #d4d4d4; }
     .topic-card h2, .event-card h2 {
       margin: 0 0 0.35rem;
@@ -407,8 +455,18 @@
     }
     .event-gate h2 { font-size: 1.35rem; font-weight: 600; letter-spacing: -0.02em; margin: 0 2.5rem 0.35rem 0; }
     [hidden] { display: none !important; }
+    @media (min-width: 721px) {
+      .events-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(17rem, 22rem);
+        gap: 2rem;
+        align-items: start;
+      }
+      .events-side { padding-top: clamp(3rem, 8vw, 4.5rem); }
+    }
     @media (max-width: 720px) {
       .event-card, .window-row { grid-template-columns: 1fr; }
+      .view-workshop { width: 100%; }
     }
     @media (prefers-reduced-motion: reduce) {
       * { scroll-behavior: auto !important; transition: none !important; }
@@ -426,59 +484,44 @@
   </header>
 
   <main>
-    <section class="page-hero">
-      <div class="section-inner">
-        <p class="eyebrow" id="eyebrow">Events</p>
-        <h1 id="page-title">Find an event for your next step.</h1>
-        <p class="lead" id="page-lead">Explore free online events on careers, relationships, money, wellbeing, and more. Choose a topic that matters to you.</p>
-        <p class="check-line" id="check-line" hidden>We checked that each session was listed as free and online.</p>
+    <div class="events-layout section-inner">
+      <div class="events-main">
+        <section class="page-hero">
+          <p class="eyebrow" id="eyebrow">Events</p>
+          <h1 id="page-title">Find an event for your next step.</h1>
+          <p class="lead" id="page-lead">Explore free online events on careers, relationships, money, wellbeing, and more. Choose a topic that matters to you.</p>
+        </section>
+        <section aria-label="Topics">
+          <div class="topic-list" id="topic-list"></div>
+          <p class="event-empty" id="event-empty" hidden>No upcoming workshops listed right now.</p>
+          <div class="event-list" id="event-list" hidden></div>
+        </section>
       </div>
-    </section>
-
-    <section aria-label="Topics">
-      <div class="section-inner">
-        <div class="topic-list" id="topic-list"></div>
-        <p class="event-empty" id="event-empty" hidden>No events listed right now.</p>
-        <div class="event-list" id="event-list" hidden></div>
-      </div>
-    </section>
-
-    <section class="alert" id="alert" hidden>
-      <div class="section-inner">
-        <h2 class="alert-heading">Haven’t found the right event yet?</h2>
-        <p class="section-intro alert-heading">Tell us what interests you, and we’ll email you when new events on this topic are available.</p>
-        <div class="form-card" id="alert-card">
-          <form id="alert-form">
-            <div class="field-group">
-              <label for="first_name">First name</label>
-              <input type="text" id="first_name" name="first_name" autocomplete="given-name" required>
-            </div>
-            <div class="field-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" autocomplete="email" required>
-            </div>
-            <div class="field-group">
-              <label for="session_note">What would you like help with or learn more about? <span class="optional">(optional)</span></label>
-              <p class="field-hint" id="note-example"></p>
-              <textarea id="session_note" name="session_note" maxlength="500"></textarea>
-            </div>
-            <button type="submit" class="btn-primary">Keep me posted</button>
-            <p class="notice">We’ll use your interests for event alerts and to suggest a relevant coach. We’ll only share your details with a coach if you request an introduction. See our <a href="/privacy/">Privacy</a> and <a href="/terms/">Terms</a>.</p>
-            <p class="message" id="alert-message" role="alert"></p>
-          </form>
-          <div id="alert-done" hidden>
-            <div class="signed-up-banner" role="status">
-              <strong id="alert-done-title">You’re on the list!</strong>
-              <span id="alert-done-copy"></span>
-            </div>
-            <div id="alert-coach-offer" hidden>
-              <h2>Want support while you wait?</h2>
-              <div id="coach-step"></div>
+      <aside class="events-side" id="events-side" hidden>
+        <section class="alert" id="alert">
+          <h2 id="alert-heading">Save your email</h2>
+          <p class="section-intro" id="alert-promise"></p>
+          <div class="form-card" id="alert-card">
+            <form id="alert-form">
+              <div class="field-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" autocomplete="email" required>
+              </div>
+              <button type="submit" class="btn-primary" id="alert-submit">Save my email</button>
+              <p class="notice">We save your email with this topic. See our <a href="/privacy/">Privacy</a> and <a href="/terms/">Terms</a>.</p>
+              <p class="message" id="alert-message" role="alert"></p>
+            </form>
+            <div id="alert-done" hidden>
+              <div class="signed-up-banner" role="status">
+                <strong id="alert-done-title">Your email is saved.</strong>
+                <span id="alert-done-copy"></span>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </section>
+        <section class="public-coach" id="public-coach" hidden aria-label="Coach"></section>
+      </aside>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -493,50 +536,7 @@
     </div>
   </footer>
 
-  <div class="event-gate" id="event-gate" hidden>
-    <div class="event-gate-card" role="dialog" aria-modal="true" aria-labelledby="gate-ask-title" tabindex="-1">
-      <button type="button" class="event-gate-close" id="gate-close">Close</button>
-      <div id="gate-ask">
-        <h2 id="gate-ask-title">Want more events like this one?</h2>
-        <p class="coach-line">Get email updates about future events on this topic. You’ll register for this event on the organizer’s website.</p>
-        <p class="selected-event" id="gate-event-title"></p>
-        <a class="btn-secondary gate-register" id="gate-skip" href="" target="_blank" rel="noopener noreferrer">Continue to event registration</a>
-        <form id="gate-form">
-          <div class="field-group">
-            <label for="gate_first_name">First name</label>
-            <input type="text" id="gate_first_name" autocomplete="given-name" required>
-          </div>
-          <div class="field-group">
-            <label for="gate_email">Email</label>
-            <input type="email" id="gate_email" autocomplete="email" required>
-          </div>
-          <div class="field-group">
-            <label for="gate_session_note">What would you like help with or learn more about? <span class="optional">(optional)</span></label>
-            <p class="field-hint" id="gate-note-example"></p>
-            <textarea id="gate_session_note" maxlength="500"></textarea>
-          </div>
-          <button type="submit" class="btn-primary">Sign me up for event alerts</button>
-          <p class="notice">We’ll use your interests for event alerts and to suggest a relevant coach. We’ll only share your details with a coach if you request an introduction. See our <a href="/privacy/">Privacy</a> and <a href="/terms/">Terms</a>.</p>
-          <p class="message" id="gate-message" role="alert"></p>
-        </form>
-      </div>
-      <div id="gate-done" hidden>
-        <div class="signed-up-banner" role="status">
-          <strong id="gate-done-title">You’re on the list!</strong>
-          <span id="gate-done-copy"></span>
-        </div>
-        <p class="selected-event" id="gate-event-kept"></p>
-        <p class="not-registered">Signing up for alerts has not registered you for this event.</p>
-        <a class="btn-primary gate-register" id="gate-continue" href="" target="_blank" rel="noopener noreferrer" hidden>Continue to event registration</a>
-        <div id="gate-coach-offer" hidden>
-          <h2>Looking for more personal support?</h2>
-          <div id="gate-coach-step"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script src="/netlify/functions/signup-guard.js"></script>
-  <script src="/events/events.js?v=20261016b"></script>
+  <script src="/events/events.js?v=20261107a"></script>
 </body>
 </html>
