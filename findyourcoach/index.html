@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Get matched with a career, life, relationship, wellness, or financial coach on Coach-Halo. Tell us your goals and we will connect you for a complimentary intro conversation." />
   <title>Find your coach | Coach-Halo</title>
+  <script id="datafast-queue">
+    window.datafast = window.datafast || function () {
+      window.datafast.q = window.datafast.q || [];
+      window.datafast.q.push(arguments);
+    };
+  </script>
   <script defer data-website-id="dfid_ImJXeenE5zJoIlqGSMtN5" data-domain="coach-halo.com" src="https://datafa.st/js/script.js"></script>
   <style>
     :root {
@@ -1531,6 +1537,28 @@
         return params;
       }
 
+      function getAdClickIds() {
+        var ids = {};
+        var search = new URLSearchParams(window.location.search);
+        ["gclid", "gbraid", "wbraid"].forEach(function (key) {
+          var v = search.get(key);
+          if (v) ids[key] = v.slice(0, 255);
+        });
+        return ids;
+      }
+
+      /* Goal properties must stay free of PII and free-text answers. */
+      var goalsSent = {};
+      function trackGoal(name, props, once) {
+        if (once) {
+          if (goalsSent[name]) return;
+          goalsSent[name] = true;
+        }
+        try {
+          if (typeof window.datafast === "function") window.datafast(name, props || {});
+        } catch (e) {}
+      }
+
       var SITUATION_MAP = {
         "breakup-or-separation": { type: "Life coaching", category: "Life Coaching", label: "Breakup or separation" },
         "starting-over": { type: "Life coaching", category: "Life Coaching", label: "Starting over" },
@@ -1544,6 +1572,13 @@
       function selectedSituation() {
         var el = document.querySelector('input[name="situation"]:checked');
         return el ? el.value : "";
+      }
+
+      function selectedCategoryForGoals() {
+        var mapped = SITUATION_MAP[selectedSituation()];
+        if (mapped) return mapped.category;
+        var typeInput = document.querySelector('input[name="coachingType"]:checked');
+        return typeInput ? (typeInput.getAttribute("data-category") || "") : "";
       }
 
       function syncCoachingTypeFromSituation() {
@@ -1722,7 +1757,10 @@
           if (currentStep === 2 && !validateStep2()) return;
           if (currentStep === 3 && !validateStep3()) return;
           if (currentStep === 4 && !validateStep4()) return;
-          if (currentStep < totalSteps) showStep(currentStep + 1);
+          if (currentStep < totalSteps) {
+            showStep(currentStep + 1);
+            trackGoal("fyc_step_" + currentStep, { category: selectedCategoryForGoals() }, true);
+          }
         }
         if (btn.getAttribute("data-action") === "back" && currentStep > 1) {
           showStep(currentStep - 1);
@@ -1767,7 +1805,8 @@
           source: "findyourcoach",
           landingRef: utm.ref || "",
           submittedAt: new Date().toISOString(),
-          utm: utm
+          utm: utm,
+          adClickIds: getAdClickIds()
         };
       }
 
@@ -2209,6 +2248,7 @@
         successPanel.classList.remove("on");
         if (confirmationPanel) confirmationPanel.classList.remove("on");
         lastFormPayload = payload;
+        trackGoal("fyc_match_requested", { category: payload.coachingTypeCategory || "" });
 
         var matchPromise = fetchCoachMatch(payload).catch(function (err) {
           return { httpOk: false, data: { ok: false, error: "network", message: String(err) } };
@@ -2251,9 +2291,20 @@
             lastMatchResult = matchReady;
             /* Coach not notified here — Zapier fires after user confirms time (see handleConfirmTime) */
             showMatchResult(payload, matchReady);
+            trackGoal("fyc_match_shown", {
+              category: payload.coachingTypeCategory || "",
+              matched_category: matchReady.matched_category || "",
+              gender_honored: matchReady.gender_preference_honored === false ? "no" : "yes",
+              has_slots: matchReady.availability_slots && matchReady.availability_slots.length ? "yes" : "no"
+            });
           } else {
             var msg = matchFailureMessage(matchReady);
             var errCode = (matchReady && matchReady.error) ? matchReady.error : "unknown";
+            trackGoal("fyc_no_match", {
+              category: payload.coachingTypeCategory || "",
+              gender_pref: payload.genderPreference || "",
+              error: errCode
+            });
             if (errCode !== "no_match") {
               sendLeadToZapier(payload, null, "findyourcoach_match_failed", "error", errCode);
             }
@@ -2323,6 +2374,11 @@
             ""
           ).then(function (result) {
             if (result && result.ok) {
+              trackGoal("fyc_request_confirmed", {
+                category: lastFormPayload.coachingTypeCategory || "",
+                matched_category: lastMatchResult.matched_category || "",
+                custom_time: confirmPayload.noneOfTimesWork ? "yes" : "no"
+              }, true);
               showConfirmation(lastFormPayload, lastMatchResult);
             } else {
               if (successPanel) successPanel.classList.add("on");
@@ -2344,8 +2400,21 @@
 
       var sitInputs = document.querySelectorAll('input[name="situation"]');
       sitInputs.forEach(function (input) {
-        input.addEventListener("change", syncCoachingTypeFromSituation);
+        input.addEventListener("change", function () {
+          syncCoachingTypeFromSituation();
+          trackGoal("fyc_start", { category: selectedCategoryForGoals() }, true);
+        });
       });
+
+      (function preselectSituationFromUrl() {
+        var sit = (new URLSearchParams(window.location.search).get("sit") || "").trim().toLowerCase();
+        if (!sit || !Object.prototype.hasOwnProperty.call(SITUATION_MAP, sit)) return;
+        var input = document.querySelector('input[name="situation"][value="' + sit + '"]');
+        if (!input) return;
+        input.checked = true;
+        syncCoachingTypeFromSituation();
+        trackGoal("fyc_landing_preselected", { category: selectedCategoryForGoals() }, true);
+      })();
 
       document.querySelectorAll("[data-toggle-more]").forEach(function (button) {
         button.addEventListener("click", function () {
@@ -2386,7 +2455,11 @@
         trigger.addEventListener("click", openModal);
         closeBtn.addEventListener("click", function () { returnToForm = false; closeModal(); });
         findBtn.addEventListener("click", function () { returnToForm = true; closeModal(); });
-        continueLink.addEventListener("click", function () { returnToForm = false; closeModal(); });
+        continueLink.addEventListener("click", function () {
+          trackGoal("fyc_thumbtack_exit", {}, true);
+          returnToForm = false;
+          closeModal();
+        });
         dialog.addEventListener("click", function (event) {
           if (event.target === dialog) { returnToForm = false; closeModal(); }
         });

@@ -12,6 +12,8 @@ const lib = require('./events-lib');
 
 const DEFAULT_BASE = 'appYMfUftdmhlnU6q';
 const DEFAULT_EVENTS_TABLE = 'tblJJVVYNwDwP28R2';
+const SPONSOR_TABLE = 'tblqRN6Rl3HjrSVA9';
+const FEATURED_TOPIC = 'career';
 
 function corsHeaders() {
   return {
@@ -53,23 +55,71 @@ async function fetchAirtableRecords(token, baseId, tableId, formula) {
   return records;
 }
 
-function eventFromFields(record) {
+function compact(text) {
+  return String(text || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function domainStem(raw) {
+  try {
+    return new URL(String(raw || '').trim()).hostname.toLowerCase().replace(/^www\./, '').split('.')[0];
+  } catch (_) {
+    return '';
+  }
+}
+
+function isAffiliateUrl(raw) {
+  try {
+    return new URL(String(raw || '').trim()).searchParams.has('am_id');
+  } catch (_) {
+    return false;
+  }
+}
+
+function sponsorKeys(rows) {
+  const keys = [];
+  for (const rec of rows) {
+    const fields = rec.fields || {};
+    for (const key of [
+      compact(fields['Bootcamp Name']),
+      domainStem(fields['Bootcamp URL']),
+      domainStem(fields['Lead Redirect URL']),
+    ]) {
+      if (key && key.length >= 6) keys.push(key);
+    }
+  }
+  return keys;
+}
+
+function isSponsorEvent(host, url, keys) {
+  const hostKey = compact(host);
+  let urlHost = '';
+  try {
+    urlHost = compact(new URL(String(url || '').trim()).hostname);
+  } catch (_) {}
+  return keys.some((k) => hostKey.includes(k) || urlHost.includes(k));
+}
+
+function eventFromFields(record, sponsors) {
   const fields = record.fields || {};
   const name = String(fields.Name || '').trim();
-  const url = lib.withCoachHaloRef(fields.URL || '');
+  const rawUrl = String(fields.URL || '').trim();
+  // Affiliate links (am_id=jobhalo) keep their own tag; no extra ref.
+  const url = isAffiliateUrl(rawUrl) ? rawUrl : lib.withCoachHaloRef(rawUrl);
   const start = String(fields.Start || '').trim();
   if (!name || !url || !start) return null;
   const cost = String(fields.Cost || fields.Price || '').trim().toLowerCase();
+  const host = String(fields.Host || '').trim();
   return {
     id: String(record.id || '').trim(),
     name,
-    host: String(fields.Host || '').trim(),
+    host,
     summary: String(fields.Summary || '').trim(),
     when: lib.formatWhen(start),
     start,
     url,
     free: !cost || cost === 'free' || cost === '0' || cost === '$0',
     online: true,
+    partner: fields.Featured === true || isSponsorEvent(host, rawUrl, sponsors || []),
   };
 }
 
@@ -113,17 +163,24 @@ exports.handler = async function (event) {
 
   const now = new Date();
   try {
+    const baseId = process.env.AIRTABLE_BASE_ID || DEFAULT_BASE;
     const formula = "AND({Live}=1,{Topic}='" + topic + "')";
-    const rows = await fetchAirtableRecords(
-      token,
-      process.env.AIRTABLE_BASE_ID || DEFAULT_BASE,
-      tableId,
-      formula
-    );
+    const rows = await fetchAirtableRecords(token, baseId, tableId, formula);
+    let sponsors = [];
+    if (topic === FEATURED_TOPIC) {
+      try {
+        sponsors = sponsorKeys(await fetchAirtableRecords(token, baseId, SPONSOR_TABLE));
+      } catch (_) {
+        sponsors = [];
+      }
+    }
     const events = rows
-      .map((row) => eventFromFields(row))
+      .map((row) => eventFromFields(row, sponsors))
       .filter((item) => item && lib.startsInWindow(item.start, now))
-      .sort((a, b) => Date.parse(a.start) - Date.parse(b.start));
+      .sort((a, b) => {
+        if (a.partner !== b.partner) return a.partner ? -1 : 1;
+        return Date.parse(a.start) - Date.parse(b.start);
+      });
     return {
       statusCode: 200,
       headers,

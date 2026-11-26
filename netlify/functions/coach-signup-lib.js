@@ -637,6 +637,104 @@ async function markWelcomeSent(email, kind) {
   });
 }
 
+function adminNotifyEmail() {
+  return clip(process.env.ADMIN_NOTIFY_EMAIL || "joaquinh@coach-halo.com", 200).toLowerCase();
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function adminRow(label, value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  return (
+    "<tr><td style=\"padding:8px 12px 8px 0;vertical-align:top;color:#666;white-space:nowrap;\">" +
+    escapeHtml(label) +
+    "</td><td style=\"padding:8px 0;vertical-align:top;color:#0a0a0a;white-space:pre-wrap;\">" +
+    escapeHtml(text) +
+    "</td></tr>"
+  );
+}
+
+function adminSignupHtml(signup, kind) {
+  const rows = [
+    adminRow("Plan", kind === "paid" ? (signup.plan || "paid") : "free"),
+    adminRow("Name", signup.name),
+    adminRow("Email", signup.email),
+    adminRow("Coach type", signup.coachType),
+    adminRow("Headline", signup.title),
+    adminRow("Website", signup.website),
+    adminRow("Helps with", listify(signup.offers)),
+    adminRow("Works with", listify(signup.levels)),
+    adminRow("Industries", signup.industries),
+    adminRow("Calendar", [signup.hasCal, signup.cal].filter(Boolean).join(" ")),
+    adminRow("First call", signup.freecall),
+    adminRow("Hourly rate", signup.price),
+    adminRow("Based in", signup.tz),
+    adminRow("Languages", listify(signup.langs)),
+    adminRow("Capacity", signup.capacity),
+    adminRow("Heard about us", signup.heard),
+    adminRow("Ideal client", signup.ideal),
+    adminRow("Approach", signup.approach),
+    adminRow("Results", signup.result),
+    adminRow("Bio", signup.bio),
+    adminRow("Photo key", signup.photoKey),
+  ].filter(Boolean).join("");
+  return (
+    "<div style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.45;color:#0a0a0a;\">" +
+    "<p style=\"margin:0 0 12px;\">New Coach-Halo <strong>" +
+    escapeHtml(kind === "paid" ? "paid" : "free") +
+    "</strong> signup.</p>" +
+    "<table style=\"border-collapse:collapse;width:100%;max-width:640px;\">" +
+    rows +
+    "</table></div>"
+  );
+}
+
+async function sendAdminSignupNotify(signup, kind) {
+  const apiKey = String(process.env.SENDGRID_API_KEY || "").trim();
+  const fromAddr = String(process.env.SENDGRID_FROM_EMAIL || "joaquinh@coach-halo.com").trim();
+  const toAddr = adminNotifyEmail();
+  if (!signup || !validEmail(signup.email) || isSignupTest(signup.email)) {
+    return { adminNotified: false };
+  }
+  if (!apiKey.startsWith("SG.") || !fromAddr.toLowerCase().endsWith("@coach-halo.com") || !validEmail(toAddr)) {
+    console.log("coach-join admin notify not configured");
+    return { adminNotified: false };
+  }
+  const label = kind === "paid" ? "paid" : "free";
+  const subject = "New Coach-Halo " + label + " signup: " + clip(signup.name, 80);
+  const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
+    method: "POST",
+    headers: { Authorization: "Bearer " + apiKey, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      personalizations: [{ to: [{ email: toAddr }] }],
+      from: { email: fromAddr, name: "Coach-Halo Signup" },
+      reply_to: { email: fromAddr, name: "Joaquin @ Coach-Halo" },
+      subject: subject,
+      content: [
+        { type: "text/plain", value: "New Coach-Halo " + label + " signup\n\n" + profileText(signup) + "\n\nIdeal Client block:\n" + idealClient(signup) },
+        { type: "text/html", value: adminSignupHtml(signup, label) },
+      ],
+      categories: ["ch_admin_signup"],
+      tracking_settings: {
+        click_tracking: { enable: false, enable_text: false },
+        open_tracking: { enable: false },
+      },
+    }),
+  });
+  if (!res.ok) {
+    console.log("coach-join admin notify status", res.status);
+    return { adminNotified: false };
+  }
+  return { adminNotified: true };
+}
+
 async function sendBrandedWelcome(name, email, kind) {
   const apiKey = String(process.env.SENDGRID_API_KEY || "").trim();
   const fromAddr = String(process.env.SENDGRID_FROM_EMAIL || "joaquinh@coach-halo.com").trim();
@@ -777,6 +875,9 @@ async function fulfillPaidCheckout(store, session) {
     await store.set("done:" + sessionId, { at: Date.now() });
     await store.delete(ref);
   }
+  if (!saved.existingMember) {
+    try { await sendAdminSignupNotify(payload, "paid"); } catch (err) { console.log("coach-join admin notify failed"); }
+  }
   return { ok: true, saved: true, table: "paid", welcomeSent: welcome.welcomeSent === true };
 }
 
@@ -823,6 +924,7 @@ module.exports = {
   sendFreeWelcome: function (payload, name, email) {
     return deliverWelcome(FREE_LIST_UID, payload, name, email);
   },
+  sendAdminSignupNotify: sendAdminSignupNotify,
   memoryStore: memoryStore,
   productionStore: productionStore,
   holdProfile: holdProfile,

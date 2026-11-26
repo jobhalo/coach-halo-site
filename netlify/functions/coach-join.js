@@ -85,9 +85,13 @@ exports.handler = async function (event) {
   if (!saved.ok) return json(saved.status || 502, { ok: false, error: saved.error || "save_failed" });
   if (saved.awaitingPayment) return json(200, { ok: true, awaitingPayment: true, welcomeSent: false });
   if (saved.existingMember) return json(200, { ok: true, existingMember: true, welcomeSent: false });
-  if (saved.table === "paid") return json(200, { ok: true, welcomeSent: false });
+  if (saved.table === "paid") {
+    try { await lib.sendAdminSignupNotify(signup, "paid"); } catch (err) { console.log("coach-join admin notify failed"); }
+    return json(200, { ok: true, welcomeSent: false });
+  }
   if (lib.isSignupTest(signup.email)) return json(200, { ok: true, photoKey: signup.photoKey || "", welcomeSent: false });
 
+  try { await lib.sendAdminSignupNotify(signup, "free"); } catch (err) { console.log("coach-join admin notify failed"); }
   const welcome = await lib.sendFreeWelcome(signup, signup.name, signup.email);
   return json(200, Object.assign({ ok: true, photoKey: signup.photoKey || "" }, welcome));
 };

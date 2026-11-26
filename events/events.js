@@ -214,10 +214,12 @@
       title.textContent = item.name || 'Workshop';
       var host = document.createElement('p');
       host.className = 'event-host';
-      host.textContent = item.host || '';
+      host.textContent = item.partner
+        ? (item.host ? item.host + ' · Partner' : 'Partner')
+        : item.host || '';
       card.appendChild(when);
       card.appendChild(title);
-      if (item.host) card.appendChild(host);
+      if (host.textContent) card.appendChild(host);
       if (item.summary) {
         var summary = document.createElement('p');
         summary.className = 'event-summary';
