@@ -157,7 +157,12 @@ h2 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.02em; margin: 0 0 1
 .platform-tag { display: inline-block; font-size: 0.72rem; font-weight: 600; border-radius: 999px; padding: 2px 9px; margin-top: 2px; }
 .platform p { margin: 0; color: var(--muted); font-size: 0.94rem; }
 .platform .eligibility { font-size: 0.85rem; color: var(--text); }
-.platform .btn { align-self: flex-start; margin-top: auto; }
+.platform-actions { margin-top: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.link-cta {
+  background: none; border: 0; padding: 0; font: inherit; font-size: 0.88rem; color: var(--text);
+  text-decoration: underline; text-underline-offset: 2px; cursor: pointer; text-align: left;
+}
+.link-cta:hover { color: var(--muted); }
 
 /* Independent coaches: two partnership paths */
 .paths { display: grid; gap: 16px; grid-template-columns: 1fr; }
@@ -193,6 +198,7 @@ h2 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.02em; margin: 0 0 1
 .modal .form-card { max-width: none; max-height: calc(100dvh - 32px); overflow-y: auto; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18); }
 .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
 .modal-head h3 { margin: 0; font-size: 1.15rem; }
+.modal-intro { margin: -6px 0 18px; color: var(--muted); font-size: 0.88rem; }
 .modal-close {
   border: 1px solid var(--border); background: #fff; color: var(--text); border-radius: 2px;
   width: 34px; height: 34px; font-size: 1.3rem; line-height: 1; cursor: pointer; flex-shrink: 0;
