@@ -195,9 +195,46 @@
     </div>
 
     <section id="affiliate">
-      <h2>Have your own affiliate program?</h2>
-      <p class="section-intro">Running your own coaching business with an affiliate or referral program? We'd love to explore a partnership and help you reach more potential clients.</p>
-      <div class="form-card accent-violet">
+      <h2>Already have your own coaching business?</h2>
+      <p class="section-intro">Keep your existing website, tools, and payment system. You can still partner directly with Coach-Halo.</p>
+      <div class="paths">
+        <article class="path accent-violet">
+          <span class="icon tone-violet" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1 1"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1-1"/></svg></span>
+          <p class="path-label">Option 1</p>
+          <h3>I already have an affiliate program</h3>
+          <p>Share your existing affiliate or referral program with us to explore a direct partnership.</p>
+          <p class="path-subhead">What you'll share</p>
+          <ul class="path-list">
+            <li>Your coaching website</li>
+            <li>Your affiliate program link</li>
+            <li>Your commission structure</li>
+          </ul>
+          <p class="path-note">Every independent partnership is reviewed by hand before referrals start.</p>
+          <a class="btn btn-primary path-cta" href="#affiliate-form-card" id="affiliate-open">Submit Your Affiliate Program</a>
+        </article>
+        <article class="path accent-blue">
+          <span class="icon tone-blue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
+          <p class="path-label">Option 2</p>
+          <h3>I want to create an affiliate program</h3>
+          <p>Launch your own affiliate program and reward partners who bring new clients to your coaching business.</p>
+          <p class="path-subhead">Recommended tool</p>
+          <ul class="tools">
+            <li class="tool">
+              <div class="platform-head">
+                <img class="platform-logo" src="/partners/assets/rewardful.png" alt="" width="44" height="44" />
+                <div>
+                  <h4>Rewardful</h4>
+                  <p>Create your affiliate program, track referrals, and manage commissions.</p>
+                </div>
+              </div>
+              <a class="btn btn-primary" href="https://www.rewardful.com/?via=coach-halo" target="_blank" rel="noopener sponsored" data-affiliate-tool="rewardful" aria-label="Get Started with Rewardful (opens in a new tab)">Get Started</a>
+            </li>
+          </ul>
+          <p class="path-note">Signing up for Rewardful doesn't activate Coach-Halo referrals. Once your program is live, submit it with Option 1.</p>
+        </article>
+      </div>
+      <p class="form-note paths-disclosure">Third-party software fees may apply. Direct partnerships require approval. Coach-Halo may earn affiliate commissions.</p>
+      <div class="form-card accent-violet" id="affiliate-form-card">
         <form id="affiliate-form" novalidate>
           <div class="hp" aria-hidden="true">
             <label for="affiliate-company">Company</label>
@@ -229,26 +266,6 @@
           <p>Every independent partnership is reviewed by hand. We'll be in touch by email.</p>
         </div>
       </div>
-    </section>
-
-    <section id="affiliate-tools">
-      <h2>Don't have an affiliate program yet?</h2>
-      <p class="section-intro">Already have your own coaching website? You don't need to switch platforms to partner with Coach-Halo. Create your own affiliate program, track client referrals, and reward partners who help grow your coaching business. Once it's set up, <a href="#affiliate">submit your affiliate program</a> above to apply for a direct partnership.</p>
-      <div class="platforms">
-        <article class="platform">
-          <div class="platform-head">
-            <img class="platform-logo" src="/partners/assets/rewardful.png" alt="" width="44" height="44" />
-            <div>
-              <h3>Rewardful</h3>
-              <span class="platform-tag tone-blue">Recommended</span>
-            </div>
-          </div>
-          <p>Affiliate and referral software that works with payment platforms like Stripe and Paddle, so you can run your own program without changing how you sell.</p>
-          <p class="eligibility"><strong>Fees:</strong> Rewardful charges its own subscription. Third-party software fees may apply.</p>
-          <a class="btn btn-primary" href="https://www.rewardful.com/?via=coach-halo" target="_blank" rel="noopener sponsored" data-affiliate-tool="rewardful">Get Started</a>
-        </article>
-      </div>
-      <p class="form-note">Affiliate disclosure: Coach-Halo may earn a commission if you sign up through this link, at no extra cost to you. Setting up an affiliate program doesn't guarantee approval for a direct partnership; every application is reviewed by hand.</p>
     </section>
 
     <div class="band">
@@ -316,6 +333,14 @@
         link.addEventListener("click", function () {
           try { localStorage.setItem(PLATFORM_KEY, link.getAttribute("data-platform")); } catch (e) {}
         });
+      });
+
+      document.getElementById("affiliate-open").addEventListener("click", function (event) {
+        var card = document.getElementById("affiliate-form-card");
+        var formHidden = document.getElementById("affiliate-form").hidden;
+        event.preventDefault();
+        card.scrollIntoView({ behavior: "smooth", block: "start" });
+        (formHidden ? card.querySelector(".form-success") : document.getElementById("affiliate-email")).focus({ preventScroll: true });
       });
 
       var email = "";

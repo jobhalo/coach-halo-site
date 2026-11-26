@@ -159,6 +159,35 @@ h2 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.02em; margin: 0 0 1
 .platform .eligibility { font-size: 0.85rem; color: var(--text); }
 .platform .btn { align-self: flex-start; margin-top: auto; }
 
+/* Independent coaches: two partnership paths */
+.paths { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 720px) { .paths { grid-template-columns: repeat(2, 1fr); } }
+.path {
+  background: #fff; border: 1px solid var(--border); border-top: 3px solid var(--border); border-radius: var(--radius);
+  padding: 24px; display: flex; flex-direction: column; gap: 10px;
+}
+.path.accent-violet { border-top-color: var(--violet); }
+.path.accent-blue { border-top-color: var(--blue); }
+.path h3 { margin: 0; font-size: 1.1rem; }
+.path p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+.path .path-label, .path .path-subhead { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+.path .path-label { margin-top: 4px; }
+.path .path-subhead { color: var(--text); margin-top: 6px; }
+.path .path-cta { align-self: flex-start; margin-top: auto; }
+.path .path-note { font-size: 0.85rem; }
+.path-list { margin: 0; padding-left: 18px; color: var(--muted); font-size: 0.93rem; }
+.path-list li { margin-bottom: 2px; }
+.tools { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.tool {
+  border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface);
+  padding: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+}
+.tool .platform-head { flex: 1 1 220px; }
+.tool h4 { margin: 0; font-size: 1rem; }
+.tool p { font-size: 0.88rem; }
+.form-note.paths-disclosure { margin: 14px 0 32px; }
+.paths-disclosure + .form-card { scroll-margin-top: 88px; }
+
 .logo-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 24px; }
 .logo-chip {
   display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px;
