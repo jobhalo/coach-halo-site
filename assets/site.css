@@ -185,8 +185,20 @@ h2 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.02em; margin: 0 0 1
 .tool .platform-head { flex: 1 1 220px; }
 .tool h4 { margin: 0; font-size: 1rem; }
 .tool p { font-size: 0.88rem; }
-.form-note.paths-disclosure { margin: 14px 0 32px; }
-.paths-disclosure + .form-card { scroll-margin-top: 88px; }
+.form-note.paths-disclosure { margin: 14px 0 0; }
+
+/* Pop-up form (native <dialog>) */
+.modal { border: 0; padding: 0; background: transparent; width: calc(100% - 32px); max-width: 600px; max-height: calc(100dvh - 32px); }
+.modal::backdrop { background: rgba(10, 10, 10, 0.45); }
+.modal .form-card { max-width: none; max-height: calc(100dvh - 32px); overflow-y: auto; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18); }
+.modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+.modal-head h3 { margin: 0; font-size: 1.15rem; }
+.modal-close {
+  border: 1px solid var(--border); background: #fff; color: var(--text); border-radius: 2px;
+  width: 34px; height: 34px; font-size: 1.3rem; line-height: 1; cursor: pointer; flex-shrink: 0;
+}
+.modal-close:hover { border-color: #0a0a0a; }
+body:has(.modal[open]) { overflow: hidden; }
 
 .logo-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 24px; }
 .logo-chip {
