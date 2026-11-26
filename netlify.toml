@@ -6,6 +6,40 @@
 [functions]
   node_bundler = "esbuild"
 
+[functions."partner-activation"]
+  schedule = "*/10 * * * *"
+
+[[redirects]]
+  from = "/scripts/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Paid checkout is retired. Files and the Stripe webhook stay for existing subscribers.
+[[redirects]]
+  from = "/join/pay"
+  to = "/partners/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/join/pay/*"
+  to = "/partners/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/join/onboarding"
+  to = "/partners/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/join/onboarding/*"
+  to = "/partners/"
+  status = 301
+  force = true
+
 # One events page. The path picks the niche. Existing files win over these rewrites.
 [[redirects]]
   from = "/events/:topic"

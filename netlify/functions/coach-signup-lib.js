@@ -1,10 +1,15 @@
 /**
- * Free signup writes the free-coach table.
- * Paid signup stores the profile until Stripe confirms $35/month or $300/year,
- * then the webhook writes the paid profile table.
+ * Coach signup writes the coach table (Coaches Distribution List).
+ * The legacy paid path (Stripe $35/month or $300/year, then the paid profile
+ * table) is kept for rollback but is no longer reachable from /join/.
  *
- * Never writes JH Member?, Approved?, Send Confirmation, or Ship?.
+ * Never writes JH Member?, Approved?, Send Confirmation, Ship?, or the
+ * partner verification fields (Referral Status, Verified Date, Activation Email Sent At).
  * The browser cannot set paidConfirmed. Only a verified Stripe event can.
+ *
+ * COACH_HALO_ENV must be "production" on coach-halo.com. Anywhere else,
+ * COACH_TABLE_ID must point at a non-production table and every email goes
+ * to EMAIL_REDIRECT_TO. Missing either one stops the write or the send.
  */
 
 const crypto = require("crypto");
@@ -13,7 +18,7 @@ const FREE_LIST_UID = "7maRvjQE";
 const PAID_LIST_UID = "aWxRZbQV";
 const DOMAIN = process.env.OUTSETA_DOMAIN || "job-halo.outseta.com";
 const PROFILE_BASE = "apppbUQrzMKIHnPUl";
-const FREE_TABLE = "tbldOPTV5xCkv23yc";
+const PROD_COACH_TABLE = "tbldOPTV5xCkv23yc";
 const PAID_TABLE = "tbl3FW3kF6KsQYi9c";
 const HOLD_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 const SIGNATURE_TOLERANCE_SEC = 300;
@@ -30,7 +35,33 @@ const DO_NOT_TOUCH = new Set([
   "ship?",
   "directory- email trigger",
   "newsletter ad - email trigger",
+  "referral status",
+  "verified date",
+  "activation email sent at",
 ]);
+
+function isProduction() {
+  return String(process.env.COACH_HALO_ENV || "").trim().toLowerCase() === "production";
+}
+
+function coachTable() {
+  const configured = String(process.env.COACH_TABLE_ID || "").trim();
+  if (isProduction()) return configured || PROD_COACH_TABLE;
+  if (!/^tbl[A-Za-z0-9]{14}$/.test(configured) || configured === PROD_COACH_TABLE) {
+    const err = new Error("staging_table_missing");
+    err.status = 503;
+    throw err;
+  }
+  return configured;
+}
+
+function siteOrigin() {
+  return String(process.env.SITE_ORIGIN || "https://coach-halo.com").trim().replace(/\/+$/, "");
+}
+
+function recordLink(recordId) {
+  return "https://airtable.com/" + PROFILE_BASE + "/" + coachTable() + "/" + recordId;
+}
 
 const FREE_TYPE = {
   career: "Career Coaching",
@@ -106,7 +137,7 @@ function cleanSignup(payload) {
     freecall: clip(payload.freecall, 20),
     price: clip(payload.price, 6),
     bio: clip(payload.bio, 4000),
-    ideal: clip(payload.coachType, 40) === "career" ? clip(payload.ideal, 1500) : "",
+    ideal: clip(payload.ideal, 1500),
     approach: clip(payload.coachType, 40) === "career" ? clip(payload.approach, 1500) : "",
     result: clip(payload.coachType, 40) === "career" ? clip(payload.result, 1500) : "",
     photoKey: clip(payload.coachType, 40) === "career" && validPhotoKey(payload.photoKey) ? payload.photoKey : "",
@@ -129,6 +160,10 @@ function isSignupTest(email) {
   return /^signup-test-[a-z0-9-]+@coach-halo\.com$/.test(String(email || ""));
 }
 
+function intakeComplete(signup) {
+  return !!signup && signup.ideal.length >= 20 && signup.title.length > 0 && !!signup.coachType && signup.offers.length > 0;
+}
+
 function careerProfileComplete(signup) {
   if (!signup || signup.coachType !== "career") return true;
   return signup.ideal.length >= 20 && signup.approach.length >= 20 && signup.result.length >= 20 && validPhotoKey(signup.photoKey);
@@ -149,26 +184,20 @@ function profileText(payload) {
     line("Languages", listify(payload.langs)),
     line("Capacity", payload.capacity),
     line("Heard about us", payload.heard),
-    line("Plan", payload.plan),
-    line("Bio", payload.bio),
+    line("Ideal client", payload.ideal),
   ].filter(Boolean).join("\n").slice(0, 8000);
 }
 
 function idealClient(payload) {
   return [
     line("Ideal client", payload.ideal),
-    line("Approach", payload.approach),
-    line("Results", payload.result),
     line("Helps with", listify(payload.offers)),
     line("Works with", listify(payload.levels)),
     line("Industries", payload.industries),
     line("Languages", listify(payload.langs)),
     line("Based in", payload.tz),
-    line("Capacity", payload.capacity),
-    line("First call", payload.freecall),
     line("Website", payload.website),
     line("Heard about us", payload.heard),
-    line("Plan chosen", payload.plan),
   ].filter(Boolean).join("\n").slice(0, 4000);
 }
 
@@ -180,10 +209,14 @@ function freeFields(payload, name, email) {
     "Account Type": "Free",
     "Status": isSignupTest(email) ? "Unsubscribed" : "Subscribed",
     "Ideal Client": idealClient(payload),
+    "Coach Title": clip(payload.title, 200),
+    "Intake Complete": true,
   };
   if (parts.length > 1) fields["Coach Last Name"] = parts.slice(1).join(" ");
   const coachingType = FREE_TYPE[clip(payload.coachType, 40)];
   if (coachingType) fields["Coaching_Type"] = coachingType;
+  const website = clip(payload.website, 400);
+  if (/^https?:\/\/\S+\.\S+/i.test(website)) fields["Website"] = website;
   return safeFields(fields);
 }
 
@@ -209,6 +242,7 @@ function airtableToken() {
 }
 
 function authHeader() {
+  if (!isProduction()) return "";
   const raw = String(process.env.OUTSETA_API_KEY || "").trim();
   const secret = String(process.env.OUTSETA_API_SECRET || process.env.OUTSETA_SECRET_KEY || "").trim();
   const token = raw.includes(":") ? raw : secret ? raw + ":" + secret : "";
@@ -235,7 +269,7 @@ async function saveCoach(payload, name, email) {
   if ((payload.plan === "monthly" || payload.plan === "annual") && !paid) {
     return { ok: true, awaitingPayment: true };
   }
-  const table = paid ? PAID_TABLE : FREE_TABLE;
+  const table = paid ? PAID_TABLE : coachTable();
   const emailField = paid ? "Contact Me" : "Coach Email";
   const formula = "LOWER({" + emailField + "})='" + email.replace(/'/g, "\\'") + "'";
   const findUrl = "https://api.airtable.com/v0/" + PROFILE_BASE + "/" + table +
@@ -251,6 +285,7 @@ async function saveCoach(payload, name, email) {
     return { ok: true, existingMember: true, table: "paid" };
   }
   const fields = paid ? paidFields(payload, name, email) : freeFields(payload, name, email);
+  if (!paid && current && /^paid/i.test(String(current["Account Type"] || ""))) delete fields["Account Type"];
   const recordUrl = "https://api.airtable.com/v0/" + PROFILE_BASE + "/" + table +
     (existing ? "/" + encodeURIComponent(existing.id) : "");
   const saved = await airtable(token, recordUrl, {
@@ -270,14 +305,14 @@ async function markDistroPaid(email) {
   const clean = clip(email, 200).toLowerCase();
   if (!token || !validEmail(clean)) return { ok: false, status: 503, error: "not_configured" };
   const formula = "LOWER({Coach Email})='" + clean.replace(/'/g, "\\'") + "'";
-  const findUrl = "https://api.airtable.com/v0/" + PROFILE_BASE + "/" + FREE_TABLE +
+  const findUrl = "https://api.airtable.com/v0/" + PROFILE_BASE + "/" + coachTable() +
     "?maxRecords=1&filterByFormula=" + encodeURIComponent(formula);
   const found = await airtable(token, findUrl, { method: "GET" });
   if (!found.ok) return { ok: false, status: 502, error: "save_failed" };
   const existing = found.data.records && found.data.records[0];
   if (!existing) return { ok: true, missing: true };
   if (existing.fields && existing.fields["Account Type"] === "Paid") return { ok: true, already: true };
-  const saved = await airtable(token, "https://api.airtable.com/v0/" + PROFILE_BASE + "/" + FREE_TABLE + "/" + encodeURIComponent(existing.id), {
+  const saved = await airtable(token, "https://api.airtable.com/v0/" + PROFILE_BASE + "/" + coachTable() + "/" + encodeURIComponent(existing.id), {
     method: "PATCH",
     body: { fields: { "Account Type": "Paid" }, typecast: false },
   });
@@ -557,6 +592,10 @@ function mailH(text) {
   return '<p style="margin:8px 0 8px;font-size:15px;line-height:24px;color:#0a0a0a;font-weight:bold;">' + text + "</p>";
 }
 
+function mailBtn(href, label) {
+  return '<p style="margin:4px 0 20px;"><a href="' + escapeHtml(href) + '" style="display:inline-block;background-color:#0a0a0a;border:1px solid #0a0a0a;border-radius:2px;padding:14px 22px;font-size:15px;line-height:20px;font-weight:bold;color:#ffffff;text-decoration:none;">' + escapeHtml(label) + " &nbsp;→</a></p>";
+}
+
 function welcomeCopy(kind) {
   if (kind === "paid") {
     return {
@@ -577,24 +616,35 @@ function welcomeCopy(kind) {
     };
   }
   return {
-    subject: "Welcome to the Coach-Halo free network",
+    subject: "Welcome to Coach-Halo",
     label: "WELCOME",
-    preheader: "You're in the Coach-Halo free network. Alerts will come to this inbox.",
-    body: mailP("Welcome to the Coach-Halo free network! 🎉") +
-      mailP("You'll receive email alerts when we find coaching opportunities that could fit your specialty and ideal clients. Each alert will explain the opportunity and how to pursue it.") +
-      mailH("What does free mean?") +
-      mailP("There's no Coach-Halo subscription fee for these alerts. Some opportunities link to marketplaces like Bark or Thumbtack, which may charge you to contact the lead. Alerts depend on fit and availability.") +
-      mailP("If paid enrollment is currently closed for your specialty, we'll let you know when it opens.") +
+    preheader: "You'll get free lead previews. Here's how to get client referrals on autopilot.",
+    body: mailP("Welcome to Coach-Halo! 🎉 Your coaching information has been saved. Here's how Coach-Halo works for you.") +
+      mailH("What you get now: free lead previews") +
+      mailP("When we find a potential client who matches your ideal client, we'll email you a preview of who they are and what they're looking for.") +
+      mailH("Want referrals on autopilot? Become a partner") +
+      mailP("Partner coaches don't just get previews. When we find a matching lead, we reach out to them for you and direct them to your coaching profile or website. Here's how to become a partner:") +
+      mailP("<strong style=\"color:#0a0a0a;\">1.</strong> Join a partner platform through our link (MentorCruise, Coachful, Paperbell, or Simply.Coach).<br><strong style=\"color:#0a0a0a;\">2.</strong> Share your profile link with us on the partners page.<br><strong style=\"color:#0a0a0a;\">3.</strong> We verify your eligibility and email you as soon as your referrals are active.") +
+      mailBtn(siteOrigin() + "/partners/?utm_medium=email&utm_source=coach_welcome&utm_campaign=partner_network", "Explore Our Partner Network") +
+      mailP("No Coach-Halo subscription required. Coachful, Paperbell, and Simply.Coach require an active paid plan started through our link; MentorCruise requires an approved, active mentor profile. Already on one of these platforms? Submit your profile for review. Referrals depend on relevant opportunities in your specialty.") +
       mailH("Keep us in your inbox 📬") +
       mailP('Add <a href="mailto:joaquinh@coach-halo.com" style="color:#0a0a0a;text-decoration:underline;">joaquinh@coach-halo.com</a> to your contacts. If this email lands in Promotions, move it to Primary. If it lands in Spam, mark it as “Not spam.”') +
       mailP("Glad to have you here! Questions? Just reply.", true),
   };
 }
 
+function unsubscribeUrl(email) {
+  return "https://airtable.com/apppbUQrzMKIHnPUl/pagXojKMMsO6ThuWB/form?prefill_Your%20Email%20(Required)=" + encodeURIComponent(email);
+}
+
 function welcomeHtml(name, email, kind) {
   const copy = welcomeCopy(kind === "paid" ? "paid" : "free");
-  const first = escapeHtml(firstName(name));
-  const unsub = "https://airtable.com/apppbUQrzMKIHnPUl/pagXojKMMsO6ThuWB/form?prefill_Your%20Email%20(Required)=" + encodeURIComponent(email);
+  return brandedHtml(copy, "Hey " + escapeHtml(firstName(name)) + ",", email);
+}
+
+function brandedHtml(copy, greetingHtml, email) {
+  const first = greetingHtml;
+  const unsub = unsubscribeUrl(email);
   return '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="x-apple-disable-message-reformatting"><title>' + escapeHtml(copy.subject) + '</title></head>' +
     '<body style="margin:0;padding:0;width:100%;background-color:#fafafa;font-family:Arial,Helvetica,sans-serif;color:#0a0a0a;">' +
     '<div style="display:none;font-size:1px;color:#fafafa;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">' + escapeHtml(copy.preheader) + '</div>' +
@@ -604,7 +654,7 @@ function welcomeHtml(name, email, kind) {
     '<table role="presentation" width="100%"><tr><td><a href="https://coach-halo.com" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;letter-spacing:2.8px;color:#0a0a0a;text-decoration:none;">COACH-HALO</a></td>' +
     '<td align="right" style="font-size:11px;letter-spacing:1.5px;color:#6b6b6b;">' + escapeHtml(copy.label) + '</td></tr></table></td></tr>' +
     '<tr><td style="padding:30px 36px 8px;">' +
-    '<p style="margin:0 0 16px;font-size:16px;line-height:25px;color:#0a0a0a;">Hey ' + first + ',</p>' +
+    '<p style="margin:0 0 16px;font-size:16px;line-height:25px;color:#0a0a0a;">' + first + '</p>' +
     copy.body +
     '</td></tr>' +
     '<tr><td style="padding:28px 36px 30px;"><p style="margin:0;font-size:14px;line-height:22px;color:#0a0a0a;">Joaquin<br><span style="font-size:12px;color:#6b6b6b;">Founder, Coach-Halo</span></p></td></tr>' +
@@ -661,9 +711,19 @@ function adminRow(label, value) {
   );
 }
 
+function adminTableHtml(intro, rows) {
+  return (
+    "<div style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.45;color:#0a0a0a;\">" +
+    "<p style=\"margin:0 0 12px;\">" + intro + "</p>" +
+    "<table style=\"border-collapse:collapse;width:100%;max-width:640px;\">" +
+    rows.filter(Boolean).join("") +
+    "</table></div>"
+  );
+}
+
 function adminSignupHtml(signup, kind) {
   const rows = [
-    adminRow("Plan", kind === "paid" ? (signup.plan || "paid") : "free"),
+    kind === "paid" ? adminRow("Plan", signup.plan || "paid") : "",
     adminRow("Name", signup.name),
     adminRow("Email", signup.email),
     adminRow("Coach type", signup.coachType),
@@ -672,103 +732,104 @@ function adminSignupHtml(signup, kind) {
     adminRow("Helps with", listify(signup.offers)),
     adminRow("Works with", listify(signup.levels)),
     adminRow("Industries", signup.industries),
-    adminRow("Calendar", [signup.hasCal, signup.cal].filter(Boolean).join(" ")),
-    adminRow("First call", signup.freecall),
-    adminRow("Hourly rate", signup.price),
     adminRow("Based in", signup.tz),
     adminRow("Languages", listify(signup.langs)),
-    adminRow("Capacity", signup.capacity),
     adminRow("Heard about us", signup.heard),
     adminRow("Ideal client", signup.ideal),
     adminRow("Approach", signup.approach),
     adminRow("Results", signup.result),
     adminRow("Bio", signup.bio),
-    adminRow("Photo key", signup.photoKey),
-  ].filter(Boolean).join("");
-  return (
-    "<div style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.45;color:#0a0a0a;\">" +
-    "<p style=\"margin:0 0 12px;\">New Coach-Halo <strong>" +
-    escapeHtml(kind === "paid" ? "paid" : "free") +
-    "</strong> signup.</p>" +
-    "<table style=\"border-collapse:collapse;width:100%;max-width:640px;\">" +
-    rows +
-    "</table></div>"
-  );
+  ];
+  const intro = kind === "paid"
+    ? "New Coach-Halo <strong>paid</strong> signup (legacy checkout)."
+    : "New Coach-Halo signup. Referral status: Inactive until partner info is submitted and verified.";
+  return adminTableHtml(intro, rows);
+}
+
+/**
+ * Every Coach-Halo email from these functions goes through here.
+ * Outside production, all recipients are replaced with EMAIL_REDIRECT_TO and
+ * the subject is prefixed; without that address nothing is sent.
+ */
+async function sendMail(msg) {
+  const apiKey = String(process.env.SENDGRID_API_KEY || "").trim();
+  const fromAddr = String(process.env.SENDGRID_FROM_EMAIL || "joaquinh@coach-halo.com").trim();
+  if (!apiKey.startsWith("SG.") || !fromAddr.toLowerCase().endsWith("@coach-halo.com") || !validEmail(String(msg.to || "").toLowerCase())) {
+    console.log("mail not configured", msg.category || "");
+    return { ok: false };
+  }
+  let to = msg.to;
+  let subject = msg.subject;
+  if (!isProduction()) {
+    const redirect = String(process.env.EMAIL_REDIRECT_TO || "").trim().toLowerCase();
+    if (!validEmail(redirect)) {
+      console.log("mail blocked outside production", msg.category || "");
+      return { ok: false };
+    }
+    subject = "[STAGING] " + subject + " (to " + msg.to + ")";
+    to = redirect;
+  }
+  const content = [];
+  if (msg.text) content.push({ type: "text/plain", value: msg.text });
+  content.push({ type: "text/html", value: msg.html });
+  const body = {
+    personalizations: [{ to: [{ email: to }] }],
+    from: { email: fromAddr, name: msg.fromName || "Joaquin @ Coach-Halo" },
+    reply_to: { email: fromAddr, name: "Joaquin @ Coach-Halo" },
+    subject: subject,
+    content: content,
+    categories: [msg.category || "ch_mail"],
+    tracking_settings: {
+      click_tracking: { enable: msg.track === true, enable_text: false },
+      open_tracking: { enable: msg.track === true },
+    },
+  };
+  if (msg.unsubscribe) {
+    body.headers = {
+      "List-Unsubscribe": "<" + msg.unsubscribe + ">",
+      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+    };
+  }
+  const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
+    method: "POST",
+    headers: { Authorization: "Bearer " + apiKey, "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    console.log("mail status", msg.category || "", res.status);
+    return { ok: false };
+  }
+  return { ok: true };
 }
 
 async function sendAdminSignupNotify(signup, kind) {
-  const apiKey = String(process.env.SENDGRID_API_KEY || "").trim();
-  const fromAddr = String(process.env.SENDGRID_FROM_EMAIL || "joaquinh@coach-halo.com").trim();
-  const toAddr = adminNotifyEmail();
   if (!signup || !validEmail(signup.email) || isSignupTest(signup.email)) {
     return { adminNotified: false };
   }
-  if (!apiKey.startsWith("SG.") || !fromAddr.toLowerCase().endsWith("@coach-halo.com") || !validEmail(toAddr)) {
-    console.log("coach-join admin notify not configured");
-    return { adminNotified: false };
-  }
   const label = kind === "paid" ? "paid" : "free";
-  const subject = "New Coach-Halo " + label + " signup: " + clip(signup.name, 80);
-  const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
-    method: "POST",
-    headers: { Authorization: "Bearer " + apiKey, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      personalizations: [{ to: [{ email: toAddr }] }],
-      from: { email: fromAddr, name: "Coach-Halo Signup" },
-      reply_to: { email: fromAddr, name: "Joaquin @ Coach-Halo" },
-      subject: subject,
-      content: [
-        { type: "text/plain", value: "New Coach-Halo " + label + " signup\n\n" + profileText(signup) + "\n\nIdeal Client block:\n" + idealClient(signup) },
-        { type: "text/html", value: adminSignupHtml(signup, label) },
-      ],
-      categories: ["ch_admin_signup"],
-      tracking_settings: {
-        click_tracking: { enable: false, enable_text: false },
-        open_tracking: { enable: false },
-      },
-    }),
+  const subject = (label === "paid" ? "New Coach-Halo paid signup: " : "New Coach-Halo signup: ") + clip(signup.name, 80);
+  const sent = await sendMail({
+    to: adminNotifyEmail(),
+    fromName: "Coach-Halo Signup",
+    subject: subject,
+    text: subject + "\n\n" + profileText(signup) + "\n\nIdeal Client block:\n" + idealClient(signup),
+    html: adminSignupHtml(signup, label),
+    category: "ch_admin_signup",
   });
-  if (!res.ok) {
-    console.log("coach-join admin notify status", res.status);
-    return { adminNotified: false };
-  }
-  return { adminNotified: true };
+  return { adminNotified: sent.ok };
 }
 
 async function sendBrandedWelcome(name, email, kind) {
-  const apiKey = String(process.env.SENDGRID_API_KEY || "").trim();
-  const fromAddr = String(process.env.SENDGRID_FROM_EMAIL || "joaquinh@coach-halo.com").trim();
-  if (!apiKey.startsWith("SG.") || !fromAddr.toLowerCase().endsWith("@coach-halo.com") || !validEmail(email)) {
-    console.log("coach-join welcome not configured");
-    return { welcomeSent: false };
-  }
   const letter = kind === "paid" ? "paid" : "free";
-  const unsub = "https://airtable.com/apppbUQrzMKIHnPUl/pagXojKMMsO6ThuWB/form?prefill_Your%20Email%20(Required)=" + encodeURIComponent(email);
-  const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
-    method: "POST",
-    headers: { Authorization: "Bearer " + apiKey, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      personalizations: [{ to: [{ email: email }] }],
-      from: { email: fromAddr, name: "Joaquin @ Coach-Halo" },
-      reply_to: { email: fromAddr, name: "Joaquin @ Coach-Halo" },
-      subject: welcomeCopy(letter).subject,
-      content: [{ type: "text/html", value: welcomeHtml(name, email, letter) }],
-      headers: {
-        "List-Unsubscribe": "<" + unsub + ">",
-        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-      },
-      categories: ["ch_welcome"],
-      tracking_settings: {
-        click_tracking: { enable: true, enable_text: false },
-        open_tracking: { enable: true },
-      },
-    }),
+  const sent = await sendMail({
+    to: email,
+    subject: welcomeCopy(letter).subject,
+    html: welcomeHtml(name, email, letter),
+    unsubscribe: unsubscribeUrl(email),
+    category: "ch_welcome",
+    track: true,
   });
-  if (!res.ok) {
-    console.log("coach-join welcome status", res.status);
-    return { welcomeSent: false };
-  }
-  return { welcomeSent: true };
+  return { welcomeSent: sent.ok };
 }
 
 async function deliverWelcome(listUid, payload, name, email, force) {
@@ -925,6 +986,24 @@ module.exports = {
     return deliverWelcome(FREE_LIST_UID, payload, name, email);
   },
   sendAdminSignupNotify: sendAdminSignupNotify,
+  sendMail: sendMail,
+  brandedHtml: brandedHtml,
+  mailP: mailP,
+  mailBtn: mailBtn,
+  adminRow: adminRow,
+  adminTableHtml: adminTableHtml,
+  escapeHtml: escapeHtml,
+  firstName: firstName,
+  unsubscribeUrl: unsubscribeUrl,
+  airtable: airtable,
+  airtableToken: airtableToken,
+  coachTable: coachTable,
+  recordLink: recordLink,
+  siteOrigin: siteOrigin,
+  isProduction: isProduction,
+  intakeComplete: intakeComplete,
+  clip: clip,
+  PROFILE_BASE: PROFILE_BASE,
   memoryStore: memoryStore,
   productionStore: productionStore,
   holdProfile: holdProfile,
@@ -933,4 +1012,5 @@ module.exports = {
   verifyStripeSignature: verifyStripeSignature,
   rawBody: rawBody,
   validEmail: validEmail,
+  adminNotifyEmail: adminNotifyEmail,
 };

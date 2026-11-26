@@ -1,14 +1,15 @@
 /**
  * Coach signup from coach-halo.com/join/.
- * Free signup writes the free-coach table and can send the free welcome.
- * Paid signup only stores a short-lived hold and returns a checkout reference.
- * Stripe's webhook writes the paid profile after payment.
+ * Writes the coach table (upsert by email), then sends the admin
+ * notification and the welcome email. Referral eligibility is never set here.
  *
- * Never writes JH Member?, Approved?, Send Confirmation, or Ship?.
- * paidConfirmed from the browser is ignored.
+ * Never writes JH Member?, Approved?, Send Confirmation, Ship?, or Referral Status.
+ * paidConfirmed and holdForPayment from the browser are ignored; the legacy
+ * paid checkout is no longer offered.
  *
- * Env: AIRTABLE_TOKEN (or AIRTABLE_PAT),
- *      OUTSETA_API_KEY and OUTSETA_API_SECRET.
+ * Env: AIRTABLE_TOKEN (or AIRTABLE_PAT), SENDGRID_API_KEY, COACH_HALO_ENV,
+ *      COACH_TABLE_ID and EMAIL_REDIRECT_TO outside production,
+ *      OUTSETA_API_KEY and OUTSETA_API_SECRET (production only).
  */
 
 const lib = require("./coach-signup-lib");
@@ -41,57 +42,30 @@ exports.handler = async function (event) {
     return json(400, { ok: false, error: "invalid_json" });
   }
   delete payload.paidConfirmed;
-  const rawPhoto = payload.photo;
+  delete payload.holdForPayment;
   delete payload.photo;
-  let storedPhoto = false;
-  if (payload.coachType === "career" && typeof rawPhoto === "string" && rawPhoto) {
-    const stored = await lib.storeCoachPhoto(payload.email, payload.name, rawPhoto);
-    if (!stored.ok) return json(stored.status || 400, { ok: false, error: stored.error || "photo_failed" });
-    payload.photoKey = stored.key;
-    storedPhoto = true;
-  }
+  delete payload.photoKey;
+  payload.plan = "free";
 
   const signup = lib.cleanSignup(payload);
   if (!lib.validEmail(signup.email) || signup.name.length < 2 || signup.agree !== true) {
     return json(400, { ok: false, error: "invalid_signup" });
   }
-  if (!lib.careerProfileComplete(signup)) {
-    return json(400, { ok: false, error: "career_profile" });
-  }
-  if (signup.coachType === "career" && !storedPhoto) {
-    const existingPhoto = await lib.loadCoachPhoto(signup.photoKey);
-    if (!existingPhoto) return json(400, { ok: false, error: "photo_invalid" });
-  }
-
-  if (payload.holdForPayment === true) {
-    let held;
-    try {
-      held = await lib.holdForCheckout(signup);
-    } catch (err) {
-      console.log("coach-join hold failed");
-      return json(503, { ok: false, error: "not_configured" });
-    }
-    if (!held.ok) return json(held.status || 400, { ok: false, error: held.error || "invalid_signup" });
-    return json(200, { ok: true, checkoutRef: held.checkoutRef, photoKey: signup.photoKey || "", welcomeSent: false });
+  if (!lib.intakeComplete(signup)) {
+    return json(400, { ok: false, error: "incomplete_signup" });
   }
 
   let saved;
   try {
     saved = await lib.saveCoach(signup, signup.name, signup.email);
   } catch (err) {
-    console.log("coach-join blocked", err && err.field ? "field" : "save");
+    console.log("coach-join blocked", err && err.field ? "field" : err && err.message === "staging_table_missing" ? "staging_table" : "save");
     return json(500, { ok: false, error: "save_failed" });
   }
   if (!saved.ok) return json(saved.status || 502, { ok: false, error: saved.error || "save_failed" });
-  if (saved.awaitingPayment) return json(200, { ok: true, awaitingPayment: true, welcomeSent: false });
-  if (saved.existingMember) return json(200, { ok: true, existingMember: true, welcomeSent: false });
-  if (saved.table === "paid") {
-    try { await lib.sendAdminSignupNotify(signup, "paid"); } catch (err) { console.log("coach-join admin notify failed"); }
-    return json(200, { ok: true, welcomeSent: false });
-  }
-  if (lib.isSignupTest(signup.email)) return json(200, { ok: true, photoKey: signup.photoKey || "", welcomeSent: false });
+  if (lib.isSignupTest(signup.email)) return json(200, { ok: true, welcomeSent: false });
 
   try { await lib.sendAdminSignupNotify(signup, "free"); } catch (err) { console.log("coach-join admin notify failed"); }
   const welcome = await lib.sendFreeWelcome(signup, signup.name, signup.email);
-  return json(200, Object.assign({ ok: true, photoKey: signup.photoKey || "" }, welcome));
+  return json(200, Object.assign({ ok: true }, welcome));
 };
